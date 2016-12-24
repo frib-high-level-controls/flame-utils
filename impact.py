@@ -13,7 +13,7 @@ import os.path, logging, shutil
 
 import numpy as np
 
-from ..exception import DataError
+from phantasy.library.exception import DataError
 
 # global logger instance
 

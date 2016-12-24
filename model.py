@@ -14,7 +14,7 @@ Imported from NSLS II APHLA
 import logging
 
 from .impact import build_result as build_impact_result
-from ... import facility as machine 
+from phantasy import facility as machine 
 
 _logger = logging.getLogger(__name__)
 
