@@ -289,7 +289,7 @@ class Model:
     def saveModel(self, name, latname, latbranch, latversion, description="",
                     username=None, password=None):
         """Save the model to the Lattice/Model store or client configured for
-        the current submachine. The lattice corresponding to ths this model
+        the current segment. The lattice corresponding to ths this model
         must be specifed by name, branch and version. Optionally specify a
         username and password for authenticating the store or client.
 

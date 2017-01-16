@@ -6,21 +6,20 @@ potential requirment of modeling accelerator with FLAME code.
 """
 
 from __future__ import absolute_import
-from __future__ import unicode_literals
 from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import logging
 import os
-import sys
 import re
+import sys
 from collections import Counter
 
-from flame import Machine
 import numpy as np
+from flame import Machine
 
 from phantasy.library.misc import miscutils
-
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016, Facility for Rare Isotope beams, Michigan State University"
