@@ -14,3 +14,10 @@ from .flame import inspect_lattice
 from .flame import propagate
 from .model import Model
 
+__all__ = [
+    'MachineStates', 'ModelFlame', 'collect_data', 'configure',
+    'convert_results', 'generate_latfile', 'get_all_names',
+    'get_all_types', 'get_element', 'get_index_by_name',
+    'get_index_by_type', 'get_names_by_pattern', 'inspect_lattice',
+    'propagate', 'Model',
+]
