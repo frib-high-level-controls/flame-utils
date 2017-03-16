@@ -1190,6 +1190,10 @@ class MachineStates(object):
      - ``beta``, ``bg``, ``gamma``, ``IonEk``, ``IonEs``, ``IonQ``, ``IonW``,
        ``IonZ``, ``phis``, ``SampleIonK``,
      - ``moment0``, ``moment0_rms``, ``moment0_env``, ``moment1``
+     - ``phis``, ``phi0``, ``phi0_env``, ``phi0_rms``,
+     - ``x0``, ``x0_env``, ``x0_rms``, ``xp0``, ``xp0_env``, ``xp0_rms``,
+     - ``y0``, ``y0_env``, ``y0_rms``, ``yp0``, ``yp0_env``, ``yp0_rms``,
+     - ``last_caviphi0`` (since version 1.1.1)
 
     Warning
     -------
@@ -1663,6 +1667,16 @@ class MachineStates(object):
     def dEk0_rms(self):
         """Array: general rms beam envelope for :math:`\delta E_k`, [MeV/u]"""
         return self._states.moment0_rms[5]
+    
+    @property
+    def last_caviphi0(self):
+        """float: Last RF cavity's driven phase, [deg]"""
+        try:
+            ret = self._states.last_caviphi0
+        except:
+            print("python-flame version should be at least 1.1.1")
+            ret = None
+        return ret
 
     def clone(self):
         """Return a copy of machine states
