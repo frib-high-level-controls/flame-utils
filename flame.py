@@ -169,7 +169,7 @@ class ModelFlame(object):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
     >>>   
     >>> latfile = "lattice/test.lat"
     >>> fm1 = flameutils.ModelFlame()
@@ -224,6 +224,8 @@ class ModelFlame(object):
     @machine.setter
     def machine(self, m):
         self._mach_ins = m
+        if self._mach_states is None:
+            self._mach_states = m.allocState({})
 
     @property
     def mstates(self):
@@ -509,7 +511,8 @@ def configure(machine=None, econf=None, **kws):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
+    >>>
     >>> latfile = 'test.lat'
     >>> m = Machine(open(latfile, 'r'))
     >>>  
@@ -829,7 +832,7 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
     >>> latfile = 'lattice/test.lat'
     >>> m = Machine(open(latfile, 'r'))
     >>> flameutils.inspect_lattice(_machine=m)
@@ -929,7 +932,7 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
     >>> latfile = 'lattice/test.lat'
     >>> ename = 'LS1_CA01:CAV4_D1150'
     >>> e = flameutils.get_element(name=ename, latfile=latfile)
@@ -1048,7 +1051,7 @@ def get_index_by_type(type='', latfile=None, rtype='dict', _machine=None):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
     >>> latfile = 'lattice/test.lat'
     >>> m = Machine(open(latfile, 'r'))
     >>> types = 'stripper'
@@ -1066,7 +1069,7 @@ def get_index_by_type(type='', latfile=None, rtype='dict', _machine=None):
     See Also
     --------
     :func:`.flatten` : flatten recursive list.
-   """
+    """
     m = miscutils.machine_setter(latfile, _machine, 'get_index_by_type')
     if m is None: return None
 
@@ -1107,7 +1110,7 @@ def get_index_by_name(name='', latfile=None, rtype='dict', _machine=None):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phyapps import flameutils
+    >>> from phantasy import flameutils
     >>> latfile = 'lattice/test.lat'
     >>> m = Machine(open(latfile, 'r'))
     >>> names = 'LS1_CA01:SOL1_D1131_1'
@@ -1137,6 +1140,7 @@ def get_index_by_name(name='', latfile=None, rtype='dict', _machine=None):
         return {n: m.find(name=n) for n in name}
     else:
         return [m.find(name=n) for n in name]
+
 
 def get_names_by_pattern(pattern='.*', latfile=None, _machine=None):
     """Get element names by regex defined by *pattern*.
