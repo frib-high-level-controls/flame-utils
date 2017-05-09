@@ -18,7 +18,6 @@ from collections import Counter
 
 import numpy as np
 from flame import Machine
-
 from phantasy.library.misc import miscutils
 
 __authors__ = "Tong Zhang"
@@ -475,7 +474,8 @@ class ModelFlame(object):
         """
         m = configure(self._mach_ins, econf)
         self._mach_ins = m
-    
+
+
 def configure(machine=None, econf=None, **kws):
     """Configure FLAME machine.
 
@@ -781,7 +781,8 @@ def get_all_types(latfile=None, _machine=None):
         None if failed, or list of valid element types' string names.
     """
     m = miscutils.machine_setter(latfile, _machine, 'get_all_types')
-    if m is None: return None
+    if m is None:
+        return None
 
     mconf = m.conf()
     mconfe = mconf['elements']
@@ -804,7 +805,8 @@ def get_all_names(latfile=None, _machine=None):
         None if failed, or list of valid element types' string names.
     """
     m = miscutils.machine_setter(latfile, _machine, 'get_all_names')
-    if m is None: return None
+    if m is None:
+        return None
 
     mconf = m.conf()
     mconfe = mconf['elements']
@@ -880,7 +882,8 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
     if latfile is None:
         latfile = "<machine>"  # data from machine, not lattice file
     m = miscutils.machine_setter(latfile, _machine, 'inspect_lattice')
-    if m is None: return None
+    if m is None:
+        return None
 
     mconf = m.conf()
     mconfe = mconf['elements']
@@ -968,7 +971,8 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     """
     _machine = kws.get('_machine', None)
     m = miscutils.machine_setter(latfile, _machine, 'get_element')
-    if m is None: return None
+    if m is None:
+        return None
 
     if index is not None:
         if not isinstance(index, (list, tuple)):
@@ -978,14 +982,14 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     else:
         idx_from_index = []
 
-    names = [] 
+    names = []
     # name pattern
     _name_pattern, _name_list = kws.get('_pattern'), None
     if _name_pattern is not None:
         _name_list = get_names_by_pattern(pattern=_name_pattern, _machine=m)
     if _name_list is not None:
         names = _name_list
-        
+
     if name is not None:
         if isinstance(name, str):
             names.append(name)
@@ -1071,7 +1075,8 @@ def get_index_by_type(type='', latfile=None, rtype='dict', _machine=None):
     :func:`.flatten` : flatten recursive list.
     """
     m = miscutils.machine_setter(latfile, _machine, 'get_index_by_type')
-    if m is None: return None
+    if m is None:
+        return None
 
     if not isinstance(type, (list, tuple)):
         type = type,
@@ -1132,7 +1137,8 @@ def get_index_by_name(name='', latfile=None, rtype='dict', _machine=None):
     :func:`.flatten` : flatten recursive list.
     """
     m = miscutils.machine_setter(latfile, _machine, 'get_index_by_name')
-    if m is None: return None
+    if m is None:
+        return None
 
     if not isinstance(name, (list, tuple)):
         name = name,
@@ -1160,7 +1166,8 @@ def get_names_by_pattern(pattern='.*', latfile=None, _machine=None):
         List of element names, if not found, return None.
     """
     m = miscutils.machine_setter(latfile, _machine, 'get_names_by_pattern')
-    if m is None: return None
+    if m is None:
+        return None
 
     econf = m.conf().get('elements')
     rp = re.compile(pattern)
@@ -1169,7 +1176,7 @@ def get_names_by_pattern(pattern='.*', latfile=None, _machine=None):
         return m_names
     else:
         return None
-    
+
 
 def is_zeros_states(s):
     """ test if flame machine states is all zeros
@@ -1260,6 +1267,7 @@ class MachineStates(object):
     keyword parameters of ``machine`` and ``latfile`` to initialize the
     states to be significant for the ``propagate()`` method.
     """
+
     def __init__(self, s=None, **kws):
         _mstates = kws.get('mstates', None)
         _machine = kws.get('machine', None)
@@ -1283,7 +1291,8 @@ class MachineStates(object):
                     _m.propagate(self._states, 0, 1)
                 else:
                     _LOGGER.warning(
-                        "MachineStates: The initial machine states is 0, true values could be obtained with more information.")
+                        "MachineStates: \
+                        The initial machine states is 0, true values could be obtained with more information.")
 
     @property
     def mstates(self):
@@ -1558,20 +1567,20 @@ class MachineStates(object):
     @property
     def moment1(self):
         r"""Array: correlation tensor of all charge states, for each charge
-        state, the correlation matrix could be written as:
-
-        .. math::
-
-           \begin{array}{ccccccc}
-               \color{red}{\left<x \cdot x\right>} & \left<x \cdot x'\right> & \left<x \cdot y\right> & \left<x \cdot y'\right> & \left<x \cdot \phi\right> & \left<x \cdot \delta E_k\right> & 0 \\
-               \left<x'\cdot x\right> & \color{red}{\left<x'\cdot x'\right>} & \left<x'\cdot y\right> & \left<x'\cdot y'\right> & \left<x'\cdot \phi\right> & \left<x'\cdot \delta E_k\right> & 0 \\
-               \left<y \cdot x\right> & \left<y \cdot x'\right> & \color{red}{\left<y \cdot y\right>} & \left<y \cdot y'\right> & \left<y \cdot \phi\right> & \left<y \cdot \delta E_k\right> & 0 \\
-               \left<y'\cdot x\right> & \left<y'\cdot x'\right> & \left<y'\cdot y\right> & \color{red}{\left<y'\cdot y'\right>} & \left<y'\cdot \phi\right> & \left<y'\cdot \delta E_k\right> & 0 \\
-               \left<\phi \cdot x\right> & \left<\phi \cdot x'\right> & \left<\phi \cdot y\right> & \left<\phi \cdot y'\right> & \color{red}{\left<\phi \cdot \phi\right>} & \left<\phi \cdot \delta E_k\right> & 0 \\
-               \left<\delta E_k  \cdot x\right> & \left<\delta E_k  \cdot x'\right> & \left<\delta E_k  \cdot y\right> & \left<\delta E_k  \cdot y'\right> & \left<\delta E_k  \cdot \phi\right> & \color{red}{\left<\delta E_k  \cdot \delta E_k\right>} & 0 \\
-               0                    & 0                     & 0                    & 0                     & 0                       & 0                      & 0
-           \end{array}
-        """
+                state, the correlation matrix could be written as:
+        
+                .. math::
+        
+                   \begin{array}{ccccccc}
+                       \color{red}{\left<x \cdot x\right>} & \left<x \cdot x'\right> & \left<x \cdot y\right> & \left<x \cdot y'\right> & \left<x \cdot \phi\right> & \left<x \cdot \delta E_k\right> & 0 \\
+                       \left<x'\cdot x\right> & \color{red}{\left<x'\cdot x'\right>} & \left<x'\cdot y\right> & \left<x'\cdot y'\right> & \left<x'\cdot \phi\right> & \left<x'\cdot \delta E_k\right> & 0 \\
+                       \left<y \cdot x\right> & \left<y \cdot x'\right> & \color{red}{\left<y \cdot y\right>} & \left<y \cdot y'\right> & \left<y \cdot \phi\right> & \left<y \cdot \delta E_k\right> & 0 \\
+                       \left<y'\cdot x\right> & \left<y'\cdot x'\right> & \left<y'\cdot y\right> & \color{red}{\left<y'\cdot y'\right>} & \left<y'\cdot \phi\right> & \left<y'\cdot \delta E_k\right> & 0 \\
+                       \left<\phi \cdot x\right> & \left<\phi \cdot x'\right> & \left<\phi \cdot y\right> & \left<\phi \cdot y'\right> & \color{red}{\left<\phi \cdot \phi\right>} & \left<\phi \cdot \delta E_k\right> & 0 \\
+                       \left<\delta E_k  \cdot x\right> & \left<\delta E_k  \cdot x'\right> & \left<\delta E_k  \cdot y\right> & \left<\delta E_k  \cdot y'\right> & \left<\delta E_k  \cdot \phi\right> & \color{red}{\left<\delta E_k  \cdot \delta E_k\right>} & 0 \\
+                       0                    & 0                     & 0                    & 0                     & 0                       & 0                      & 0
+                   \end{array}
+                """
         return getattr(self._states, 'moment1')
 
     @moment1.setter
@@ -1671,7 +1680,7 @@ class MachineStates(object):
     def dEk0_rms(self):
         """Array: general rms beam envelope for :math:`\delta E_k`, [MeV/u]"""
         return self._states.moment0_rms[5]
-    
+
     @property
     def last_caviphi0(self):
         """float: Last RF cavity's driven phase, [deg]"""
