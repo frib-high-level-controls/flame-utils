@@ -169,7 +169,7 @@ class ModelFlame(object):
     --------
     >>> from flame import Machine
     >>> from phantasy import flameutils
-    >>>   
+    >>>
     >>> latfile = "lattice/test.lat"
     >>> fm1 = flameutils.ModelFlame()
     >>> # manually initialization
@@ -179,21 +179,21 @@ class ModelFlame(object):
     >>> fm1.mstates = m.allocState({})
     >>> # or by explicitly calling:
     >>> fm1.machine, fm1.mstates = fm1.init_machine(latfile)
-    >>>  
+    >>>
     >>> # initialize with valid lattice file
     >>> fm2 = flameutils.ModelFlame(lat_file=latfile)
-    >>>  
+    >>>
     >>> # (Recommanded) initialize with MachineStates
     >>> fm = flameutils.ModelFlame()
     >>> ms = flameutils.MachineStates(machine=m)
     >>> # now the attributes of ms could be arbitarily altered
     >>> fm.mstates = ms
     >>> fm.machine = m
-    >>>  
+    >>>
     >>> # run fm
     >>> obs = fm.get_index_by_type(type='bpm')['bpm']
     >>> r, s = fm.run(monitor=obs)
-    >>>  
+    >>>
     >>> # get result, storing as a dict, e.g. data
     >>> data = fm.collect_data(r, pos=True, x0=True, y0=True)
 
@@ -269,7 +269,7 @@ class ModelFlame(object):
 
     def get_element(self, name=None, index=None, type=None, **kws):
         """Element inspection, get properties.
-        
+
         Returns
         -------
         res : list of dict
@@ -323,7 +323,7 @@ class ModelFlame(object):
 
     def get_index_by_type(self, type='', rtype='dict'):
         """Get element(s) index by type(s).
-        
+
         Parameters
         ----------
         type : str or list of str
@@ -350,7 +350,7 @@ class ModelFlame(object):
         ----------
         name : list or tuple of str
             Single element name or list[tuple] of element names.
-        rtype : str 
+        rtype : str
             Return type, 'dict' (default) or 'list'.
 
         Returns
@@ -370,7 +370,7 @@ class ModelFlame(object):
 
         Parameters
         ----------
-        mstates : 
+        mstates :
             FLAME machine states object, also could be :class:`MachineStates`
             object if not set, will use the one from ``ModelFlame`` object
             itself, usually is created at the initialization stage,
@@ -381,7 +381,7 @@ class ModelFlame(object):
         to_element : int
             Element index of end point, if not set, will be the last element.
         monitor : list[int]
-            List of element indice selected as states monitors, if set -1, 
+            List of element indice selected as states monitors, if set -1,
             will be a list of only last element.
 
         Returns
@@ -450,7 +450,7 @@ class ModelFlame(object):
 
         Parameters
         ----------
-        result : 
+        result :
             propagation results with ``MachineStates`` object
 
         See Also
@@ -498,7 +498,7 @@ def configure(machine=None, econf=None, **kws):
 
     Returns
     -------
-    m : new FLAME machine object 
+    m : new FLAME machine object
         None if failed, else new machine object.
 
     Note
@@ -507,7 +507,7 @@ def configure(machine=None, econf=None, **kws):
     *c_dict* could be used, e.g. reconfigure one corrector of ``m``:
     ``configure(machine=m, c_idx=10, c_dict={'theta_x': 0.001})``
     which is just the same as: ``m.reconfigure(10, {'theta_x': 0.001})``.
-    
+
     Examples
     --------
     >>> from flame import Machine
@@ -515,21 +515,21 @@ def configure(machine=None, econf=None, **kws):
     >>>
     >>> latfile = 'test.lat'
     >>> m = Machine(open(latfile, 'r'))
-    >>>  
+    >>>
     >>> # reconfigure one element
     >>> e1 = flameutils.get_element(_machine=m, index=1)[0]
     >>> print(e1)
-    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.02, 
+    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.02,
      'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
     >>> e1['properties']['aper'] = 0.04
     >>> m = flameutils.configure(m, e1)
     >>> print(flameutils.get_element(_machine=m, index=1)[0])
-    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.04, 
+    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.04,
      'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
-    >>>  
+    >>>
     >>> # reconfiugre more than one element
     >>> e_cor = flameutils.get_element(_machine=m, type='orbtrim')
-    >>> # set all horizontal correctors with theta_x = 0.001 
+    >>> # set all horizontal correctors with theta_x = 0.001
     >>> for e in e_cor:
     >>>     if 'theta_x' in e['properties']:
     >>>         e['properties']['theta_x'] = 0.001
@@ -580,7 +580,7 @@ def collect_data(result, **kws):
 
     Parameters
     ----------
-    result : 
+    result :
         Propagation results with ``MachineStates`` object.
 
     Keyword Arguments
@@ -740,7 +740,7 @@ def propagate(machine=None, mstates=None, from_element=None, to_element=None, mo
 
     See Also
     --------
-    MachineStates : FLAME Machine state class created for ``MomentMatrix`` 
+    MachineStates : FLAME Machine state class created for ``MomentMatrix``
         type.
     """
     _latfile = kws.get('latfile', None)
@@ -767,7 +767,7 @@ def propagate(machine=None, mstates=None, from_element=None, to_element=None, mo
 
 def get_all_types(latfile=None, _machine=None):
     """Get all unique types from a FLAME machine or lattice file.
-    
+
     Parameters
     ----------
     latfile:
@@ -791,14 +791,14 @@ def get_all_types(latfile=None, _machine=None):
 
 def get_all_names(latfile=None, _machine=None):
     """Get all uniqe names from a FLAME machine or lattice file.
-    
+
     Parameters
     ----------
     latfile : str
         FLAME lattice file.
-    _machine : 
+    _machine :
         FLAME machine object.
-    
+
     Returns
     -------
     str or None
@@ -819,9 +819,9 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
 
     Parameters
     ----------
-    latfile : 
+    latfile :
         FLAME lattice file.
-    out : 
+    out :
         output stream, stdout by default.
     _machine :
         FLAME machine object.
@@ -843,13 +843,13 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
     TYPE        COUNT   PERCENTAGE
     ------------------------------
     SOURCE       1       0.08
-    STRIPPER     1       0.08  
-    QUADRUPOLE   40      3.22  
-    BPM          75      6.04  
-    SOLENOID     78      6.28  
-    SBEND        80      6.44  
-    RFCAVITY     117     9.42  
-    ORBTRIM      120     9.66  
+    STRIPPER     1       0.08
+    QUADRUPOLE   40      3.22
+    BPM          75      6.04
+    SOLENOID     78      6.28
+    SBEND        80      6.44
+    RFCAVITY     117     9.42
+    ORBTRIM      120     9.66
     DRIFT        730    58.78
     >>> # pass the latfile parameter
     >>> flameutils.inspect_lattice(latfile=latfile)
@@ -857,22 +857,22 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
     ==============================
     TYPE        COUNT   PERCENTAGE
     ------------------------------
-    SOURCE       1       0.08  
-    STRIPPER     1       0.08  
-    QUADRUPOLE   40      3.22  
-    BPM          75      6.04  
-    SOLENOID     78      6.28  
-    SBEND        80      6.44  
-    RFCAVITY     117     9.42  
-    ORBTRIM      120     9.66  
-    DRIFT        730    58.78 
-    >>>  
+    SOURCE       1       0.08
+    STRIPPER     1       0.08
+    QUADRUPOLE   40      3.22
+    BPM          75      6.04
+    SOLENOID     78      6.28
+    SBEND        80      6.44
+    RFCAVITY     117     9.42
+    ORBTRIM      120     9.66
+    DRIFT        730    58.78
+    >>>
     >>> ## write inspection message to other streams
     >>> # write to file
     >>> fout = open('test.out', 'w')
     >>> flameutils.inspect_lattice(latfile=latfile, out=fout)
     >>> fout.close()
-    >>>   
+    >>>
     >>> # write to string
     >>> from cStringIO import StringIO
     >>> sio = StringIO()
@@ -949,7 +949,7 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     [{'index': 18, 'properties': {'name': 'LS1_CA01:BPM_D1144', 'type': 'bpm'}},
      {'index': 5, 'properties': {'name': 'LS1_CA01:BPM_D1129', 'type': 'bpm'}}]
     >>> # all these filters could be used together, return [] if found nothing
-    >>>  
+    >>>
     >>> # get names by regex
     >>> e = flameutils.get_element(_machine=m, _pattern='FS1_BBS:DH_D2394_1.?')
     >>> print(e)
@@ -1029,16 +1029,16 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
 
 def get_index_by_type(type='', latfile=None, rtype='dict', _machine=None):
     """Get element(s) index by type(s).
-    
+
     Parameters
     ----------
     type : str or list of str
         Single element type name or list[tuple] of element type names.
-    latfile : 
+    latfile :
         FLAME lattice file, preferred.
     rtype : str
         Return type, 'dict' (default) or 'list'.
-    _machine : 
+    _machine :
         FLAME machine object.
 
     Returns
@@ -1123,10 +1123,10 @@ def get_index_by_name(name='', latfile=None, rtype='dict', _machine=None):
     {'LS1_CA01:SOL1_D1131_1': [8]}
     >>> print(flameutils.get_index_by_name(name=names, _machine=m))
     {'LS1_CA01:SOL1_D1131_1': [8]}
-    >>> names = ['LS1_CA01:SOL1_D1131_1', 'LS1_CA01:CAV4_D1150', 
+    >>> names = ['LS1_CA01:SOL1_D1131_1', 'LS1_CA01:CAV4_D1150',
     >>>          'LS1_WB01:BPM_D1286', 'LS1_CA01:BPM_D1144']
     >>> print(flameutils.get_index_by_name(name=names, latfile=latfile))
-    {'LS1_CA01:SOL1_D1131_1': [8], 'LS1_WB01:BPM_D1286': [154], 
+    {'LS1_CA01:SOL1_D1131_1': [8], 'LS1_WB01:BPM_D1286': [154],
      'LS1_CA01:BPM_D1144': [18], 'LS1_CA01:CAV4_D1150': [27]}
     >>> # return a list instead of dict
     >>> print(flameutils.get_index_by_name(name=names, latfile=latfile, rtype='list'))
@@ -1240,26 +1240,26 @@ class MachineStates(object):
 
     Parameters
     ----------
-    s : 
+    s :
         machine states object.
 
     Keyword Arguments
     -----------------
-    mstates : 
+    mstates :
         flame machine states object, priority: high
-    machine : 
+    machine :
         flame machine object, priority: middle
-    latfile : 
+    latfile :
         flame lattice file name, priority: low
 
     Note
     ----
-    If more than one keyword parameters are provided, 
+    If more than one keyword parameters are provided,
     the selection policy follows the priority from high to low.
-    
+
     Warning
     -------
-    If only ``s`` is assigned with all-zeros states (usually created by 
+    If only ``s`` is assigned with all-zeros states (usually created by
     ``allocState({})`` method), then attention should be paid, since this
     machine states only can propagate from the first element, i.e. ``SOURCE``
     (``from_element`` parameter of ``run()`` or ``propagate()`` should be 0),
@@ -1523,14 +1523,14 @@ class MachineStates(object):
         ----
         The physics meanings for each column are:
 
-            * ``x``: x position in transverse plane;
-            * ``x'``: x divergence;
-            * ``y``: y position in transverse plane;
-            * ``y'``: y divergence;
-            * ``phi``: longitudinal beam length, measured in RF frequency;
-            * ``dEk``: kinetic energy deviation w.r.t. reference charge state;
-            * ``1``: should be always 1, for the convenience of handling 
-              corrector (i.e. ``orbtrim`` element)
+        - ``x``: x position in transverse plane;
+        - ``x'``: x divergence;
+        - ``y``: y position in transverse plane;
+        - ``y'``: y divergence;
+        - ``phi``: longitudinal beam length, measured in RF frequency;
+        - ``dEk``: kinetic energy deviation w.r.t. reference charge state;
+        - ``1``: should be always 1, for the convenience of handling
+          corrector (i.e. ``orbtrim`` element)
         """
         return getattr(self._states, 'moment0_env')
 
@@ -1567,20 +1567,20 @@ class MachineStates(object):
     @property
     def moment1(self):
         r"""Array: correlation tensor of all charge states, for each charge
-                state, the correlation matrix could be written as:
-        
-                .. math::
-        
-                   \begin{array}{ccccccc}
-                       \color{red}{\left<x \cdot x\right>} & \left<x \cdot x'\right> & \left<x \cdot y\right> & \left<x \cdot y'\right> & \left<x \cdot \phi\right> & \left<x \cdot \delta E_k\right> & 0 \\
-                       \left<x'\cdot x\right> & \color{red}{\left<x'\cdot x'\right>} & \left<x'\cdot y\right> & \left<x'\cdot y'\right> & \left<x'\cdot \phi\right> & \left<x'\cdot \delta E_k\right> & 0 \\
-                       \left<y \cdot x\right> & \left<y \cdot x'\right> & \color{red}{\left<y \cdot y\right>} & \left<y \cdot y'\right> & \left<y \cdot \phi\right> & \left<y \cdot \delta E_k\right> & 0 \\
-                       \left<y'\cdot x\right> & \left<y'\cdot x'\right> & \left<y'\cdot y\right> & \color{red}{\left<y'\cdot y'\right>} & \left<y'\cdot \phi\right> & \left<y'\cdot \delta E_k\right> & 0 \\
-                       \left<\phi \cdot x\right> & \left<\phi \cdot x'\right> & \left<\phi \cdot y\right> & \left<\phi \cdot y'\right> & \color{red}{\left<\phi \cdot \phi\right>} & \left<\phi \cdot \delta E_k\right> & 0 \\
-                       \left<\delta E_k  \cdot x\right> & \left<\delta E_k  \cdot x'\right> & \left<\delta E_k  \cdot y\right> & \left<\delta E_k  \cdot y'\right> & \left<\delta E_k  \cdot \phi\right> & \color{red}{\left<\delta E_k  \cdot \delta E_k\right>} & 0 \\
-                       0                    & 0                     & 0                    & 0                     & 0                       & 0                      & 0
-                   \end{array}
-                """
+        state, the correlation matrix could be written as:
+
+        .. math::
+
+           \begin{array}{ccccccc}
+               \color{red}{\left<x \cdot x\right>} & \left<x \cdot x'\right> & \left<x \cdot y\right> & \left<x \cdot y'\right> & \left<x \cdot \phi\right> & \left<x \cdot \delta E_k\right> & 0 \\
+               \left<x'\cdot x\right> & \color{red}{\left<x'\cdot x'\right>} & \left<x'\cdot y\right> & \left<x'\cdot y'\right> & \left<x'\cdot \phi\right> & \left<x'\cdot \delta E_k\right> & 0 \\
+               \left<y \cdot x\right> & \left<y \cdot x'\right> & \color{red}{\left<y \cdot y\right>} & \left<y \cdot y'\right> & \left<y \cdot \phi\right> & \left<y \cdot \delta E_k\right> & 0 \\
+               \left<y'\cdot x\right> & \left<y'\cdot x'\right> & \left<y'\cdot y\right> & \color{red}{\left<y'\cdot y'\right>} & \left<y'\cdot \phi\right> & \left<y'\cdot \delta E_k\right> & 0 \\
+               \left<\phi \cdot x\right> & \left<\phi \cdot x'\right> & \left<\phi \cdot y\right> & \left<\phi \cdot y'\right> & \color{red}{\left<\phi \cdot \phi\right>} & \left<\phi \cdot \delta E_k\right> & 0 \\
+               \left<\delta E_k  \cdot x\right> & \left<\delta E_k  \cdot x'\right> & \left<\delta E_k  \cdot y\right> & \left<\delta E_k  \cdot y'\right> & \left<\delta E_k  \cdot \phi\right> & \color{red}{\left<\delta E_k  \cdot \delta E_k\right>} & 0 \\
+               0                    & 0                     & 0                    & 0                     & 0                       & 0                      & 0
+           \end{array}
+        """
         return getattr(self._states, 'moment1')
 
     @moment1.setter
