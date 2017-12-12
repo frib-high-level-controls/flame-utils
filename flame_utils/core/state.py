@@ -10,9 +10,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-
+import numpy as np
 
 from flame_utils.misc import machine_setter
+from flame_utils.misc import is_zeros_states
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -119,7 +120,7 @@ class MachineStates(object):
             self._states = s
 
         if self._states is not None:
-            if _is_zeros_states(self._states):
+            if is_zeros_states(self._states):
                 _m = machine_setter(_latfile, _machine, 'MachineStates')
                 if _m is not None:
                     _m.propagate(self._states, 0, 1)
@@ -536,15 +537,3 @@ class MachineStates(object):
             return "State: moment0 mean=[7]({})".format(moment0_env)
         except AttributeError:
             return "Incompleted initializaion."
-
-
-def _is_zeros_states(s):
-    """ test if flame machine states is all zeros
-
-    Returns
-    -------
-    True or False
-        True if is all zeros, else False
-    """
-    return np.alltrue(getattr(s, 'moment0') == np.zeros([7, 1]))
-

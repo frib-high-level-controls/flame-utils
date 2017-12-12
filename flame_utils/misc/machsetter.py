@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-"""
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
+import numpy as np
 
 from flame import Machine
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def machine_setter(_latfile=None, _machine=None, _handle_name=None):
@@ -38,3 +38,13 @@ def machine_setter(_latfile=None, _machine=None, _handle_name=None):
             m = _machine
     return m
 
+
+def is_zeros_states(s):
+    """ test if flame machine states is all zeros
+
+    Returns
+    -------
+    True or False
+        True if is all zeros, else False
+    """
+    return np.alltrue(getattr(s, 'moment0') == np.zeros([7, 1]))

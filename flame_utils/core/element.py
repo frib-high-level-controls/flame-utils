@@ -10,7 +10,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-
+import os
+import re
 
 from collections import Counter
 
@@ -42,7 +43,7 @@ def get_all_types(latfile=None, _machine=None):
     list
         None if failed, or list of valid element types' string names.
     """
-    m = miscutils.machine_setter(latfile, _machine, 'get_all_types')
+    m = machine_setter(latfile, _machine, 'get_all_types')
     if m is None:
         return None
 

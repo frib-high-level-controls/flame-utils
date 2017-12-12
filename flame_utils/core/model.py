@@ -9,6 +9,22 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
+from flame import Machine
+
+from .state import MachineStates
+from .element import get_element
+from .element import get_all_types
+from .element import get_all_names
+from .element import get_index_by_type
+from .element import get_index_by_name
+
+from flame_utils.misc import is_zeros_states
+from flame_utils.misc import machine_setter
+from flame_utils.io import collect_data
+
+_LOGGER = logging.getLogger(__name__)
+
 
 def propagate(machine=None, mstates=None, from_element=None, to_element=None, monitor=None, **kws):
     """Propagate ``MachineStates``.
@@ -46,7 +62,7 @@ def propagate(machine=None, mstates=None, from_element=None, to_element=None, mo
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
-    _m = miscutils.machine_setter(_latfile, _machine, 'propagate')
+    _m = machine_setter(_latfile, _machine, 'propagate')
     if _m is None:
         return None
     if mstates is None:
@@ -131,7 +147,7 @@ def configure(machine=None, econf=None, **kws):
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
-    _m = miscutils.machine_setter(_latfile, _machine, 'configure')
+    _m = machine_setter(_latfile, _machine, 'configure')
     if _m is None:
         return None
 
