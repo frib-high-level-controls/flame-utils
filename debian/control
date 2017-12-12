@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Tong Zhang <zhangt@frib.msu.edu>
 Build-Depends: debhelper (>=9), dh-python, python-all,
                python-setuptools, python-nose, python-nose-exclude,
-               python-coverage
+               python-coverage, python-flame
 Standards-Version: 3.9.6
 Homepage: https://github.com/frib-high-level-controls/flame-utils
 X-Python-Version: >= 2.7
@@ -13,7 +13,8 @@ Vcs-Browser: https://github.com/frib-high-level-controls/flame-utils
 
 Package: python-flame-utils
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}
+Depends: python-flame, ${python:Depends}, ${misc:Depends}
+Suggests: flame
 Description: Python package to support python-flame (Python 2)
  Python package to provide useful utilites for python-flame.
  .
