@@ -9,6 +9,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import numpy as np
+
 
 def generate_latfile(machine, latfile=None, out=None):
     """Generate lattice file for the usage of FLAME code.

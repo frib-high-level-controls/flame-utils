@@ -1,0 +1,13 @@
+Inspecting lattice: test_1.lat
+==============================
+TYPE        COUNT   PERCENTAGE
+------------------------------
+SOURCE       1       0.08
+STRIPPER     1       0.08
+QUADRUPOLE   40      3.22
+BPM          75      6.04
+SOLENOID     78      6.28
+SBEND        80      6.44
+RFCAVITY     117     9.42
+ORBTRIM      120     9.66
+DRIFT        730    58.78
