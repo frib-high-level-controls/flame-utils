@@ -16,7 +16,7 @@ Architecture: all
 Depends: python-flame, ${python:Depends}, ${misc:Depends}
 Suggests: flame
 Description: Python package to support python-flame (Python 2)
- Python package to provide useful utilites for python-flame.
+ Python package to provide useful utilities for python-flame.
  .
  Build upon python-flame, higher-level interface to make it easy and
  efficient when using python-flame package.
