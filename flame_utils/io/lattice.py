@@ -12,13 +12,15 @@ from __future__ import unicode_literals
 import numpy as np
 
 
-def generate_latfile(machine, latfile=None, out=None):
+def generate_latfile(machine, state=None, latfile=None, out=None):
     """Generate lattice file for the usage of FLAME code.
 
     Parameters
     ----------
     machine :
         FLAME machine object.
+    state :
+        FLAME beam state object of initial condition. (optional)
     latfile :
         File name for generated lattice file.
     out :
@@ -61,19 +63,36 @@ def generate_latfile(machine, latfile=None, out=None):
     m = machine
     try:
         mconf = m.conf()
-        mks = mconf.keys()
     except:
         print("Failed to load FLAME machine object.")
         return None
 
     try:
+
         mconf_ks = mconf.keys()
         [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
+        mc_src = m.conf(m.find(type = 'source')[0])
 
-        #
+        # initial beam condition from input
+        if type(state) == type(m.allocState({})):
+            mc_src['IonEk'] = state.ref_IonEk
+            mc_src['IonEs'] = state.ref_IonEs
+            mc_src['IonZ'] = state.ref_IonZ
+            mc_src['IonW'] = state.ref_IonW
+
+            mc_src['IonChargeStates'] = state.IonZ
+            mc_src['NCharge'] = state.IonQ
+
+            cenkey = mc_src['vector_variable']
+            envkey = mc_src['matrix_variable']
+            for i in range(len(state.IonZ)):
+                mc_src[cenkey+str(i)] = state.moment0[:,i]
+                mc_src[envkey+str(i)] = state.moment1[:,:,i].flatten()
+
         lines = []
+
         for k in mconf_ks:
-            v = mconf[k]
+            v = mc_src[k]
             if isinstance(v, np.ndarray):
                 v = v.tolist()
             if isinstance(v, str):
@@ -93,7 +112,10 @@ def generate_latfile(machine, latfile=None, out=None):
                 continue
             elem_name_list.append(ename)
             ki = elem_i.keys()
-            elem_k = set(ki).difference(mks)
+            elem_k = set(ki).difference(mc_src.keys())
+            if etype == 'source':
+                elem_k.add('vector_variable')
+                elem_k.add('matrix_variable')
             if etype == 'stripper':
                 elem_k.add('IonChargeStates')
                 elem_k.add('NCharge')
