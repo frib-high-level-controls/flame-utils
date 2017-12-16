@@ -25,7 +25,7 @@ class TestGenerateLatfile(unittest.TestCase):
         s0 = self.m.allocState({})
         self.r = self.m.propagate(s0, 0, len(self.m), range(len(self.m)))
         self.s = s0
-        k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW', 
+        k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW',
              'IonZ', 'phis', 'SampleIonK']
         self.keys = [i for i in k]
         self.ref_keys = ['ref_{}'.format(i) for i in k] + ['pos']
@@ -37,6 +37,13 @@ class TestGenerateLatfile(unittest.TestCase):
         self.latfile1 = os.path.join(curdir, 'lattice/out1_org.lat')
         self.latfile2 = os.path.join(curdir, 'lattice/out1_mod.lat')
 
+        self.testcfile = os.path.join(curdir, 'lattice/test_c.lat')
+        self.out3file = os.path.join(curdir, 'lattice/out3.lat')
+        with open(self.out3file, 'rb') as f:
+            self.fout3_str = f.read().strip()
+        with open(self.testcfile) as f:
+            self.mc = Machine(f)
+
     def tearDown(self):
         for f in [self.latfile1, self.latfile2]:
             if os.path.isfile(f):
@@ -47,18 +54,18 @@ class TestGenerateLatfile(unittest.TestCase):
         sioname = generate_latfile(self.m, out=sio)
         self.assertEqual(sioname, 'string')
         self.assertEqual(sio.getvalue().strip(), self.fout1_str)
-        
+
     def test_generate_latfile_original2(self):
         # TEST LATFILE
-        fout1_file = generate_latfile(self.m, self.latfile1)
+        fout1_file = generate_latfile(self.m, latfile=self.latfile1)
         lines1 = [line.strip() for line in open(fout1_file).read().strip().split('\n')]
         lines0 = [line.strip() for line in self.fout1_str.split('\n')]
         self.assertEqual(lines1, lines0)
-        
+
         m = Machine(open(fout1_file))
         s = m.allocState({})
         r = m.propagate(s, 0, len(m), range(len(m)))
-        
+
         # TEST RESULTS
         for i in range(len(m)):
             s1, s0 = r[i][1], self.r[i][1]
@@ -66,18 +73,24 @@ class TestGenerateLatfile(unittest.TestCase):
                 self.assertEqual(getattr(s1, k), getattr(s0, k))
 
             for k in self.keys:
-                self.assertEqual(getattr(s1, k).tolist(), 
+                self.assertEqual(getattr(s1, k).tolist(),
                                  getattr(s0, k).tolist())
 
             for k in self.keys_ps:
-                self.assertEqual(getattr(s1, k).tolist(), 
+                self.assertEqual(getattr(s1, k).tolist(),
                                  getattr(s0, k).tolist())
-    
+
+    def test_generate_latfile_original3(self):
+        sio = StringIO()
+        sioname = generate_latfile(self.mc, original=self.testcfile, out=sio)
+        self.assertEqual(sioname, 'string')
+        self.assertEqual(sio.getvalue().strip(), self.fout3_str)
+
     def test_generate_latfile_update(self):
         idx = 80
         self.m.reconfigure(idx, {'theta_x': 0.1})
-        fout2_file = generate_latfile(self.m, self.latfile2)
+        fout2_file = generate_latfile(self.m, latfile=self.latfile2)
         self.assertEqual(open(fout2_file).read().strip(), self.fout2_str)
-        
+
         m = Machine(open(fout2_file))
         self.assertEqual(m.conf(idx)['theta_x'], 0.1)
