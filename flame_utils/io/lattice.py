@@ -12,19 +12,19 @@ from __future__ import unicode_literals
 import numpy as np
 
 
-def generate_latfile(machine, state=None, original=None, latfile=None, out=None):
+def generate_latfile(machine, latfile=None, state=None, original=None, out=None):
     """Generate lattice file for the usage of FLAME code.
 
     Parameters
     ----------
     machine :
         FLAME machine object.
-    state :
-        FLAME beam state object of initial condition. (optional)
-    original :
-        File name for original lattice file to keep user comments and indents. (optional)
     latfile :
         File name for generated lattice file.
+    original :
+        File name for original lattice file to keep user comments and indents. (optional)
+    state :
+        FLAME beam state object of initial condition. (optional)
     out :
         New stream paramter, file stream, would be preferred.
 
@@ -78,8 +78,6 @@ def generate_latfile(machine, state=None, original=None, latfile=None, out=None)
         if type(state) == type(m.allocState({})):
             mc_src['IonEk'] = state.ref_IonEk
             mc_src['IonEs'] = state.ref_IonEs
-            mc_src['IonZ'] = state.ref_IonZ
-            mc_src['IonW'] = state.ref_IonW
 
             mc_src['IonChargeStates'] = state.IonZ
             mc_src['NCharge'] = state.IonQ
