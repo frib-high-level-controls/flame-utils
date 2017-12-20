@@ -27,6 +27,9 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 
 _LOGGER = logging.getLogger(__name__)
 
+STRIPPER_PROP_KEYS = ['IonChargeStates', 'NCharge']
+SOURCE_PROP_KEYS = ['IonEk', 'IonEs', 'NCharge', 'IonChargeStates']  # field names, not including S[i], P[i]
+
 
 def get_all_types(latfile=None, _machine=None):
     """Get all unique types from a FLAME machine or lattice file.
@@ -272,7 +275,7 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     ele_idx = get_intersection(index=idx_from_index, name=idx_from_name, type=idx_from_type)
 
     if ele_idx == []:
-        _LOGGER.warning("get_element: Nothing to inspect")
+        _LOGGER.warning("get_element: Nothing to get, invalid filtering.")
         return []
     else:
         mconf = m.conf()
@@ -283,8 +286,15 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
             elem = m.conf(i)
             elem_k = set(elem.keys()).difference(share_keys)
             if elem.get('type') == 'stripper':
-                elem_k.add('IonChargeStates')
-                elem_k.add('NCharge')
+                [elem_k.add(k) for k in STRIPPER_PROP_KEYS]
+            elif elem.get('type') == 'source':
+                ndim_charge = len(elem.get('NCharge'))
+                p = elem.get('vector_variable', None)
+                s = elem.get('matrix_variable', None)
+                for v in (s, p):
+                    if v is not None:
+                        [elem_k.add('{0}{1}'.format(v, i)) for i in range(ndim_charge)]
+                [elem_k.add(k) for k in SOURCE_PROP_KEYS]
             elem_p = {k: elem.get(k) for k in elem_k}
             retval.append({'index': i, 'properties': elem_p})
         return retval

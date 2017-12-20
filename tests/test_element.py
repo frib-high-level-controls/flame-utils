@@ -4,6 +4,8 @@ import unittest
 import os
 from cStringIO import StringIO
 import random
+from numpy import array
+import numpy as np
 
 from flame import Machine
 
@@ -98,14 +100,49 @@ class TestGetElement(unittest.TestCase):
         e1 = get_element(index=idx, latfile=self.latfile)
         self.assertEqual(e1, e0)
 
+    def test_get_source(self):
+        source_conf = {'index': 0,
+                       'properties': {
+                           'IonChargeStates': array([0.138655]),
+                           'IonEk': 500000.0,
+                           'IonEs': 931494000.0,
+                           'NCharge': array([ 10111.]),
+                           'P0': array([-7.88600000e-04, 1.08371000e-05, 1.33734000e-02,
+                                        6.67853000e-06, -1.84773000e-04, 3.09995000e-04,
+                                        1.00000000e+00]),
+                           'S0': array([
+                                 2.76309000e+00,  -4.28247000e-04,   1.58179000e-02,
+                                 2.15594000e-05,   1.86381000e-04,  -2.99394000e-05,
+                                 0.00000000e+00,  -4.28247000e-04,   3.84947000e-06,
+                                -1.38385000e-06,  -1.85410000e-08,   1.06778000e-07,
+                                 5.28564000e-09,   0.00000000e+00,   1.58179000e-02,
+                                -1.38385000e-06,   2.36251000e+00,  -6.69320000e-04,
+                                -5.80100000e-04,   6.71652000e-06,   0.00000000e+00,
+                                 2.15594000e-05,  -1.85410000e-08,  -6.69320000e-04,
+                                 4.89711000e-06,  -5.01615000e-07,   5.57484000e-08,
+                                 0.00000000e+00,   1.86381000e-04,   1.06778000e-07,
+                                -5.80100000e-04,  -5.01615000e-07,   6.71687000e-04,
+                                -1.23223000e-05,   0.00000000e+00,  -2.99394000e-05,
+                                 5.28564000e-09,   6.71652000e-06,   5.57484000e-08,
+                                -1.23223000e-05,   1.99525000e-06,   0.00000000e+00,
+                                 0.00000000e+00,   0.00000000e+00,   0.00000000e+00,
+                                 0.00000000e+00,   0.00000000e+00,   0.00000000e+00,
+                                 0.00000000e+00]),
+                           'matrix_variable': 'S',
+                           'name': 'S',
+                           'type': 'source',
+                           'vector_variable': 'P'}}
+        sconf = get_element(index=0, latfile=self.latfile)[0]
+        for k,v in sconf['properties'].items():
+            left_val, right_val = v, source_conf['properties'][k]
+            if isinstance(v, np.ndarray):
+                self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
+            else:
+                self.assertAlmostEqual(left_val, right_val)
+
     def test_multi_indice(self):
-        idx = range(3)
+        idx = range(1,3)
         e0 = [
-                {'index': 0,
-                 'properties': {'matrix_variable': 'S',
-                 'name': 'S',
-                 'type': 'source',
-                 'vector_variable': 'P'}},
                 {'index': 1,
                  'properties': {'L': 0.072,
                  'aper': 0.02,
