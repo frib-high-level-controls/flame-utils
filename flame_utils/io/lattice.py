@@ -10,7 +10,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import numpy as np
-
+import flame
+from flame_utils.core import MachineStates, get_all_names
 
 def generate_latfile(machine, latfile=None, state=None, original=None, out=None):
     """Generate lattice file for the usage of FLAME code.
@@ -72,10 +73,12 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
     try:
         mconf_ks = mconf.keys()
         [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
-        mc_src = m.conf(m.find(type = 'source')[0])
+        mc_src = m.conf(m.find(type='source')[0])
 
         # initial beam condition from input
-        if type(state) == type(m.allocState({})):
+        if isinstance(state, MachineStates):
+                state = state._states
+        if isinstance(state, flame._internal.State):
             mc_src['IonEk'] = state.ref_IonEk
             mc_src['IonEs'] = state.ref_IonEs
 
@@ -153,7 +156,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
     else:
 
         try:
-            names = [m.conf(i)['name'] for i in range(len(m))]
+            names = get_all_names(_machine=m)
 
             with open(original, 'rb') as f:
                 fline = f.readlines()
