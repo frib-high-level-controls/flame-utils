@@ -239,10 +239,12 @@ class ModelFlame(object):
 
         See Also
         --------
-        MachineStates : FLAME Machine state class created for ``MomentMatrix``
-            type.
+        MachineStates : FLAME Machine state class created for ``MomentMatrix``.
         """
-        return self._mach_states
+        if self._mach_states is None:
+            return None
+        else:
+            return MachineStates(self._mach_states)
 
     @mstates.setter
     def mstates(self, s):
