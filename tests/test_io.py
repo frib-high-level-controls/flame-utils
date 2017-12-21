@@ -7,6 +7,7 @@ from cStringIO import StringIO
 from flame import Machine
 from _utils import make_latfile
 from flame_utils import generate_latfile
+from numpy.testing import assert_array_almost_equal as assertAEqual
 
 curdir = os.path.dirname(__file__)
 
@@ -36,6 +37,13 @@ class TestGenerateLatfile(unittest.TestCase):
 
         self.latfile1 = os.path.join(curdir, 'lattice/out1_org.lat')
         self.latfile2 = os.path.join(curdir, 'lattice/out1_mod.lat')
+
+        self.testcfile = os.path.join(curdir, 'lattice/test_c.lat')
+        self.out3file = os.path.join(curdir, 'lattice/out3.lat')
+        with open(self.out3file, 'rb') as f:
+            self.fout3_str = f.read().strip()
+        with open(self.testcfile) as f:
+            self.mc = Machine(f)
 
     def tearDown(self):
         for f in [self.latfile1, self.latfile2]:
@@ -73,7 +81,13 @@ class TestGenerateLatfile(unittest.TestCase):
                 self.assertEqual(getattr(s1, k).tolist(),
                                  getattr(s0, k).tolist())
 
-    def test_generate_latfile_update(self):
+    def test_generate_latfile_original3(self):
+        sio = StringIO()
+        sioname = generate_latfile(self.mc, original=self.testcfile, out=sio)
+        self.assertEqual(sioname, 'string')
+        self.assertEqual(sio.getvalue().strip(), self.fout3_str)
+
+    def test_generate_latfile_update1(self):
         idx = 80
         self.m.reconfigure(idx, {'theta_x': 0.1})
         fout2_file = generate_latfile(self.m, latfile=self.latfile2)
@@ -81,3 +95,13 @@ class TestGenerateLatfile(unittest.TestCase):
 
         m = Machine(open(fout2_file))
         self.assertEqual(m.conf(idx)['theta_x'], 0.1)
+
+    def test_generate_latfile_update2(self):
+        idx = 0
+        s = self.m.allocState({})
+        self.m.propagate(s,0,1)
+        s.moment0 = [[0.1], [0.1], [0.1], [0.1], [0.1], [0.1], [1.0]]
+        fout2_file = generate_latfile(self.m, latfile=self.latfile2, state=s)
+
+        m = Machine(open(fout2_file))
+        assertAEqual(m.conf()['P0'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1.0])
