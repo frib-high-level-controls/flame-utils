@@ -88,8 +88,13 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
                 mc_src[cenkey+str(i)] = state.moment0[:,i]
                 mc_src[envkey+str(i)] = state.moment1[:,:,i].flatten()
 
-        if not isinstance(original, (str, unicode)):
+    except:
+        print("Failed to load initial beam state.")
+        return None
 
+    if not isinstance(original, (str, unicode)):
+
+        try:
             lines = []
 
             for k in mconf_ks:
@@ -141,8 +146,13 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
             lines.append('{0}: LINE = {1};'.format(blname, dline))
             lines.append('USE: {0};'.format(blname))
 
-        else:
+        except:
+            print("Failed to generate lattice file.")
+            return None
 
+    else:
+
+        try:
             names = [m.conf(i)['name'] for i in range(len(m))]
 
             with open(original, 'rb') as f:
@@ -236,10 +246,9 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
                                 else:
                                     flg = 0
                     n += 1
-
-    except:
-        print("Failed to generate lattice file.")
-        return None
+        except:
+            print("Failed to generate lattice file with original file.")
+            return None
 
     all_lines = '\n'.join(lines)
     try:
