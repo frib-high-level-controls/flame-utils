@@ -23,6 +23,13 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 
 _LOGGER = logging.getLogger(__name__)
 
+KEY_MAPPING = {
+        'IonChargeStates' : 'IonZ',
+        'IonEk' : 'ref_IonEk',
+        'IonEs' : 'ref_IonEs',
+        'NCharge' : 'IonQ',
+}
+
 
 class MachineStates(object):
     """Class for general FLAME machine states
@@ -537,3 +544,47 @@ class MachineStates(object):
             return "State: moment0 mean=[7]({})".format(moment0_env)
         except AttributeError:
             return "Incompleted initializaion."
+
+
+def generate_source(state, sconf=None):
+    """Generate/Update FLAME source element from machine state object.
+
+    Parameters
+    ----------
+    state :
+        MachineStates object.
+    sconf : dict
+        Configuration of source element, if None, generate new one from state.
+
+    Returns
+    -------
+    ret : dict
+        FLAME source element configuration.
+
+    See Also
+    --------
+    get_element : Get element from FLAME machine or lattice.
+    """
+    if sconf is not None:
+        sconf_indx = sconf['index']
+        sconf_prop = sconf['properties']
+
+    else:
+        sconf_indx = 0
+        sconf_prop = {
+                'name': 'S',
+                'type': 'source',
+                'matrix_variable': 'S',
+                'vector_variable': 'P'
+        }
+    # update properties
+    for k,v in KEY_MAPPING.items():
+        sconf_prop[k] = getattr(state, v)
+    # vector/matrix variables
+    p = sconf_prop.get('vector_variable', None)
+    s = sconf_prop.get('matrix_variable', None)
+    for i in range(len(state.IonZ)):
+        sconf_prop['{0}{1}'.format(p, i)] = state.moment0[:, i]
+        sconf_prop['{0}{1}'.format(s, i)] = state.moment1[:,:,i].flatten()
+
+    return {'index': sconf_indx, 'properties': sconf_prop}
