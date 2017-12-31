@@ -101,10 +101,9 @@ def configure(machine=None, econf=None, **kws):
     c_dict : dict
         Configuration dict.
 
-
     Returns
     -------
-    m : new FLAME machine object
+    m : New FLAME machine object
         None if failed, else new machine object.
 
     Note
@@ -147,9 +146,11 @@ def configure(machine=None, econf=None, **kws):
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
-    _m = machine_setter(_latfile, _machine, 'configure')
-    if _m is None:
+    m = machine_setter(_latfile, _machine, 'configure')
+    if m is None:
         return None
+
+    _m = Machine(m.conf())
 
     _c_idx, _c_dict = kws.get('c_idx'), kws.get('c_dict')
     if _c_idx is not None and _c_dict is not None:
@@ -238,10 +239,12 @@ class ModelFlame(object):
 
         See Also
         --------
-        MachineStates : FLAME Machine state class created for ``MomentMatrix``
-            type.
+        MachineStates : FLAME Machine state class created for ``MomentMatrix``.
         """
-        return self._mach_states
+        if self._mach_states is None:
+            return None
+        else:
+            return MachineStates(self._mach_states)
 
     @mstates.setter
     def mstates(self, s):
@@ -263,7 +266,7 @@ class ModelFlame(object):
             and ``s`` is initial machine states.
         """
         try:
-            with open(latfile, 'r') as f:
+            with open(latfile, 'rb') as f:
                 m = Machine(f)
             s = m.allocState({})
             m.propagate(s, 0, 1)
@@ -481,3 +484,12 @@ class ModelFlame(object):
         m = configure(self._mach_ins, econf)
         self._mach_ins = m
 
+    def clone_machine(self):
+        """Clone FLAME Machine object.
+
+        Return
+        ------
+        ret :
+            FLAME Machine object.
+        """
+        return Machine(self._mach_ins.conf())

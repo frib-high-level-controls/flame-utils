@@ -16,6 +16,7 @@ from flame_utils import get_index_by_name
 from flame_utils import get_all_types
 from flame_utils import get_all_names
 from _utils import make_latfile
+from _utils import compare_source_element
 
 curdir = os.path.dirname(__file__)
 
@@ -133,12 +134,13 @@ class TestGetElement(unittest.TestCase):
                            'type': 'source',
                            'vector_variable': 'P'}}
         sconf = get_element(index=0, latfile=self.latfile)[0]
-        for k,v in sconf['properties'].items():
-            left_val, right_val = v, source_conf['properties'][k]
-            if isinstance(v, np.ndarray):
-                self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
-            else:
-                self.assertAlmostEqual(left_val, right_val)
+        compare_source_element(self, sconf, source_conf)
+        #for k,v in sconf['properties'].items():
+        #    left_val, right_val = v, source_conf['properties'][k]
+        #    if isinstance(v, np.ndarray):
+        #        self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
+        #    else:
+        #        self.assertAlmostEqual(left_val, right_val)
 
     def test_multi_indice(self):
         idx = range(1,3)
