@@ -76,9 +76,9 @@ def propagate(machine=None, bmstate=None, from_element=None, to_element=None, mo
     obs = [vend] if monitor is -1 else monitor
 
     vmax = vend - vstart + 1
-    s = bs.bmstate
+    s = bs.state
     r = _m.propagate(s, start=vstart, max=vmax, observe=obs)
-    bs.bmstate = s
+    bs.state = s
     return r, bs
 
 
