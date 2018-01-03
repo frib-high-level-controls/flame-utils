@@ -13,7 +13,7 @@ import numpy as np
 import flame
 from flame_utils.core import BeamState
 from flame_utils.core import get_all_names
-
+from flame_utils.core import generate_source
 
 def generate_latfile(machine, latfile=None, state=None, original=None, out=None):
     """Generate lattice file for the usage of FLAME code.
@@ -81,17 +81,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
         if isinstance(state, BeamState):
                 state = state._states
         if isinstance(state, flame._internal.State):
-            mc_src['IonEk'] = state.ref_IonEk
-            mc_src['IonEs'] = state.ref_IonEs
-
-            mc_src['IonChargeStates'] = state.IonZ
-            mc_src['NCharge'] = state.IonQ
-
-            cenkey = mc_src['vector_variable']
-            envkey = mc_src['matrix_variable']
-            for i in range(len(state.IonZ)):
-                mc_src[cenkey+str(i)] = state.moment0[:,i]
-                mc_src[envkey+str(i)] = state.moment1[:,:,i].flatten()
+            mc_src = generate_source(state, sconf={'index':0, 'properties':mc_src})['properties']
 
     except:
         print("Failed to load initial beam state.")
