@@ -1,4 +1,4 @@
-from .state import MachineStates
+from .state import BeamState
 from .state import generate_source
 from .element import get_all_types
 from .element import get_all_names
@@ -11,7 +11,7 @@ from .model import propagate
 from .model import configure
 from .model import ModelFlame
 
-__all__ = ['MachineStates', 'generate_source', 'get_all_types',
+__all__ = ['BeamState', 'generate_source', 'get_all_types',
            'get_all_names', 'inspect_lattice', 'get_element',
            'get_index_by_type', 'get_index_by_name', 'get_names_by_pattern',
            'propagate', 'configure', 'ModelFlame'
