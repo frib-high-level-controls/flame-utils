@@ -6,7 +6,7 @@ import numpy as np
 import random
 
 from flame import Machine
-from flame_utils import MachineStates
+from flame_utils import BeamState
 from flame_utils import ModelFlame
 from flame_utils import collect_data
 from flame_utils import generate_source
@@ -18,55 +18,55 @@ from _utils import compare_source_element
 curdir = os.path.dirname(__file__)
 
 
-class TestMachineStates(unittest.TestCase):
+class TestBeamState(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
 
     def test_init_with_s1(self):
-        """ test_init_with_s1: s it not None
+        """ test_init_with_s1: s is not None
         """
         m = Machine(open(self.latfile, 'r'))
         s0 = m.allocState({})
         s1 = s0.clone()
         m.propagate(s1, 0, 1)
 
-        ms0 = MachineStates(s0)
+        ms0 = BeamState(s0)
         compare_mstates(self, ms0, s0)
 
-        ms1 = MachineStates(s0, machine=m)
+        ms1 = BeamState(s0, machine=m)
         compare_mstates(self, ms1, s1)
 
-        ms1_1 = MachineStates(s0, latfile=self.latfile)
+        ms1_1 = BeamState(s0, latfile=self.latfile)
         compare_mstates(self, ms1_1, s1)
 
     def test_init_with_s2(self):
-        """ test_init_with_s2: s it None
+        """ test_init_with_s2: s is None
         """
         m = Machine(open(self.latfile, 'r'))
         s = m.allocState({})
-        ms = MachineStates()
-        ms.mstates = s
         m.propagate(s, 0, 1)
+        ms = BeamState()
+        ms.state = s
         compare_mstates(self, ms, s)
     
     def test_init_with_machine(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(machine=m)
+        ms = BeamState(machine=m)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
  
     def test_init_with_latfile(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(latfile=self.latfile)
+        ms = BeamState(latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
 
     def test_init_with_mix(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(machine=m, latfile=self.latfile)
+        ms = BeamState(machine=m, latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
@@ -91,23 +91,21 @@ class TestModelFlame(unittest.TestCase):
         fm_none.machine = m
         self.assertEqual(fm_none.machine, m)
 
-    def test_set_mstates(self):
+    def test_set_bmstate(self):
         fm_none = ModelFlame()
-        self.assertIsNone(fm_none.mstates)
+        self.assertIsNone(fm_none.bmstate)
         m = Machine(open(self.testfile, 'r'))
         s = m.allocState({})
         m.propagate(s, 0, 1)
-        fm_none.mstates = s
-        compare_mstates(self, fm_none.mstates, s)
-        # self.assertEqual(fm_none.mstates, s)
+        fm_none.bmstate = s
+        compare_mstates(self, fm_none.bmstate, s)
 
     def test_init_machine(self):
         fm_none = ModelFlame()
         m, s = fm_none.init_machine(self.testfile)
-        fm_none.machine, fm_none.mstates = m, s
+        fm_none.machine, fm_none.bmstate = m, s
         self.assertEqual(fm_none.machine, m)
-        compare_mstates(self, fm_none.mstates, s)
-        # self.assertEqual(fm_none.mstates, s)
+        compare_mstates(self, fm_none.bmstate, s)
 
     def test_get_all_types(self):
         fm = ModelFlame(self.testfile)
@@ -193,14 +191,14 @@ class TestModelFlame(unittest.TestCase):
             compare_mstates(self, is1, is2)
 
     def test_run_5(self):
-        """ test_run_5: using MachineStates object
+        """ test_run_5: using BeamState object
         """
         latfile = self.testfile
         m0 = Machine(open(latfile, 'r'))
-        ms = MachineStates(machine=m0) 
+        ms = BeamState(machine=m0) 
 
         fm = ModelFlame()
-        fm.mstates = ms
+        fm.bmstate = ms
         fm.machine = m0
         obs = fm.get_index_by_type(type='bpm')['bpm']
         r,s = fm.run(monitor=obs)
@@ -261,7 +259,7 @@ class TestStateToSource(unittest.TestCase):
     def test_generate_source(self):
         latfile = self.testfile
         fm = ModelFlame(latfile)
-        ms = fm.mstates
+        ms = fm.bmstate
         sconf = generate_source(ms)
         sconf0 = fm.get_element(type='source')[0]
         compare_source_element(self, sconf, sconf0)
