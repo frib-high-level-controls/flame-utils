@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""FLAME lattice.
+"""FLAME lattice operations.
 """
 
 from __future__ import absolute_import
@@ -11,7 +11,9 @@ from __future__ import unicode_literals
 
 import numpy as np
 import flame
-from flame_utils.core import MachineStates, get_all_names
+from flame_utils.core import BeamState
+from flame_utils.core import get_all_names
+
 
 def generate_latfile(machine, latfile=None, state=None, original=None, out=None):
     """Generate lattice file for the usage of FLAME code.
@@ -76,7 +78,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
         mc_src = m.conf(m.find(type='source')[0])
 
         # initial beam condition from input
-        if isinstance(state, MachineStates):
+        if isinstance(state, BeamState):
                 state = state._states
         if isinstance(state, flame._internal.State):
             mc_src['IonEk'] = state.ref_IonEk
