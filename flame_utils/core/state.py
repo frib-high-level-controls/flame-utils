@@ -558,7 +558,7 @@ def generate_source(state, sconf=None):
     Parameters
     ----------
     state :
-        BeamState object.
+        BeamState object, (also accept FLAME internal State object).
     sconf : dict
         Configuration of source element, if None, generate new one from state.
 
@@ -566,6 +566,13 @@ def generate_source(state, sconf=None):
     -------
     ret : dict
         FLAME source element configuration.
+
+    Warning
+    -------
+    All zeros state may not produce reasonable result, for this case, the
+    recommended way is to create a `BeamState` object with `latfile` or
+    `machine` keyword parameter, e.g. `s = BeamState(s0, machine=m)`, then
+    use `s` as the input of `generate_source`.
 
     See Also
     --------
