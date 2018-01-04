@@ -28,7 +28,7 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 _LOGGER = logging.getLogger(__name__)
 
 STRIPPER_PROP_KEYS = ['IonChargeStates', 'NCharge']
-SOURCE_PROP_KEYS = ['IonEk', 'IonEs', 'NCharge', 'IonChargeStates']  # field names, not including S[i], P[i]
+SOURCE_PROP_KEYS = ['IonEk', 'IonEs', 'NCharge', 'IonChargeStates'] # field names, not including S[i], P[i]
 
 
 def get_all_types(latfile=None, _machine=None):
@@ -140,7 +140,7 @@ def inspect_lattice(latfile=None, out=None, _machine=None):
     >>> fout.close()
     >>>
     >>> # write to string
-    >>> from cStringIO import StringIO
+    >>> from StringIO import StringIO
     >>> sio = StringIO()
     >>> flameutils.inspect_lattice(latfile=latfile, out=sio)
     >>> retstr = sio.getvalue()

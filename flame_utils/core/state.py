@@ -9,12 +9,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import logging
 import flame
-import numpy as np
+import logging
 
-from flame_utils.misc import machine_setter
 from flame_utils.misc import is_zeros_states
+from flame_utils.misc import machine_setter
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -25,10 +24,10 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 _LOGGER = logging.getLogger(__name__)
 
 KEY_MAPPING = {
-        'IonChargeStates' : 'IonZ',
-        'IonEk' : 'ref_IonEk',
-        'IonEs' : 'ref_IonEs',
-        'NCharge' : 'IonQ',
+        'IonChargeStates': 'IonZ',
+        'IonEk': 'ref_IonEk',
+        'IonEs': 'ref_IonEs',
+        'NCharge': 'IonQ',
 }
 
 
@@ -134,9 +133,9 @@ class BeamState(object):
                     _m.propagate(self._states, 0, 1)
                 else:
                     _LOGGER.warning(
-                        "BeamState: \
-                        The initial states are 0s, true values could be obtained \
-                        by additional parameter '_latfile' or '_machine'.")
+                    "BeamState: \
+                     The initial states are 0s, true values could be obtained \
+                     by additional parameter '_latfile' or '_machine'.")
 
     @property
     def state(self):
@@ -534,7 +533,7 @@ class BeamState(object):
         """float: Last RF cavity's driven phase, [deg]"""
         try:
             ret = self._states.last_caviphi0
-        except:
+        except AttributeError:
             print("python-flame version should be at least 1.1.1")
             ret = None
         return ret
@@ -591,13 +590,13 @@ def generate_source(state, sconf=None):
                 'vector_variable': 'P'
         }
     # update properties
-    for k,v in KEY_MAPPING.items():
+    for k, v in KEY_MAPPING.items():
         sconf_prop[k] = getattr(state, v)
     # vector/matrix variables
     p = sconf_prop.get('vector_variable', None)
     s = sconf_prop.get('matrix_variable', None)
     for i in range(len(state.IonZ)):
         sconf_prop['{0}{1}'.format(p, i)] = state.moment0[:, i]
-        sconf_prop['{0}{1}'.format(s, i)] = state.moment1[:,:,i].flatten()
+        sconf_prop['{0}{1}'.format(s, i)] = state.moment1[:, :, i].flatten()
 
     return {'index': sconf_indx, 'properties': sconf_prop}

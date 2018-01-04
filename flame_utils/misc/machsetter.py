@@ -7,9 +7,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-import numpy as np
-
 from flame import Machine
+
+import numpy as np
 
 _LOGGER = logging.getLogger(__name__)
 
