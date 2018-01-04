@@ -27,9 +27,9 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
     original :
         File name for original lattice file to keep user comments and indents. (optional)
     state :
-        FLAME beam state object of initial condition. (optional)
+        BeamState object, accept FLAME internal State object also. (optional)
     out :
-        New stream paramter, file stream, would be preferred.
+        New stream paramter, file stream. (optional)
 
     Returns
     -------
@@ -78,9 +78,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
         mc_src = m.conf(m.find(type='source')[0])
 
         # initial beam condition from input
-        if isinstance(state, BeamState):
-                state = state._states
-        if isinstance(state, flame._internal.State):
+        if state is not None:
             mc_src = generate_source(state, sconf={'index':0, 'properties':mc_src})['properties']
 
     except:
