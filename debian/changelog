@@ -1,3 +1,16 @@
+flame-utils (0.2.0-1) unstable; urgency=medium
+
+  * New - generate_source: Generate element of source type from beam state
+  * New - ModelFlame.clone_machine: Clone FLAME machine object
+  * New - Initialize beam state
+  * New - Lattice visualization [Will be enhanced in the next release]
+  * Enhanced - generate_latfile: Keep style and customized beamstate
+  * Changed - MachineStates --> BeamState
+  * Changed - MachineStates.mstates --> BeamState.state
+  * Changed - get_element: Properties of FLAME element of source type
+
+ -- Tong Zhang <zhangt@frib.msu.edu>  Fri, 05 Jan 2018 11:05:15 -0500
+
 flame-utils (0.1.0-1) unstable; urgency=medium
 
   * Fork flameutils from python-phantasy repo
