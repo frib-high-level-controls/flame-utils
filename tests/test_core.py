@@ -6,81 +6,70 @@ import numpy as np
 import random
 
 from flame import Machine
-from flame_utils import MachineStates
+from flame_utils import BeamState
 from flame_utils import ModelFlame
 from flame_utils import collect_data
+from flame_utils import generate_source
 
 from _utils import make_latfile
+from _utils import compare_mstates
+from _utils import compare_source_element
 
 curdir = os.path.dirname(__file__)
 
 
-class TestMachineStates(unittest.TestCase):
+class TestBeamState(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
 
     def test_init_with_s1(self):
-        """ test_init_with_s1: s it not None
+        """ test_init_with_s1: s is not None
         """
         m = Machine(open(self.latfile, 'r'))
         s0 = m.allocState({})
         s1 = s0.clone()
         m.propagate(s1, 0, 1)
 
-        ms0 = MachineStates(s0)
-        self.iter_all_attrs(ms0, s0)
+        ms0 = BeamState(s0)
+        compare_mstates(self, ms0, s0)
 
-        ms1 = MachineStates(s0, machine=m)
-        self.iter_all_attrs(ms1, s1)
+        ms1 = BeamState(s0, machine=m)
+        compare_mstates(self, ms1, s1)
 
-        ms1_1 = MachineStates(s0, latfile=self.latfile)
-        self.iter_all_attrs(ms1_1, s1)
+        ms1_1 = BeamState(s0, latfile=self.latfile)
+        compare_mstates(self, ms1_1, s1)
 
     def test_init_with_s2(self):
-        """ test_init_with_s2: s it None
+        """ test_init_with_s2: s is None
         """
         m = Machine(open(self.latfile, 'r'))
         s = m.allocState({})
-        ms = MachineStates()
-        ms.mstates = s
         m.propagate(s, 0, 1)
-        self.iter_all_attrs(ms, s)
+        ms = BeamState()
+        ms.state = s
+        compare_mstates(self, ms, s)
     
     def test_init_with_machine(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(machine=m)
+        ms = BeamState(machine=m)
         s = m.allocState({})
         m.propagate(s, 0, 1)
-        self.iter_all_attrs(ms, s)
+        compare_mstates(self, ms, s)
  
     def test_init_with_latfile(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(latfile=self.latfile)
+        ms = BeamState(latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
-        self.iter_all_attrs(ms, s)
+        compare_mstates(self, ms, s)
 
     def test_init_with_mix(self):
         m = Machine(open(self.latfile, 'r'))
-        ms = MachineStates(machine=m, latfile=self.latfile)
+        ms = BeamState(machine=m, latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
-        self.iter_all_attrs(ms, s)
-
-    def iter_all_attrs(self, ms, s):
-        k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW', 
-             'IonZ', 'phis', 'SampleIonK']
-        all_keys = [i for i in k]
-        all_keys.extend(['ref_{}'.format(i) for i in k] + ['pos'])
-        all_keys.extend(['moment0', 'moment0_env', 'moment0_rms', 'moment1'])
-        for attr in all_keys:
-            left_val, right_val = getattr(ms, attr), getattr(s, attr)
-            if isinstance(left_val, np.ndarray):
-                #self.assertTrue((np.allclose(left_val, right_val, equal_nan=True) | (np.isnan(left_val) & np.isnan(right_val))).all())
-                self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
-            else:
-                self.assertAlmostEqual(left_val, right_val)
+        compare_mstates(self, ms, s)
 
 
 class TestModelFlame(unittest.TestCase):
@@ -102,21 +91,21 @@ class TestModelFlame(unittest.TestCase):
         fm_none.machine = m
         self.assertEqual(fm_none.machine, m)
 
-    def test_set_mstates(self):
+    def test_set_bmstate(self):
         fm_none = ModelFlame()
-        self.assertIsNone(fm_none.mstates)
+        self.assertIsNone(fm_none.bmstate)
         m = Machine(open(self.testfile, 'r'))
         s = m.allocState({})
         m.propagate(s, 0, 1)
-        fm_none.mstates = s
-        self.assertEqual(fm_none.mstates, s)
+        fm_none.bmstate = s
+        compare_mstates(self, fm_none.bmstate, s)
 
     def test_init_machine(self):
         fm_none = ModelFlame()
         m, s = fm_none.init_machine(self.testfile)
-        fm_none.machine, fm_none.mstates = m, s
+        fm_none.machine, fm_none.bmstate = m, s
         self.assertEqual(fm_none.machine, m)
-        self.assertEqual(fm_none.mstates, s)
+        compare_mstates(self, fm_none.bmstate, s)
 
     def test_get_all_types(self):
         fm = ModelFlame(self.testfile)
@@ -154,7 +143,7 @@ class TestModelFlame(unittest.TestCase):
         fm = ModelFlame(latfile)
         r,s = fm.run()
         self.assertEqual(r, [])
-        self.iter_all_attrs(s, s0)
+        compare_mstates(self, s, s0)
 
     def test_run_2(self):
         """ test_run_2: propagate from the first to last, monitor all BPMs
@@ -169,8 +158,8 @@ class TestModelFlame(unittest.TestCase):
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
-            self.iter_all_attrs(is1, is2)
-        self.iter_all_attrs(s, s0)
+            compare_mstates(self, is1, is2)
+        compare_mstates(self, s, s0)
 
     def test_run_3(self):
         """ test run_3: test initial states
@@ -181,7 +170,7 @@ class TestModelFlame(unittest.TestCase):
         m0.propagate(s0, 0, 1)
         fm = ModelFlame(latfile)
         r, s = fm.run(from_element=0, to_element=0)
-        self.iter_all_attrs(s0, s)
+        compare_mstates(self, s0, s)
 
     def test_run_4(self):
         """ test_run_4: run and monitor from element index of 10 to 20
@@ -194,21 +183,22 @@ class TestModelFlame(unittest.TestCase):
 
         fm = ModelFlame(latfile)
         r, s = fm.run(from_element=10, to_element=20, monitor=range(10,21))
-        self.iter_all_attrs(s0, s)
+        compare_mstates(self, s0, s)
+
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
-            self.iter_all_attrs(is1, is2)
+            compare_mstates(self, is1, is2)
 
     def test_run_5(self):
-        """ test_run_5: using MachineStates object
+        """ test_run_5: using BeamState object
         """
         latfile = self.testfile
         m0 = Machine(open(latfile, 'r'))
-        ms = MachineStates(machine=m0) 
+        ms = BeamState(machine=m0) 
 
         fm = ModelFlame()
-        fm.mstates = ms
+        fm.bmstate = ms
         fm.machine = m0
         obs = fm.get_index_by_type(type='bpm')['bpm']
         r,s = fm.run(monitor=obs)
@@ -219,8 +209,8 @@ class TestModelFlame(unittest.TestCase):
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
-            self.iter_all_attrs(is1, is2)
-        self.iter_all_attrs(s, s0)
+            compare_mstates(self, is1, is2)
+        compare_mstates(self, s, s0)
 
     def test_collect_data(self):
         """ test_collect_data: get pos, x0, IonEk
@@ -240,20 +230,6 @@ class TestModelFlame(unittest.TestCase):
         self.assertEqual(data0['x0'][1:].tolist(), data['x0'].tolist())
         self.assertEqual(data0['IonEk'][1:].tolist(), data['IonEk'].tolist())
  
-    def iter_all_attrs(self, ms, s):
-        k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW', 
-             'IonZ', 'phis', 'SampleIonK']
-        all_keys = [i for i in k]
-        all_keys.extend(['ref_{}'.format(i) for i in k] + ['pos'])
-        all_keys.extend(['moment0', 'moment0_env', 'moment0_rms', 'moment1'])
-        for attr in all_keys:
-            left_val, right_val = getattr(ms, attr), getattr(s, attr)
-            if isinstance(left_val, np.ndarray):
-                #self.assertTrue((np.allclose(left_val, right_val, equal_nan=True) | (np.isnan(left_val) & np.isnan(right_val))).all())
-                self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
-            else:
-                self.assertAlmostEqual(left_val, right_val)
-
     def test_configure(self):
         latfile = self.testfile
         m0 = Machine(open(latfile, 'r'))
@@ -272,6 +248,28 @@ class TestModelFlame(unittest.TestCase):
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
-            self.iter_all_attrs(is1, is2)
+            compare_mstates(self, is1, is2)
 
 
+class TestStateToSource(unittest.TestCase):
+    def setUp(self):
+        testfile = os.path.join(curdir, 'lattice/test_0.lat')
+        self.testfile = make_latfile(testfile)
+
+    def test_generate_source(self):
+        latfile = self.testfile
+        fm = ModelFlame(latfile)
+        ms = fm.bmstate
+        sconf = generate_source(ms)
+        sconf0 = fm.get_element(type='source')[0]
+        compare_source_element(self, sconf, sconf0)
+        
+        r0, s0 = fm.run(monitor=range(len(fm.machine)))
+        fm.configure(sconf)
+        r, s = fm.run(monitor=range(len(fm.machine)))
+        compare_mstates(self, s, s0)
+
+        rs0 = [ts for (ti,ts) in r0] 
+        rs = [ts for (ti,ts) in r] 
+        for (is1, is2) in zip(rs0, rs):
+            compare_mstates(self, is1, is2)

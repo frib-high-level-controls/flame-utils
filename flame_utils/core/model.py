@@ -9,32 +9,37 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import logging
+import flame
 from flame import Machine
 
-from .state import MachineStates
-from .element import get_element
-from .element import get_all_types
-from .element import get_all_names
-from .element import get_index_by_type
-from .element import get_index_by_name
+import logging
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
 from flame_utils.io import collect_data
+from flame_utils.io import convert_results
+
+from .element import get_all_names
+from .element import get_all_types
+from .element import get_element
+from .element import get_index_by_name
+from .element import get_index_by_type
+from .element import inspect_lattice
+from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
 
 
-def propagate(machine=None, mstates=None, from_element=None, to_element=None, monitor=None, **kws):
-    """Propagate ``MachineStates``.
+def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
+              monitor=None, **kws):
+    """Propagate ``BeamState``.
 
     Parameters
     ----------
     machine :
         FLAME machine object.
-    mstates :
-        MachineStates object.
+    bmstate :
+        BeamState object.
     from_element : int
         Element index of start point, if not set, will be the first element.
     to_element : int
@@ -51,35 +56,33 @@ def propagate(machine=None, mstates=None, from_element=None, to_element=None, mo
     Returns
     -------
     tuple
-        None if failed, else tuple of ``(r,ms)``, where ``r`` is list of
-        results at each monitor points, ``ms`` is ``MachineStates`` object
+        None if failed, else tuple of ``(r, bs)``, where ``r`` is list of
+        results at each monitor points, ``bs`` is ``BeamState`` object
         after the last monitor point.
 
     See Also
     --------
-    MachineStates : FLAME Machine state class created for ``MomentMatrix``
-        type.
+    BeamState : FLAME beam state class created for ``MomentMatrix`` type.
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
     _m = machine_setter(_latfile, _machine, 'propagate')
     if _m is None:
         return None
-    if mstates is None:
-        s0 = _m.allocState({})
-        ms = MachineStates(s0)
+    if bmstate is None:
+        bs = BeamState(_m.allocState({}))
     else:
-        ms = mstates
+        bs = bmstate
 
     vstart = 0 if from_element is None else from_element
     vend = len(_m) - 1 if to_element is None else to_element
     obs = [vend] if monitor is -1 else monitor
 
     vmax = vend - vstart + 1
-    s = ms.mstates
+    s = bs.state
     r = _m.propagate(s, start=vstart, max=vmax, observe=obs)
-    ms.mstates = s
-    return r, ms
+    bs.state = s
+    return r, bs
 
 
 def configure(machine=None, econf=None, **kws):
@@ -101,10 +104,9 @@ def configure(machine=None, econf=None, **kws):
     c_dict : dict
         Configuration dict.
 
-
     Returns
     -------
-    m : new FLAME machine object
+    m : New FLAME machine object
         None if failed, else new machine object.
 
     Note
@@ -147,9 +149,11 @@ def configure(machine=None, econf=None, **kws):
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
-    _m = machine_setter(_latfile, _machine, 'configure')
-    if _m is None:
+    m = machine_setter(_latfile, _machine, 'configure')
+    if m is None:
         return None
+
+    _m = Machine(m.conf())
 
     _c_idx, _c_dict = kws.get('c_idx'), kws.get('c_dict')
     if _c_idx is not None and _c_dict is not None:
@@ -174,26 +178,26 @@ class ModelFlame(object):
     Examples
     --------
     >>> from flame import Machine
-    >>> from phantasy import flameutils
+    >>> from flame_utlis import ModelFlame
     >>>
     >>> latfile = "lattice/test.lat"
-    >>> fm1 = flameutils.ModelFlame()
+    >>> fm1 = ModelFlame()
     >>> # manually initialization
     >>> fm1.latfile = latfile
     >>> m = Machine(latfile)
     >>> fm1.machine = m
-    >>> fm1.mstates = m.allocState({})
+    >>> fm1.bmstate = m.allocState({})
     >>> # or by explicitly calling:
-    >>> fm1.machine, fm1.mstates = fm1.init_machine(latfile)
+    >>> fm1.machine, fm1.bmstate = fm1.init_machine(latfile)
     >>>
     >>> # initialize with valid lattice file
-    >>> fm2 = flameutils.ModelFlame(lat_file=latfile)
+    >>> fm2 = ModelFlame(lat_file=latfile)
     >>>
-    >>> # (Recommanded) initialize with MachineStates
-    >>> fm = flameutils.ModelFlame()
-    >>> ms = flameutils.MachineStates(machine=m)
+    >>> # (Recommanded) initialize with BeamState
+    >>> fm = ModelFlame()
+    >>> bs = BeamState(machine=m)
     >>> # now the attributes of ms could be arbitarily altered
-    >>> fm.mstates = ms
+    >>> fm.bmstate = bs
     >>> fm.machine = m
     >>>
     >>> # run fm
@@ -205,7 +209,7 @@ class ModelFlame(object):
 
     See Also
     --------
-    MachineStates : FLAME Machine state class created for ``MomentMatrix`` type.
+    BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.
     """
 
     def __init__(self, lat_file=None, **kws):
@@ -233,19 +237,25 @@ class ModelFlame(object):
             self._mach_states = m.allocState({})
 
     @property
-    def mstates(self):
-        """FLAME machine state, could be internal state or MachineStates.
+    def bmstate(self):
+        """BeamState: Could be initialized with FLAME internal state
+        or BeamState object.
 
         See Also
         --------
-        MachineStates : FLAME Machine state class created for ``MomentMatrix``
-            type.
+        BeamState : FLAME beam state class created for ``MomentMatrix``.
         """
-        return self._mach_states
+        if self._mach_states is None:
+            return None
+        else:
+            return BeamState(self._mach_states)
 
-    @mstates.setter
-    def mstates(self, s):
-        self._mach_states = s
+    @bmstate.setter
+    def bmstate(self, s):
+        if isinstance(s, flame._internal.State):
+            self._mach_states = s.clone()
+        elif isinstance(s, BeamState):
+            self._mach_states = s.clone().state
 
     @staticmethod
     def init_machine(latfile):
@@ -263,14 +273,15 @@ class ModelFlame(object):
             and ``s`` is initial machine states.
         """
         try:
-            with open(latfile, 'r') as f:
+            with open(latfile, 'rb') as f:
                 m = Machine(f)
             s = m.allocState({})
             m.propagate(s, 0, 1)
             _LOGGER.info("ModelFlame: Initialization succeeded.")
             return m, s
         except:
-            _LOGGER.warning("ModelFlame: Lattice file is not valid, do it manually.")
+            _LOGGER.warning(
+                "ModelFlame: Lattice file is not valid, do it manually.")
             return None, None
 
     def get_element(self, name=None, index=None, type=None, **kws):
@@ -371,14 +382,14 @@ class ModelFlame(object):
         """
         return get_index_by_name(name=name, _machine=self._mach_ins, rtype=rtype)
 
-    def run(self, mstates=None, from_element=None, to_element=None, monitor=None):
+    def run(self, bmstate=None, from_element=None, to_element=None, monitor=None):
         """Simulate model.
 
         Parameters
         ----------
-        mstates :
-            FLAME machine states object, also could be :class:`MachineStates`
-            object if not set, will use the one from ``ModelFlame`` object
+        bmstate :
+            FLAME beam state object, also could be :class:`BeamState`
+            object, if not set, will use the one from ``ModelFlame`` object
             itself, usually is created at the initialization stage,
             see :func:`init_machine()`.
         from_element : int
@@ -393,28 +404,25 @@ class ModelFlame(object):
         Returns
         -------
         tuple
-            Tuple of ``(r,s)``, where ``r`` is list of results at each monitor
-            points, ``s`` is ``MachineStates`` object after the last monitor
+            Tuple of ``(r, s)``, where ``r`` is list of results at each monitor
+            points, ``s`` is ``BeamState`` object after the last monitor
             point.
 
         Warning
         -------
-        This method does not change the input *mstates*, while ``propagate``
+        This method does not change the input *bmstate*, while ``propagate``
         changes.
 
         See Also
         --------
-        MachineStates : FLAME Machine state class created for ``MomentMatrix``
-            type.
-        propagate : Propagate ``MachineStates`` within defined FLAME machine
-            object.
+        BeamState : FLAME BeamState class created for ``MomentMatrix`` type.
+        propagate : Propagate ``BeamState`` object for FLAME machine object.
         """
         m = self._mach_ins
-        if mstates is None:
-            # s = m.allocState({})
+        if bmstate is None:
             s = self._mach_states.clone()
         else:
-            s = mstates.clone()
+            s = bmstate.clone()
 
         if is_zeros_states(s):
             vstart = 0 if from_element is None else from_element
@@ -424,7 +432,7 @@ class ModelFlame(object):
         obs = [vend] if monitor is -1 else monitor
 
         vmax = vend - vstart + 1
-        if isinstance(s, MachineStates):
+        if isinstance(s, BeamState):
             r, s = propagate(m, s, from_element=vstart, to_element=vend, monitor=obs)
         else:
             r = m.propagate(s, start=vstart, max=vmax, observe=obs)
@@ -432,32 +440,32 @@ class ModelFlame(object):
         return r, s
 
     @staticmethod
-    def convert_results(mres, **kws):
-        """Convert all machine states of results generated by :func:`run()`
-        method to be ``MachineStates`` object.
+    def convert_results(res, **kws):
+        """Convert all beam states of results generated by :func:`run()`
+        method to be ``BeamState`` object.
 
         Parameters
         ----------
-        mres : list of tuple
+        res : list of tuple
             List of propagation results.
 
         Returns
         -------
         list of tuple
-            Tuple of ``(r,s)``, where ``r`` is list of results at each monitor
-            points, ``s`` is ``MachineStates`` object after the last monitor
+            Tuple of ``(r, s)``, where ``r`` is list of results at each monitor
+            points, ``s`` is ``BeamState`` object after the last monitor
             point.
         """
-        return [(i, MachineStates(s)) for (i, s) in mres]
+        return convert_results(res, **kws)
 
     @staticmethod
     def collect_data(result, **kws):
-        """collect data of interest from propagation results
+        """Collect data of interest from propagation results.
 
         Parameters
         ----------
         result :
-            propagation results with ``MachineStates`` object
+            Propagation results with ``BeamState`` object.
 
         See Also
         --------
@@ -481,3 +489,12 @@ class ModelFlame(object):
         m = configure(self._mach_ins, econf)
         self._mach_ins = m
 
+    def clone_machine(self):
+        """Clone FLAME Machine object.
+
+        Return
+        ------
+        ret :
+            FLAME Machine object.
+        """
+        return Machine(self._mach_ins.conf())

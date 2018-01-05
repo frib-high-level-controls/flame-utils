@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Abstracted FLAME machine state class.
+"""Abstracted FLAME beam state class.
 """
 
 from __future__ import absolute_import
@@ -9,11 +9,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import flame
 import logging
-import numpy as np
 
-from flame_utils.misc import machine_setter
 from flame_utils.misc import is_zeros_states
+from flame_utils.misc import machine_setter
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -23,9 +23,16 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 
 _LOGGER = logging.getLogger(__name__)
 
+KEY_MAPPING = {
+        'IonChargeStates': 'IonZ',
+        'IonEk': 'ref_IonEk',
+        'IonEs': 'ref_IonEs',
+        'NCharge': 'IonQ',
+}
 
-class MachineStates(object):
-    """Class for general FLAME machine states
+
+class BeamState(object):
+    """FLAME beam state, from which simulated results could be retrieved.
 
     All attributes of states:
 
@@ -49,8 +56,8 @@ class MachineStates(object):
     2. If the attribute is an array, new array value should be assigned
        instead of by element indexing way, e.g.
 
-       >>> ms = MachineStates(s)
-       >>> print(ms.moment0)
+       >>> bs = BeamState(s)
+       >>> print(bs.moment0)
        array([[ -7.88600000e-04],
               [  1.08371000e-05],
               [  1.33734000e-02],
@@ -59,10 +66,10 @@ class MachineStates(object):
               [  3.09995000e-04],
               [  1.00000000e+00]])
        >>> # the right way to just change the first element of the array
-       >>> m_tmp = ms.moment0
+       >>> m_tmp = bs.moment0
        >>> m_tmp[0] = 0
-       >>> ms.moment0 = m_tmp
-       >>> print(ms.moment0)
+       >>> bs.moment0 = m_tmp
+       >>> print(bs.moment0)
        array([[  0.00000000e+00],
               [  1.08371000e-05],
               [  1.33734000e-02],
@@ -70,22 +77,22 @@ class MachineStates(object):
               [ -1.84773000e-04],
               [  3.09995000e-04],
               [  1.00000000e+00]])
-       >>> # this way does work: ms.moment0[0] = 0
+       >>> # while this way does not work: ms.moment0[0] = 0
 
 
     Parameters
     ----------
     s :
-        machine states object.
+        FLAME state object, created by `allocState()`.
 
     Keyword Arguments
     -----------------
-    mstates :
-        flame machine states object, priority: high
+    bmstate :
+        BeamState object, priority: high
     machine :
-        flame machine object, priority: middle
+        FLAME machine object, priority: middle
     latfile :
-        flame lattice file name, priority: low
+        FLAME lattice file name, priority: low
 
     Note
     ----
@@ -95,25 +102,25 @@ class MachineStates(object):
     Warning
     -------
     If only ``s`` is assigned with all-zeros states (usually created by
-    ``allocState({})`` method), then attention should be paid, since this
-    machine states only can propagate from the first element, i.e. ``SOURCE``
+    ``allocState({})`` method), then please note that this state can only
+    propagate from the first element, i.e. ``SOURCE``
     (``from_element`` parameter of ``run()`` or ``propagate()`` should be 0),
     or errors happen; the better initialization should be passing one of
     keyword parameters of ``machine`` and ``latfile`` to initialize the
-    states to be significant for the ``propagate()`` method.
+    state to be significant for the ``propagate()`` method.
     """
 
     def __init__(self, s=None, **kws):
-        _mstates = kws.get('mstates', None)
+        _bmstate = kws.get('bmstate', None)
         _machine = kws.get('machine', None)
         _latfile = kws.get('latfile', None)
         self._states = None
 
         if s is None:
-            if _mstates is not None:
-                self._states = _mstates.clone()
+            if _bmstate is not None:
+                self.state = _bmstate
             else:
-                _m = machine_setter(_latfile, _machine, 'MachineStates')
+                _m = machine_setter(_latfile, _machine, 'BeamState')
                 if _m is not None:
                     self._states = _m.allocState({})
         else:
@@ -121,22 +128,27 @@ class MachineStates(object):
 
         if self._states is not None:
             if is_zeros_states(self._states):
-                _m = machine_setter(_latfile, _machine, 'MachineStates')
+                _m = machine_setter(_latfile, _machine, 'BeamState')
                 if _m is not None:
                     _m.propagate(self._states, 0, 1)
                 else:
                     _LOGGER.warning(
-                        "MachineStates: \
-                        The initial machine states is 0, true values could be obtained with more information.")
+                    "BeamState: \
+                     The initial states are 0s, true values could be obtained \
+                     by additional parameter '_latfile' or '_machine'.")
 
     @property
-    def mstates(self):
-        """flame._internal.State: FLAME Machine states object"""
+    def state(self):
+        """flame._internal.State: FLAME state object, also could be
+        initialized with BeamState object"""
         return self._states
 
-    @mstates.setter
-    def mstates(self, s):
-        self._states = s
+    @state.setter
+    def state(self, s):
+        if isinstance(s, flame._internal.State):
+            self._states = s.clone()
+        elif isinstance(s, BeamState):
+            self._states = s.clone().state
 
     @property
     def pos(self):
@@ -521,19 +533,70 @@ class MachineStates(object):
         """float: Last RF cavity's driven phase, [deg]"""
         try:
             ret = self._states.last_caviphi0
-        except:
+        except AttributeError:
             print("python-flame version should be at least 1.1.1")
             ret = None
         return ret
 
     def clone(self):
-        """Return a copy of machine states
+        """Return a copy of Beamstate object.
         """
-        return MachineStates(self._states.clone())
+        return BeamState(self._states.clone())
 
     def __repr__(self):
         try:
             moment0_env = ','.join(["{0:.6g}".format(i) for i in self.moment0_env])
-            return "State: moment0 mean=[7]({})".format(moment0_env)
+            return "BeamState: moment0 mean=[7]({})".format(moment0_env)
         except AttributeError:
             return "Incompleted initializaion."
+
+
+def generate_source(state, sconf=None):
+    """Generate/Update FLAME source element from FLAME beam state object.
+
+    Parameters
+    ----------
+    state :
+        BeamState object, (also accept FLAME internal State object).
+    sconf : dict
+        Configuration of source element, if None, generate new one from state.
+
+    Returns
+    -------
+    ret : dict
+        FLAME source element configuration.
+
+    Warning
+    -------
+    All zeros state may not produce reasonable result, for this case, the
+    recommended way is to create a `BeamState` object with `latfile` or
+    `machine` keyword parameter, e.g. `s = BeamState(s0, machine=m)`, then
+    use `s` as the input of `generate_source`.
+
+    See Also
+    --------
+    get_element : Get element from FLAME machine or lattice.
+    """
+    if sconf is not None:
+        sconf_indx = sconf['index']
+        sconf_prop = sconf['properties']
+
+    else:
+        sconf_indx = 0
+        sconf_prop = {
+                'name': 'S',
+                'type': 'source',
+                'matrix_variable': 'S',
+                'vector_variable': 'P'
+        }
+    # update properties
+    for k, v in KEY_MAPPING.items():
+        sconf_prop[k] = getattr(state, v)
+    # vector/matrix variables
+    p = sconf_prop.get('vector_variable', None)
+    s = sconf_prop.get('matrix_variable', None)
+    for i in range(len(state.IonZ)):
+        sconf_prop['{0}{1}'.format(p, i)] = state.moment0[:, i]
+        sconf_prop['{0}{1}'.format(s, i)] = state.moment1[:, :, i].flatten()
+
+    return {'index': sconf_indx, 'properties': sconf_prop}

@@ -1,0 +1,33 @@
+language: python
+
+sudo: required
+dist: trusty
+
+python:
+    - "2.7"
+
+virtualenv:
+    system_site_packages: true
+
+addons:
+  apt:
+    packages:
+    - libboost-program-options-dev
+    - libboost-filesystem-dev
+    - libhdf5-dev
+    - python-numpy
+
+before_install:
+    - VERSION=1.4.0
+    - cwd=$(pwd)
+    - git clone -b latest https://github.com/archman/FLAME.git
+    - cd FLAME/deb/trusty
+    - sudo dpkg -i *${VERSION}*.deb
+    - cd ${cwd}
+
+install:
+    - pip install -r requirements.txt
+
+script:
+    - cd tests
+    - make test
