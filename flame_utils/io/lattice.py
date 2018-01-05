@@ -9,13 +9,15 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import numpy as np
 import flame
-from flame_utils.core import BeamState
+import numpy as np
+
 from flame_utils.core import get_all_names
 from flame_utils.core import generate_source
 
-def generate_latfile(machine, latfile=None, state=None, original=None, out=None):
+
+def generate_latfile(machine, latfile=None, state=None, original=None,
+                     out=None):
     """Generate lattice file for the usage of FLAME code.
 
     Parameters
@@ -173,7 +175,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
                     p = gps(l)
                     nl = None
                     if (p['='] != -1 and p['='] < p['#']) and \
-                        (p[': '] == -1 or (p[': '] > p['='] and p[': '] < p['#'])):
+                        (p[': '] == -1 or (p['='] < p[': '] < p['#'])):
                         bp = l[0:p['=']].replace(' ', '')
                         if mc_src.has_key(bp):
                             if bp == 'Eng_Data_Dir':
@@ -201,7 +203,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None, out=None)
                                     v = str(v)
                                 nl = bp + ' = ' + v
 
-                    elif (p[': '] != -1 and p[': '] < p['#']):
+                    elif p[': '] != -1 and p[': '] < p['#']:
                         name = l[0:p[': ']].replace(' ', '')
                         if name in names:
                             c = m.conf(m.find(name=name)[0])

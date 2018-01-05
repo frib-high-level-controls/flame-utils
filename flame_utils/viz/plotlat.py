@@ -8,14 +8,13 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import logging
-
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as ptc
-import matplotlib.lines as lin
-
 from flame import Machine
+
+import matplotlib.lines as lin
+import matplotlib.patches as ptc
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 class PlotLat:
     """Lattice picture class from FLAME lattice file or FLAME Machine object
@@ -184,7 +183,7 @@ class PlotLat:
 
         self.total_length = pos
 
-        if xlim != None:
+        if xlim is not None:
             self.axes.set_xlim(xlim)
             ancscl = xlim[1]-xlim[0]
         else :

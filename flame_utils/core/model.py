@@ -9,26 +9,29 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import logging
 import flame
 from flame import Machine
 
-from .state import BeamState
-from .element import get_element
-from .element import get_all_types
-from .element import get_all_names
-from .element import get_index_by_type
-from .element import get_index_by_name
+import logging
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
 
+from .element import get_all_names
+from .element import get_all_types
+from .element import get_element
+from .element import get_index_by_name
+from .element import get_index_by_type
+from .element import inspect_lattice
+from .state import BeamState
+
 _LOGGER = logging.getLogger(__name__)
 
 
-def propagate(machine=None, bmstate=None, from_element=None, to_element=None, monitor=None, **kws):
+def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
+              monitor=None, **kws):
     """Propagate ``BeamState``.
 
     Parameters
@@ -175,7 +178,7 @@ class ModelFlame(object):
     Examples
     --------
     >>> from flame import Machine
-    >>> from flame import ModelFlame
+    >>> from flame_utlis import ModelFlame
     >>>
     >>> latfile = "lattice/test.lat"
     >>> fm1 = ModelFlame()
@@ -277,7 +280,8 @@ class ModelFlame(object):
             _LOGGER.info("ModelFlame: Initialization succeeded.")
             return m, s
         except:
-            _LOGGER.warning("ModelFlame: Lattice file is not valid, do it manually.")
+            _LOGGER.warning(
+                "ModelFlame: Lattice file is not valid, do it manually.")
             return None, None
 
     def get_element(self, name=None, index=None, type=None, **kws):
