@@ -45,10 +45,14 @@ class BeamState(object):
        ``ref_SampleIonK``,
      - ``beta``, ``bg``, ``gamma``, ``IonEk``, ``IonEs``, ``IonQ``, ``IonW``,
        ``IonZ``, ``phis``, ``SampleIonK``,
-     - ``moment0``, ``moment0_rms``, ``moment0_env``, ``moment1``
-     - ``phis``, ``phi0``, ``phi0_env``, ``phi0_rms``,
-     - ``x0``, ``x0_env``, ``x0_rms``, ``xp0``, ``xp0_env``, ``xp0_rms``,
-     - ``y0``, ``y0_env``, ``y0_rms``, ``yp0``, ``yp0_env``, ``yp0_rms``,
+     - ``moment0`` (``cenvector_all``), ``moment0_rms`` (``rmsvector``), ``moment0_env`` (``cenvector``),
+     - ``moment1`` (``beammatrix_all``), ``moment1_env`` (``beammatrix``),
+     - ``dEk0`` (``dEkcen_all``), ``dEk0_env`` (``dEkcen``), ``dEk0_rms`` (``dEkrms``), ``dEkrms_all``
+     - ``phi0`` (``phicen_all``), ``phi0_env`` (``phicen``), ``phi0_rms`` (``phirms``), ``phirms_all``
+     - ``x0`` (``xcen_all``), ``x0_env`` (``xcen``), ``x0_rms`` (``xrms``), ``xrms_all``,
+     - ``xp0`` (``xpcen_all``), ``xp0_env`` (``xpcen``), ``xp0_rms`` (``xprms``), ``xprms_all``,
+     - ``y0`` (``ycen_all``), ``y0_env`` (``ycen``), ``y0_rms`` (``yrms``), ``yrms_all``,
+     - ``yp0`` (``ypcen_all``), ``yp0_env`` (``ypcen``), ``yp0_rms`` (``yprms``), ``yprms_all``,
      - ``last_caviphi0`` (since version 1.1.1)
 
     Warning
@@ -463,7 +467,7 @@ class BeamState(object):
 
     @property
     def moment1_env(self):
-        """Array: correlation tensor of all charge states"""
+        """Array: averaged correlation tensor of all charge states"""
         return getattr(self._states, 'moment1_env')
         
     @moment1_env.setter

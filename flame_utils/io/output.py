@@ -90,54 +90,68 @@ def collect_data(result, **kws):
     SampleIonK : Array
         Wave-vector in cavities with different beta values of all charge
         states.
-    x0 : Array
+    x0, xcen_all : Array
         X centroid for all charge states, [mm].
-    y0 : Array
+    y0, ycen_all : Array
         Y centroid for all charge states, [mm].
-    xp0 : Array
+    xp0, xpcen_all : Array
         X centroid divergence for all charge states, [rad].
-    yp0 : Array
+    yp0, ypcen_all : Array
         Y centroid divergence for all charge states, [rad].
-    phi0 : Array
+    phi0, phicen_all : Array
         Longitudinal beam length, measured in RF frequency for all charge
         states, [rad].
-    dEk0 : Array
+    dEk0, dEkcen_all : Array
         Kinetic energy deviation w.r.t. reference charge state, for all charge
         states, [MeV/u].
-    x0_rms : Array
+    x0_rms, xrms : float
         General rms beam envelope for x, [mm].
-    y0_rms : Array
+    y0_rms, yrms : float
         General rms beam envelope for y, [mm].
-    xp0_rms : Array
+    xp0_rms, xprms : float
         General rms beam envelope for x', [rad].
-    yp0_rms : Array
+    yp0_rms, yprms : float
         General rms beam envelope for y', [rad].
-    phi0_rms : Array
+    phi0_rms, phirms : float
         General rms beam envelope for :math:`\phi`, [rad].
-    dEk0_rms : Array
+    dEk0_rms, dEkrms : float
         General rms beam envelope for :math:`\delta E_k`, [MeV/u].
-    x0_env : Array
+    xrms_all : Array
+        General rms beam envelope for x of all charge states, [mm].
+    yrms_all : Array
+        General rms beam envelope for y of all charge states, [mm].
+    xprms_all : Array
+        General rms beam envelope for x' of all charge states, [rad].
+    yprms_all : Array
+        General rms beam envelope for y' of all charge states, [rad].
+    phirms_all : Array
+        General rms beam envelope for :math:`\phi` of all charge states, [rad].
+    dEkrms_all : Array
+        General rms beam envelope for :math:`\delta E_k` of all charge states, [MeV/u].
+    x0_env, xcen : Array
         Weight average of all charge states for x', [rad].
-    y0_env : Array
+    y0_env, ycen : Array
         Weight average of all charge states for y, [mm].
-    xp0_env : Array
+    xp0_env, xpcen : Array
         Weight average of all charge states for x', [rad].
-    yp0_env : Array
+    yp0_env, ypcen : Array
         Weight average of all charge states for y', [rad].
-    phi0_env : Array
+    phi0_env, phicen : Array
         Weight average of all charge states for :math:`\phi`, [mm].
-    dEk0_env : Array
+    dEk0_env, dEkcen : Array
         Weight average of all charge states for :math:`\delta E_k`, [MeV/u].
-    moment0_env : Array
+    moment0_env, cenvector : Array
         Weight average of centroid for all charge states, array of
         ``[x, x', y, y', phi, dEk, 1]``, with the units of
         ``[mm, rad, mm, rad, rad, MeV/u, 1]``.
-    moment0 : Array
+    moment0, cenvector_all : Array
         Centroid for all charge states, array of ``[x, x', y, y', phi, dEk, 1]``.
-    moment0_rms : Array
+    moment0_rms, rmsvector : Array
         RMS beam envelope, part of statistical results from ``moment1``.
-    moment1 : Array
+    moment1, beammatrix_all : Array
         Correlation tensor of all charge states, for each charge state.
+    moment1_env, beammatrix : Array
+        Correlation tensor of all charge states, average over all charge states.
 
     Returns
     -------
