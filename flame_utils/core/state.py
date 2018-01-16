@@ -11,9 +11,11 @@ from __future__ import unicode_literals
 
 import flame
 import logging
+import numpy as np
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
+from flame_utils.misc import alias
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -31,6 +33,7 @@ KEY_MAPPING = {
 }
 
 
+@alias
 class BeamState(object):
     """FLAME beam state, from which simulated results could be retrieved.
 
@@ -109,7 +112,31 @@ class BeamState(object):
     keyword parameters of ``machine`` and ``latfile`` to initialize the
     state to be significant for the ``propagate()`` method.
     """
-
+    _aliases = {
+        'xcen_all': 'x0',
+        'ycen_all': 'y0',
+        'xpcen_all': 'xp0',
+        'ypcen_all': 'yp0',
+        'phicen_all': 'phi0',
+        'dEkcen_all': 'dEk0',
+        'xrms': 'x0_rms',
+        'yrms': 'y0_rms',
+        'xprms': 'xp0_rms',
+        'yprms': 'yp0_rms',
+        'phirms': 'phi0_rms',
+        'dEkrms': 'dEk0_rms',
+        'xcen': 'x0_env',
+        'ycen': 'y0_env',
+        'xpcen': 'xp0_env',
+        'ypcen': 'yp0_env',
+        'phicen': 'phi0_env',
+        'dEkcen': 'dEk0_env',
+        'cenvector': 'moment0_env',
+        'cenvector_all': 'moment0',
+        'rmsvector': 'moment0_rms',
+        'beammatrix_all': 'moment1',
+        'beammatrix': 'moment1_env',
+    }
     def __init__(self, s=None, **kws):
         _bmstate = kws.get('bmstate', None)
         _machine = kws.get('machine', None)
@@ -435,6 +462,15 @@ class BeamState(object):
         setattr(self._states, 'moment1', x)
 
     @property
+    def moment1_env(self):
+        """Array: correlation tensor of all charge states"""
+        return getattr(self._states, 'moment1_env')
+        
+    @moment1_env.setter
+    def moment1_env(self, x):
+        setattr(self._states, 'moment1_env', x)
+
+    @property
     def x0(self):
         """Array: x centroid for all charge states, [mm]"""
         return self._states.moment0[0]
@@ -499,33 +535,63 @@ class BeamState(object):
         return self._states.moment0_env[5]
 
     @property
+    def xrms_all(self):
+        """Array: general rms beam envelope for ``x`` of all charge states, [mm]"""
+        return np.sqrt(self._states.moment1[0, 0, :])
+
+    @property
+    def xprms_all(self):
+        """Array: general rms beam envelope for ``x'`` of all charge states, [rad]"""
+        return np.sqrt(self._states.moment1[1, 1, :])
+
+    @property
+    def yrms_all(self):
+        """Array: general rms beam envelope for ``y`` of all charge states, [mm]"""
+        return np.sqrt(self._states.moment1[2, 2, :])
+
+    @property
+    def yprms_all(self):
+        """Array: general rms beam envelope for ``y'`` of all charge states, [rad]"""
+        return np.sqrt(self._states.moment1[3, 3, :])
+
+    @property
+    def phirms_all(self):
+        """Array: general rms beam envelope for :math:`\phi` of all charge states, [mm]"""
+        return np.sqrt(self._states.moment1[4, 4, :])
+
+    @property
+    def dEkrms_all(self):
+        """Array: general rms beam envelope for :math:`\delta E_k` of all charge states, [MeV/u]"""
+        return np.sqrt(self._states.moment1[5, 5, :])
+
+    @property
     def x0_rms(self):
-        """Array: general rms beam envelope for ``x``, [mm]"""
+        """float: general rms beam envelope for ``x``, [mm]"""
         return self._states.moment0_rms[0]
 
     @property
     def xp0_rms(self):
-        """Array: general rms beam envelope for ``x'``, [rad]"""
+        """float: general rms beam envelope for ``x'``, [rad]"""
         return self._states.moment0_rms[1]
 
     @property
     def y0_rms(self):
-        """Array: general rms beam envelope for ``y``, [mm]"""
+        """float: general rms beam envelope for ``y``, [mm]"""
         return self._states.moment0_rms[2]
 
     @property
     def yp0_rms(self):
-        """Array: general rms beam envelope for ``y'``, [rad]"""
+        """float: general rms beam envelope for ``y'``, [rad]"""
         return self._states.moment0_rms[3]
 
     @property
     def phi0_rms(self):
-        """Array: general rms beam envelope for :math:`\phi`, [mm]"""
+        """float: general rms beam envelope for :math:`\phi`, [mm]"""
         return self._states.moment0_rms[4]
 
     @property
     def dEk0_rms(self):
-        """Array: general rms beam envelope for :math:`\delta E_k`, [MeV/u]"""
+        """float: general rms beam envelope for :math:`\delta E_k`, [MeV/u]"""
         return self._states.moment0_rms[5]
 
     @property
