@@ -71,6 +71,45 @@ class TestBeamState(unittest.TestCase):
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
 
+    def test_attr_alias(self):
+        aliases = {
+            'xcen_all': 'x0',
+            'ycen_all': 'y0',
+            'xpcen_all': 'xp0',
+            'ypcen_all': 'yp0',
+            'phicen_all': 'phi0',
+            'dEkcen_all': 'dEk0',
+            'xrms': 'x0_rms',
+            'yrms': 'y0_rms',
+            'xprms': 'xp0_rms',
+            'yprms': 'yp0_rms',
+            'phirms': 'phi0_rms',
+            'dEkrms': 'dEk0_rms',
+            'xcen': 'x0_env',
+            'ycen': 'y0_env',
+            'xpcen': 'xp0_env',
+            'ypcen': 'yp0_env',
+            'phicen': 'phi0_env',
+            'dEkcen': 'dEk0_env',
+            'cenvector': 'moment0_env',
+            'cenvector_all': 'moment0',
+            'rmsvector': 'moment0_rms',
+            'beammatrix_all': 'moment1',
+            'beammatrix': 'moment1_env',
+        }
+        ms = BeamState(latfile=self.latfile)
+        for k,v in aliases.items():
+            left_val, right_val = getattr(ms, k), getattr(ms, v)
+            if isinstance(left_val, np.ndarray):
+                self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
+            else:
+                self.assertAlmostEqual(left_val, right_val)
+
+    def test_rms_size(self):
+        ms = BeamState(latfile=self.latfile)
+        for k in ('xrms', 'yrms', 'xprms', 'yprms', 'phirms', 'dEkrms'):
+            self.assertEqual(getattr(ms, k), getattr(ms, k + '_all')[0])
+        
 
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
