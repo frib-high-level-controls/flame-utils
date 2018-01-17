@@ -12,3 +12,5 @@ __all__ = [
     'get_index_by_type', 'get_names_by_pattern', 'inspect_lattice',
     'propagate', 'machine_setter', 'flatten', 'get_intersection',
 ]
+
+__version__ = "0.2.1"
