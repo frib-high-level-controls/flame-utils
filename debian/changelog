@@ -1,3 +1,9 @@
+flame-utils (0.2.1-1) unstable; urgency=medium
+
+  * Create attribute aliases for BeamState class, see #17.
+
+ -- Tong Zhang <zhangt@frib.msu.edu>  Wed, 17 Jan 2018 13:38:53 -0500
+
 flame-utils (0.2.0-1) unstable; urgency=medium
 
   * New - generate_source: Generate element of source type from beam state
