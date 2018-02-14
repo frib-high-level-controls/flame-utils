@@ -2,12 +2,15 @@ Source: flame-utils
 Section: python
 Priority: optional
 Maintainer: Tong Zhang <zhangt@frib.msu.edu>
-Build-Depends: debhelper (>=9), dh-python, python-all,
-               python-setuptools, python-nose, python-nose-exclude,
-               python-coverage, python-flame
+Build-Depends: debhelper (>=9), dh-python, python-all, python3-all,
+               python-setuptools, python3-setuptools, python-nose,
+               python3-nose, python-nose-exclude, python3-nose-exclude,
+               python-coverage, python3-coverage,
+               python-flame, python3-flame
 Standards-Version: 3.9.6
 Homepage: https://github.com/frib-high-level-controls/flame-utils
 X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.4
 Vcs-Git: https://github.com/frib-high-level-controls/flame-utils.git
 Vcs-Browser: https://github.com/frib-high-level-controls/flame-utils
 
@@ -20,3 +23,13 @@ Description: Python package to support python-flame (Python 2)
  .
  Build upon python-flame, higher-level interface to make it easy and
  efficient when using python-flame package.
+
+Package: python3-flame-utils
+Architecture: all
+Depends: python3-flame, ${python3:Depends}, ${misc:Depends}
+Suggests: flame
+Description: Python package to support python3-flame (Python 3)
+ Python package to provide useful utilities for python3-flame.
+ .
+ Build upon python3-flame, higher-level interface to make it easy and
+ efficient when using python3-flame package.
