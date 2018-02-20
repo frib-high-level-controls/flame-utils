@@ -17,7 +17,7 @@ from flame_utils.core import generate_source
 
 
 def generate_latfile(machine, latfile=None, state=None, original=None,
-                     out=None):
+                     out=None, start=None, end=None):
     """Generate lattice file for the usage of FLAME code.
 
     Parameters
@@ -32,6 +32,10 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         BeamState object, accept FLAME internal State object also. (optional)
     out :
         New stream paramter, file stream. (optional)
+    start :
+        Start element (id or name) of generated lattice. (optional)
+    end :
+        End element (id or name) of generated lattice. (optional)
 
     Returns
     -------
@@ -102,11 +106,27 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                 lines.append(line)
 
             mconfe = mconf['elements']
+            elem_num = len(mconfe)
+
+            if start is None:
+                start = 1
+            elif isinstance(start, (str, unicode)):
+                start = m.find(name=start)[0]
+            else :
+                start = int(start)
+
+            if end is None:
+                end = elem_num
+            elif isinstance(end, (str, unicode)):
+                end = m.find(name=end)[0] + 1
+            else :
+                end = int(end) + 1
+
+            section = [0] + list(range(start,end))
 
             # element configuration
-            elem_num = len(mconfe)
             elem_name_list = []
-            for i in range(0, elem_num):
+            for i in section:
                 elem_i = m.conf(i)
                 ename, etype = elem_i['name'], elem_i['type']
                 if ename in elem_name_list:
@@ -135,7 +155,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                 line = line.strip(', ') + ';'
                 lines.append(line)
 
-            dline = '(' + ', '.join(([e['name'] for e in mconfe])) + ')'
+            dline = '(' + ', '.join(([m.conf(i)['name'] for i in section])) + ')'
 
             blname = mconf['name']
             lines.append('{0}: LINE = {1};'.format(blname, dline))
