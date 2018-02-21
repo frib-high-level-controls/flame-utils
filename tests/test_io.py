@@ -35,8 +35,9 @@ class TestGenerateLatfile(unittest.TestCase):
         self.fout1_str = open(self.out1file).read().strip()
         self.fout2_str = open(self.out2file).read().strip()
 
-        self.latfile1 = os.path.join(curdir, 'lattice/out1_org.lat')
-        self.latfile2 = os.path.join(curdir, 'lattice/out1_mod.lat')
+        self.latfile0 = os.path.join(curdir, 'lattice/test_1.lat')
+        self.latfile1 = os.path.join(curdir, 'lattice/out1_1.lat')
+        self.latfile2 = os.path.join(curdir, 'lattice/out2_1.lat')
 
         self.testcfile = os.path.join(curdir, 'lattice/test_c.lat')
         self.out3file = os.path.join(curdir, 'lattice/out3.lat')
@@ -45,8 +46,13 @@ class TestGenerateLatfile(unittest.TestCase):
         with open(self.testcfile) as f:
             self.mc = Machine(f)
 
+        out4file = os.path.join(curdir, 'lattice/out4_0.lat')
+        self.out4file = make_latfile(out4file)
+        self.fout4_str = open(self.out4file).read().strip()
+        self.latfile4 = os.path.join(curdir, 'lattice/out4_1.lat')
+
     def tearDown(self):
-        for f in [self.latfile1, self.latfile2]:
+        for f in [self.latfile0, self.latfile1, self.latfile2, self.latfile4]:
             if os.path.isfile(f):
                 os.remove(f)
 
@@ -86,6 +92,12 @@ class TestGenerateLatfile(unittest.TestCase):
         sioname = generate_latfile(self.mc, original=self.testcfile, out=sio)
         self.assertEqual(sioname, 'string')
         self.assertEqual(sio.getvalue().strip(), self.fout3_str)
+
+    def test_generate_latfile_original4(self):
+        sio = StringIO()
+        sioname = generate_latfile(self.m, start=30, end=60, out=sio)
+        self.assertEqual(sioname, 'string')
+        self.assertEqual(sio.getvalue().strip(), self.fout4_str)
 
     def test_generate_latfile_update1(self):
         idx = 80
