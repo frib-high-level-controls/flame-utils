@@ -12,9 +12,12 @@ from __future__ import unicode_literals
 import flame
 import numpy as np
 
+import logging
+
 from flame_utils.core import get_all_names
 from flame_utils.core import generate_source
 
+_LOGGER = logging.getLogger(__name__)
 
 def generate_latfile(machine, latfile=None, state=None, original=None,
                      out=None, start=None, end=None):
@@ -47,6 +50,8 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     - If *latfile* and *out* are not defined, will print all output to screen;
     - If *latfile* and *out* are all defined, *out* stream is preferred;
     - For other cases, choose one that is defined.
+    - If *start* is defined, user should define *state* also.
+    - If user define *start* only, the initial beam state is the same as the *machine*.
 
     Examples
     --------
@@ -75,7 +80,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     try:
         mconf = m.conf()
     except:
-        print("Failed to load FLAME machine object.")
+        _LOGGER.error("Failed to load FLAME machine object.")
         return None
 
     try:
@@ -88,7 +93,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             mc_src = generate_source(state, sconf={'index':0, 'properties':mc_src})['properties']
 
     except:
-        print("Failed to load initial beam state.")
+        _LOGGER.error("Failed to load initial beam state.")
         return None
 
     if not isinstance(original, (str, unicode)):
@@ -114,6 +119,9 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                 start = m.find(name=start)[0]
             else :
                 start = int(start)
+
+            if start != 1 and state is None:
+                _LOGGER.warning("Initial beam state is missing. Use original initial beam state.")
 
             if end is None:
                 end = elem_num
@@ -162,7 +170,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             lines.append('USE: {0};'.format(blname))
 
         except:
-            print("Failed to generate lattice file.")
+            _LOGGER.error("Failed to generate lattice file.")
             return None
 
     else:
@@ -262,7 +270,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                     flg = 0
                     n += 1
         except:
-            print("Failed to generate lattice file with original file.")
+            _LOGGER.error("Failed to generate lattice file with original file.")
             return None
 
     all_lines = '\n'.join(lines)
@@ -275,7 +283,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             sout = out
         print(all_lines, file=sout)
     except:
-        print("Failed to write to %s" % latfile)
+        _LOGGER.error("Failed to write to %s" % latfile)
         return None
 
     try:
