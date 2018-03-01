@@ -16,6 +16,7 @@ import logging
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
+from flame_utils.misc import conf_update
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
 
