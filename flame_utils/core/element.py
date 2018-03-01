@@ -12,13 +12,14 @@ from __future__ import unicode_literals
 import logging
 import os
 import re
+import flame
 
 from collections import Counter
 
 from flame_utils.misc import machine_setter
 from flame_utils.misc import flatten
 from flame_utils.misc import get_intersection
-
+from flame_utils.misc import conf_update
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -450,3 +451,35 @@ def get_names_by_pattern(pattern='.*', latfile=None, _machine=None):
     else:
         return None
 
+
+def insert_element(machine=None, index=None, element=None):
+    """Insert new element to the machine.
+
+    Parameters
+    ----------
+    machine :
+        FLAME machine object.
+    index :
+        Insert element before the index.
+    element :
+        Lattice element dictionary.
+
+    Returns
+    -------
+    machine : FLAME machine object.
+    """
+    if machine is None:
+        return None
+
+    try:
+        m = conf_update(machine)
+        mconf = m.conf()
+    except:
+        _LOGGER.error("Failed to load FLAME machine object.")
+        return None
+
+    if index is not None and element is not None:
+        mconf['elements'].insert(index, element)
+
+    new_m = flame.Machine(mconf)
+    return new_m

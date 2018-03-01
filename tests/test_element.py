@@ -5,6 +5,7 @@ import os
 from cStringIO import StringIO
 import random
 from numpy import array
+from numpy.testing import assert_array_equal
 import numpy as np
 
 from flame import Machine
@@ -15,6 +16,7 @@ from flame_utils import get_index_by_type
 from flame_utils import get_index_by_name
 from flame_utils import get_all_types
 from flame_utils import get_all_names
+from flame_utils import insert_element
 from _utils import make_latfile
 from _utils import compare_source_element
 
@@ -246,3 +248,19 @@ class TestGetIndexByName(unittest.TestCase):
             self.assertEqual(e, e0)
 
 
+class TestInsertElement(unittest.TestCase):
+    def setUp(self):
+        latfile = os.path.join(curdir, 'lattice/test_0.lat')
+        self.latfile = make_latfile(latfile)
+        self.m = Machine(open(self.latfile, 'r'))
+
+    def test_insert_element(self):
+        """test_insert_element: insert new element
+        """
+        new_drift = {'name':'test_drift', 'type':'drift', 'L':1.0, 'test_option':np.array([1,2,3])}
+        new_m = insert_element(self.m, 5, new_drift)
+        conf_drift = new_m.conf(5)
+        self.assertEqual(conf_drift['name'], new_drift['name'])
+        self.assertEqual(conf_drift['type'], new_drift['type'])
+        self.assertEqual(conf_drift['L'], new_drift['L'])
+        assert_array_equal(conf_drift['test_option'], new_drift['test_option'])
