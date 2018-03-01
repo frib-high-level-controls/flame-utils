@@ -460,7 +460,7 @@ def insert_element(machine=None, index=None, element=None):
     machine :
         FLAME machine object.
     index :
-        Insert element before the index.
+        Insert element before the index (or element name).
     element :
         Lattice element dictionary.
 
@@ -479,6 +479,8 @@ def insert_element(machine=None, index=None, element=None):
         return None
 
     if index is not None and element is not None:
+        if isinstance(index, (str, unicode)):
+            index = m.find(name=index)[0]
         mconf['elements'].insert(index, element)
 
     new_m = flame.Machine(mconf)

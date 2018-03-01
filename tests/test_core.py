@@ -312,3 +312,19 @@ class TestStateToSource(unittest.TestCase):
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
+
+class TestInsertElemInModelFlame(unittest.TestCase):
+    def setUp(self):
+        testfile = os.path.join(curdir, 'lattice/test_0.lat')
+        self.testfile = make_latfile(testfile)
+
+    def test_insert_in_modelflame(self):
+        latfile = self.testfile
+        fm = ModelFlame(latfile)
+        new_econf = {'index':5, 'properties':{'name':'test_drift', 'type':'drift', 'L':1.0}}
+        fm.insert_element(new_econf)
+        test_econf = fm.get_element(index=5)[0]
+        self.assertEqual(test_econf['index'], new_econf['index'])
+        self.assertEqual(test_econf['properties']['name'], new_econf['properties']['name'])
+        self.assertEqual(test_econf['properties']['type'], new_econf['properties']['type'])
+        self.assertEqual(test_econf['properties']['L'], new_econf['properties']['L'])
