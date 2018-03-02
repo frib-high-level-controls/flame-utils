@@ -321,10 +321,21 @@ class TestInsertElemInModelFlame(unittest.TestCase):
     def test_insert_in_modelflame(self):
         latfile = self.testfile
         fm = ModelFlame(latfile)
-        new_econf = {'index':5, 'properties':{'name':'test_drift', 'type':'drift', 'L':1.0}}
-        fm.insert_element(new_econf)
+        r0,s0=fm.run(to_element=6)
+
+        new_econf = {'index':5, 'properties':{'name':'test_drift', 'type':'drift', 'L':0.05588}}
+        fm.insert_element(econf=new_econf)
         test_econf = fm.get_element(index=5)[0]
         self.assertEqual(test_econf['index'], new_econf['index'])
         self.assertEqual(test_econf['properties']['name'], new_econf['properties']['name'])
         self.assertEqual(test_econf['properties']['type'], new_econf['properties']['type'])
         self.assertEqual(test_econf['properties']['L'], new_econf['properties']['L'])
+
+        test_econf2 = fm.get_element(index=6)[0]
+        self.assertEqual(test_econf2['index'], 6)
+        self.assertEqual(test_econf2['properties']['name'], 'LS1_CA01:BPM_D1129')
+        self.assertEqual(test_econf2['properties']['type'], 'bpm')
+
+        r1,s1 = fm.run(to_element=6)
+
+        compare_mstates(self, s0, s1)

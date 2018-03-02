@@ -501,7 +501,7 @@ class ModelFlame(object):
         """
         return Machine(conf_update(self._mach_ins.conf()))
 
-    def insert_element(self, econf=None, index=None, element=None):
+    def insert_element(self, index=None, element=None, econf=None):
         """Insert new element to the machine.
 
         Parameters

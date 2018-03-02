@@ -462,7 +462,7 @@ def insert_element(machine=None, index=None, element=None):
     index :
         Insert element before the index (or element name).
     element :
-        Lattice element dictionary.
+        Lattice element dictionary. e.g. {'name':xxx, 'type':yyy, 'L':zzz}
 
     Returns
     -------
