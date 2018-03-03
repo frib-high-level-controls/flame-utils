@@ -17,7 +17,9 @@ _LOGGER = logging.getLogger(__name__)
 def conf_update(machine):
     """Update machine conf() by using current settings.
 
-    :return: FLAME machine object
+    Returns
+    -------
+    FLAME machine object
     """
 
     m = machine

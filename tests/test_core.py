@@ -322,19 +322,23 @@ class TestInsertElemInModelFlame(unittest.TestCase):
         latfile = self.testfile
         fm = ModelFlame(latfile)
         r0,s0=fm.run(to_element=6)
+        econf_before_insertion = fm.get_element(index=5)[0]
+        total_before_insertion = len(fm._mach_ins)
 
         new_econf = {'index':5, 'properties':{'name':'test_drift', 'type':'drift', 'L':0.05588}}
         fm.insert_element(econf=new_econf)
+        total_after_insertion = len(fm._mach_ins)
         test_econf = fm.get_element(index=5)[0]
         self.assertEqual(test_econf['index'], new_econf['index'])
         self.assertEqual(test_econf['properties']['name'], new_econf['properties']['name'])
         self.assertEqual(test_econf['properties']['type'], new_econf['properties']['type'])
         self.assertEqual(test_econf['properties']['L'], new_econf['properties']['L'])
+        self.assertEqual(total_before_insertion+1, total_after_insertion)
 
         test_econf2 = fm.get_element(index=6)[0]
         self.assertEqual(test_econf2['index'], 6)
-        self.assertEqual(test_econf2['properties']['name'], 'LS1_CA01:BPM_D1129')
-        self.assertEqual(test_econf2['properties']['type'], 'bpm')
+        self.assertEqual(test_econf2['properties']['name'], econf_before_insertion['properties']['name'])
+        self.assertEqual(test_econf2['properties']['type'], econf_before_insertion['properties']['type'])
 
         r1,s1 = fm.run(to_element=6)
 
