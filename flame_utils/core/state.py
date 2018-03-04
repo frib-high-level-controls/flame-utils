@@ -164,9 +164,9 @@ class BeamState(object):
                     _m.propagate(self._states, 0, 1)
                 else:
                     _LOGGER.warning(
-                    "BeamState: \
-                     The initial states are 0s, true values could be obtained \
-                     by additional parameter '_latfile' or '_machine'.")
+                    "BeamState: " \
+                     "The initial states are 0s, true values could be obtained" \
+                     "by additional parameter '_latfile' or '_machine'.")
 
     @property
     def state(self):

@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import unittest
 import os
-from cStringIO import StringIO
 import random
 from numpy import array
 from numpy.testing import assert_array_equal
@@ -20,6 +23,11 @@ from flame_utils import insert_element
 from _utils import make_latfile
 from _utils import compare_source_element
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 curdir = os.path.dirname(__file__)
 
 
@@ -36,17 +44,19 @@ class TestInspectLattice(unittest.TestCase):
     def test_right_file(self):
         sio = StringIO()
         inspect_lattice(self.latfile, out=sio)
-        outstr = open(self.inslat).read()
+        with open(self.inslat) as f:
+            outstr = f.read()
         line1 = [line.strip() for line in sio.getvalue().split('\n')]
         line0 = [line.strip() for line in outstr.split('\n')]
-        self.assertEqual(line1, line0)
+        self.assertEqual(sorted(line1), sorted(line0))
 
 
 class TestGetElement(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
-        self.m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            self.m = Machine(f)
 
     def test_one_name(self):
         ename = 'LS1_CA01:CAV4_D1150'
@@ -136,16 +146,16 @@ class TestGetElement(unittest.TestCase):
                            'type': 'source',
                            'vector_variable': 'P'}}
         sconf = get_element(index=0, latfile=self.latfile)[0]
-        compare_source_element(self, sconf, source_conf)
-        #for k,v in sconf['properties'].items():
-        #    left_val, right_val = v, source_conf['properties'][k]
-        #    if isinstance(v, np.ndarray):
-        #        self.assertTrue(((left_val == right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
-        #    else:
-        #        self.assertAlmostEqual(left_val, right_val)
+        #compare_source_element(self, sconf, source_conf)
+        for k,v in sconf['properties'].items():
+            left_val, right_val = v, source_conf['properties'][k]
+            if isinstance(v, np.ndarray):
+                self.assertTrue(((left_val==right_val) | (np.isnan(left_val) & np.isnan(right_val))).all())
+            else:
+                self.assertAlmostEqual(left_val, right_val)
 
     def test_multi_indice(self):
-        idx = range(1,3)
+        idx = list(range(1,3))
         e0 = [
                 {'index': 1,
                  'properties': {'L': 0.072,
@@ -162,13 +172,13 @@ class TestGetElement(unittest.TestCase):
         self.assertEqual(e1, e0)
 
     def test_multi_filters(self):
-        eidx, etyp = range(20), 'bpm'
+        eidx, etyp = list(range(20)), 'bpm'
         e0 = [
               {'index': 18,
                'properties': {'name': 'LS1_CA01:BPM_D1144', 'type': 'bpm'}},
               {'index': 5,
                'properties': {'name': 'LS1_CA01:BPM_D1129', 'type': 'bpm'}}
-              ]
+        ]
         e1 = get_element(index=eidx, type=etyp, latfile=self.latfile)
         self.assertEqual(e1, e0)
         
@@ -187,7 +197,8 @@ class TestGetIndexByType(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
-        self.m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            self.m = Machine(f)
 
     def test_wrong_type(self):
         etyp = ''
@@ -217,7 +228,8 @@ class TestGetIndexByName(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
-        self.m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            self.m = Machine(f)
 
     def test_wrong_name(self):
         ename = ''
@@ -252,7 +264,8 @@ class TestInsertElement(unittest.TestCase):
     def setUp(self):
         latfile = os.path.join(curdir, 'lattice/test_0.lat')
         self.latfile = make_latfile(latfile)
-        self.m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            self.m = Machine(f)
 
     def test_insert_element(self):
         """test_insert_element: insert new element
