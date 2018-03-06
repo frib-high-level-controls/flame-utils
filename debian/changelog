@@ -1,3 +1,12 @@
+flame-utils (0.3.0-1) unstable; urgency=medium
+
+  * Support both Python 2.7 and Python 3.x, see PR #21
+  * New method for ModelFlame class: insert_element, see PR #20
+  * Update unittests
+  * d/rules: fix test for Python 3.x
+
+ -- Tong Zhang <zhangt@frib.msu.edu>  Tue, 06 Mar 2018 15:00:08 -0500
+
 flame-utils (0.2.1-1) unstable; urgency=medium
 
   * Create attribute aliases for BeamState class, see #17.
