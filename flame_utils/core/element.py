@@ -21,6 +21,11 @@ from flame_utils.misc import flatten
 from flame_utils.misc import get_intersection
 from flame_utils.misc import conf_update
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
                 "Michigan State University"
@@ -479,7 +484,7 @@ def insert_element(machine=None, index=None, element=None):
         return None
 
     if index is not None and element is not None:
-        if isinstance(index, (str, unicode)):
+        if isinstance(index, basestring):
             index = m.find(name=index)[0]
         mconf['elements'].insert(index, element)
 

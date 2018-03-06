@@ -15,6 +15,11 @@ import matplotlib.patches as ptc
 import matplotlib.pyplot as plt
 import numpy as np
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 class PlotLat:
     """Lattice picture class from FLAME lattice file or FLAME Machine object
@@ -78,7 +83,7 @@ class PlotLat:
 
                     self.types[elem['type']]['scale'] = max(prv_scl,tmp_scl)
 
-        if isinstance(output, (str, unicode)):
+        if isinstance(output, basestring):
             self.generate()
             self.output(window=True, fname=output, **kws)
 

@@ -21,7 +21,8 @@ def machine_setter(_latfile=None, _machine=None, _handle_name=None):
     """
     if _latfile is not None:
         try:
-            m = Machine(open(_latfile, 'r'))
+            with open(_latfile, 'rb') as f:
+                m = Machine(f)
         except:
             if _machine is None:
                 _LOGGER.error("{}: Failed to initialize flame machine".format(

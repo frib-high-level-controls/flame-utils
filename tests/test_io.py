@@ -1,13 +1,22 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import unittest
 import os
-from cStringIO import StringIO
 
 from flame import Machine
 from _utils import make_latfile
 from flame_utils import generate_latfile
 from numpy.testing import assert_array_almost_equal as assertAEqual
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 curdir = os.path.dirname(__file__)
 
@@ -21,8 +30,8 @@ class TestGenerateLatfile(unittest.TestCase):
         self.out1file = make_latfile(out1file)
         self.out2file = make_latfile(out2file)
 
-        ftest = open(self.testfile)
-        self.m = Machine(ftest)
+        with open(self.testfile, 'rb') as f:
+            self.m = Machine(f)
         s0 = self.m.allocState({})
         self.r = self.m.propagate(s0, 0, len(self.m), range(len(self.m)))
         self.s = s0
@@ -32,8 +41,11 @@ class TestGenerateLatfile(unittest.TestCase):
         self.ref_keys = ['ref_{}'.format(i) for i in k] + ['pos']
         self.keys_ps = ['moment0', 'moment0_env', 'moment0_rms', 'moment1']
 
-        self.fout1_str = open(self.out1file).read().strip()
-        self.fout2_str = open(self.out2file).read().strip()
+        with open(self.out1file, 'rb') as f:
+            self.fout1_str = f.read().strip().decode()
+
+        with open(self.out2file, 'rb') as f:
+            self.fout2_str = f.read().strip().decode()
 
         self.latfile0 = os.path.join(curdir, 'lattice/test_1.lat')
         self.latfile1 = os.path.join(curdir, 'lattice/out1_1.lat')
@@ -41,14 +53,19 @@ class TestGenerateLatfile(unittest.TestCase):
 
         self.testcfile = os.path.join(curdir, 'lattice/test_c.lat')
         self.out3file = os.path.join(curdir, 'lattice/out3.lat')
+
         with open(self.out3file, 'rb') as f:
-            self.fout3_str = f.read().strip()
-        with open(self.testcfile) as f:
+            self.fout3_str = f.read().strip().decode()
+
+        with open(self.testcfile, 'rb') as f:
             self.mc = Machine(f)
 
         out4file = os.path.join(curdir, 'lattice/out4_0.lat')
         self.out4file = make_latfile(out4file)
-        self.fout4_str = open(self.out4file).read().strip()
+
+        with open(self.out4file, 'rb') as f: 
+            self.fout4_str = f.read().strip().decode()
+
         self.latfile4 = os.path.join(curdir, 'lattice/out4_1.lat')
 
     def tearDown(self):
@@ -65,11 +82,12 @@ class TestGenerateLatfile(unittest.TestCase):
     def test_generate_latfile_original2(self):
         # TEST LATFILE
         fout1_file = generate_latfile(self.m, latfile=self.latfile1)
-        lines1 = [line.strip() for line in open(fout1_file).read().strip().split('\n')]
-        lines0 = [line.strip() for line in self.fout1_str.split('\n')]
-        self.assertEqual(lines1, lines0)
-
-        m = Machine(open(fout1_file))
+        with open(fout1_file, 'rb') as f:
+            f_str = f.read().strip().decode()
+        self.assertEqual(f_str, self.fout1_str)
+        
+        with open(fout1_file, 'rb') as f:
+            m = Machine(f)
         s = m.allocState({})
         r = m.propagate(s, 0, len(m), range(len(m)))
 
@@ -103,9 +121,11 @@ class TestGenerateLatfile(unittest.TestCase):
         idx = 80
         self.m.reconfigure(idx, {'theta_x': 0.1})
         fout2_file = generate_latfile(self.m, latfile=self.latfile2)
-        self.assertEqual(open(fout2_file).read().strip(), self.fout2_str)
+        with open(fout2_file) as f:
+            self.assertEqual(f.read().strip(), self.fout2_str)
 
-        m = Machine(open(fout2_file))
+        with open(fout2_file, 'rb') as f:
+            m = Machine(f)
         self.assertEqual(m.conf(idx)['theta_x'], 0.1)
 
     def test_generate_latfile_update2(self):
@@ -114,6 +134,7 @@ class TestGenerateLatfile(unittest.TestCase):
         self.m.propagate(s,0,1)
         s.moment0 = [[0.1], [0.1], [0.1], [0.1], [0.1], [0.1], [1.0]]
         fout2_file = generate_latfile(self.m, latfile=self.latfile2, state=s)
-
-        m = Machine(open(fout2_file))
+        
+        with open(fout2_file, 'rb') as f:
+            m = Machine(f)
         assertAEqual(m.conf()['P0'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1.0])

@@ -5,6 +5,7 @@ dist: trusty
 
 python:
     - "2.7"
+    - "3.4"
 
 virtualenv:
     system_site_packages: true
@@ -16,17 +17,21 @@ addons:
     - libboost-filesystem-dev
     - libhdf5-dev
     - python-numpy
+    - python3-numpy
+    - python-matplotlib
+    - python3-matplotlib
+    - python-nose
+    - python3-nose
+    - python-coverage
+    - python3-coverage
 
 before_install:
-    - VERSION=1.4.0
+    - VERSION=1.5.1
     - cwd=$(pwd)
-    - git clone -b latest https://github.com/archman/FLAME.git
-    - cd FLAME/deb/trusty
+    - git clone -b trusty https://github.com/archman/packages.git
+    - cd packages/trusty
     - sudo dpkg -i *${VERSION}*.deb
     - cd ${cwd}
-
-install:
-    - pip install -r requirements.txt
 
 script:
     - cd tests
