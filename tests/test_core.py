@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import unittest
 import os
 import numpy as np
@@ -26,7 +31,8 @@ class TestBeamState(unittest.TestCase):
     def test_init_with_s1(self):
         """ test_init_with_s1: s is not None
         """
-        m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
         s0 = m.allocState({})
         s1 = s0.clone()
         m.propagate(s1, 0, 1)
@@ -43,7 +49,8 @@ class TestBeamState(unittest.TestCase):
     def test_init_with_s2(self):
         """ test_init_with_s2: s is None
         """
-        m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         ms = BeamState()
@@ -51,21 +58,24 @@ class TestBeamState(unittest.TestCase):
         compare_mstates(self, ms, s)
     
     def test_init_with_machine(self):
-        m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
         ms = BeamState(machine=m)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
  
     def test_init_with_latfile(self):
-        m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
         ms = BeamState(latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
 
     def test_init_with_mix(self):
-        m = Machine(open(self.latfile, 'r'))
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
         ms = BeamState(machine=m, latfile=self.latfile)
         s = m.allocState({})
         m.propagate(s, 0, 1)
@@ -126,14 +136,16 @@ class TestModelFlame(unittest.TestCase):
     def test_set_machine(self):
         fm_none = ModelFlame()
         self.assertIsNone(fm_none.machine)
-        m = Machine(open(self.testfile, 'r'))
+        with open(self.testfile, 'rb') as f:
+            m = Machine(f)
         fm_none.machine = m
         self.assertEqual(fm_none.machine, m)
 
     def test_set_bmstate(self):
         fm_none = ModelFlame()
         self.assertIsNone(fm_none.bmstate)
-        m = Machine(open(self.testfile, 'r'))
+        with open(self.testfile, 'rb') as f:
+            m = Machine(f)
         s = m.allocState({})
         m.propagate(s, 0, 1)
         fm_none.bmstate = s
@@ -148,9 +160,9 @@ class TestModelFlame(unittest.TestCase):
 
     def test_get_all_types(self):
         fm = ModelFlame(self.testfile)
-        etypes = ['quadrupole', 'bpm', 'drift', 'source', 'rfcavity',
-                  'sbend', 'orbtrim', 'solenoid', 'stripper']
-        self.assertEqual(fm.get_all_types(), etypes)
+        etypes = {'quadrupole', 'bpm', 'drift', 'source', 'rfcavity',
+                  'sbend', 'orbtrim', 'solenoid', 'stripper'}
+        self.assertEqual(set(fm.get_all_types()), etypes)
     
     def test_get_index_by_name(self):
         fm = ModelFlame(self.testfile)
@@ -176,7 +188,8 @@ class TestModelFlame(unittest.TestCase):
         """ test_run_1: propagate from the first to last, monitor None
         """ 
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         m0.propagate(s0, 0, -1)
         fm = ModelFlame(latfile)
@@ -188,7 +201,8 @@ class TestModelFlame(unittest.TestCase):
         """ test_run_2: propagate from the first to last, monitor all BPMs
         """
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         fm = ModelFlame(latfile)
         obs = fm.get_index_by_type(type='bpm')['bpm']
@@ -204,7 +218,8 @@ class TestModelFlame(unittest.TestCase):
         """ test run_3: test initial states
         """
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         m0.propagate(s0, 0, 1)
         fm = ModelFlame(latfile)
@@ -215,7 +230,8 @@ class TestModelFlame(unittest.TestCase):
         """ test_run_4: run and monitor from element index of 10 to 20
         """
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         m0.propagate(s0, 0, 1)
         r0 = m0.propagate(s0, 10, 11, observe=range(10, 21))
@@ -233,7 +249,8 @@ class TestModelFlame(unittest.TestCase):
         """ test_run_5: using BeamState object
         """
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         ms = BeamState(machine=m0) 
 
         fm = ModelFlame()
@@ -255,7 +272,8 @@ class TestModelFlame(unittest.TestCase):
         """ test_collect_data: get pos, x0, IonEk
         """
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         r0 = m0.propagate(s0, 0, 100, observe=range(100))
 
@@ -271,7 +289,8 @@ class TestModelFlame(unittest.TestCase):
  
     def test_configure(self):
         latfile = self.testfile
-        m0 = Machine(open(latfile, 'r'))
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
         s0 = m0.allocState({})
         e_cor_idx = 10
         m0.reconfigure(10, {'theta_x': 0.005})
@@ -312,3 +331,34 @@ class TestStateToSource(unittest.TestCase):
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
+
+class TestInsertElemInModelFlame(unittest.TestCase):
+    def setUp(self):
+        testfile = os.path.join(curdir, 'lattice/test_0.lat')
+        self.testfile = make_latfile(testfile)
+
+    def test_insert_in_modelflame(self):
+        latfile = self.testfile
+        fm = ModelFlame(latfile)
+        r0,s0 = fm.run(to_element=6)
+        econf_before_insertion = fm.get_element(index=5)[0]
+        total_before_insertion = len(fm.machine)
+
+        new_econf = {'index':5, 'properties':{'name':'test_drift', 'type':'drift', 'L':0.05588}}
+        fm.insert_element(econf=new_econf)
+        total_after_insertion = len(fm._mach_ins)
+        test_econf = fm.get_element(index=5)[0]
+        self.assertEqual(test_econf['index'], new_econf['index'])
+        self.assertEqual(test_econf['properties']['name'], new_econf['properties']['name'])
+        self.assertEqual(test_econf['properties']['type'], new_econf['properties']['type'])
+        self.assertEqual(test_econf['properties']['L'], new_econf['properties']['L'])
+        self.assertEqual(total_before_insertion+1, total_after_insertion)
+
+        test_econf2 = fm.get_element(index=6)[0]
+        self.assertEqual(test_econf2['index'], 6)
+        self.assertEqual(test_econf2['properties']['name'], econf_before_insertion['properties']['name'])
+        self.assertEqual(test_econf2['properties']['type'], econf_before_insertion['properties']['type'])
+
+        r1,s1 = fm.run(to_element=6)
+
+        compare_mstates(self, s0, s1)

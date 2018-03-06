@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 import numpy as np
 
@@ -14,13 +19,16 @@ def make_latfile(latfile1):
     f2_filename = f1_filename.replace('0', '1')
     f2_pathname = f1_pathname
     f2 = os.path.join(f2_pathname, f2_filename)
-    fp2 = open(f2, 'w')
-    for line in open(f1, 'r'):
-        if line.startswith('Eng'):
-            name, _ = line.split('=')
-            line = '{0} = "{1}";\n'.format(name.strip(),
-                                           os.path.abspath(FLAME_DATA))
-        fp2.write(line)
+    fp2 = open(f2, 'wb')
+    with open(f1, 'rb') as f:
+        for line in f:
+            if line.startswith(b'Eng'):
+                name, _ = line.decode().split('=')
+                line0 = '{0} = "{1}";\n'.format(
+                        name.strip(),
+                        os.path.abspath(FLAME_DATA))
+                line = line0.encode()
+            fp2.write(line)
     fp2.close()
     return f2
 

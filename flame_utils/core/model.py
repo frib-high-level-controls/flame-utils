@@ -16,6 +16,7 @@ import logging
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
+from flame_utils.misc import conf_update
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
 
@@ -25,6 +26,7 @@ from .element import get_element
 from .element import get_index_by_name
 from .element import get_index_by_type
 from .element import inspect_lattice
+from .element import insert_element
 from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
@@ -497,4 +499,29 @@ class ModelFlame(object):
         ret :
             FLAME Machine object.
         """
-        return Machine(self._mach_ins.conf())
+        return Machine(conf_update(self._mach_ins.conf()))
+
+    def insert_element(self, index=None, element=None, econf=None):
+        """Insert new element to the machine.
+
+        Parameters
+        ----------
+        econf : dict
+            Element configuration (see :func:`get_element`).
+        index : int or str
+            Insert element before the index (or element name).
+        element : dict
+            Lattice element dictionary.
+
+        Note
+        ----
+        User must input 'econf' or 'index and element'.
+        If econf is defined, insert econf['properties'] element before econf['index'].
+        """
+        if econf is None:
+            new_m = insert_element(self._mach_ins, index, element)
+        else:
+            new_m = insert_element(self._mach_ins, econf['index'], econf['properties'])
+
+        if new_m is not None:
+            self._mach_ins = new_m

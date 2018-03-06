@@ -12,12 +12,21 @@ from __future__ import unicode_literals
 import flame
 import numpy as np
 
+import logging
+
+try:
+    basestring
+except NameError:
+    basestring = str
+
 from flame_utils.core import get_all_names
 from flame_utils.core import generate_source
 
 
+_LOGGER = logging.getLogger(__name__)
+
 def generate_latfile(machine, latfile=None, state=None, original=None,
-                     out=None):
+                     out=None, start=None, end=None):
     """Generate lattice file for the usage of FLAME code.
 
     Parameters
@@ -32,6 +41,10 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         BeamState object, accept FLAME internal State object also. (optional)
     out :
         New stream paramter, file stream. (optional)
+    start :
+        Start element (id or name) of generated lattice. (optional)
+    end :
+        End element (id or name) of generated lattice. (optional)
 
     Returns
     -------
@@ -43,6 +56,8 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     - If *latfile* and *out* are not defined, will print all output to screen;
     - If *latfile* and *out* are all defined, *out* stream is preferred;
     - For other cases, choose one that is defined.
+    - If *start* is defined, user should define *state* also.
+    - If user define *start* only, the initial beam state is the same as the *machine*.
 
     Examples
     --------
@@ -71,11 +86,11 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     try:
         mconf = m.conf()
     except:
-        print("Failed to load FLAME machine object.")
+        _LOGGER.error("Failed to load FLAME machine object.")
         return None
 
     try:
-        mconf_ks = mconf.keys()
+        mconf_ks = list(mconf.keys())
         [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
         mc_src = m.conf(m.find(type='source')[0])
 
@@ -84,10 +99,10 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             mc_src = generate_source(state, sconf={'index':0, 'properties':mc_src})['properties']
 
     except:
-        print("Failed to load initial beam state.")
+        _LOGGER.error("Failed to load initial beam state.")
         return None
 
-    if not isinstance(original, (str, unicode)):
+    if not isinstance(original, basestring):
 
         try:
             lines = []
@@ -102,11 +117,30 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                 lines.append(line)
 
             mconfe = mconf['elements']
+            elem_num = len(mconfe)
+
+            if start is None:
+                start = 1
+            elif isinstance(start, basestring):
+                start = m.find(name=start)[0]
+            else :
+                start = int(start)
+
+            if start != 1 and state is None:
+                _LOGGER.warning("Initial beam state is missing. Use original initial beam state.")
+
+            if end is None:
+                end = elem_num
+            elif isinstance(end, basestring):
+                end = m.find(name=end)[0] + 1
+            else :
+                end = int(end) + 1
+
+            section = [0] + list(range(start,end))
 
             # element configuration
-            elem_num = len(mconfe)
             elem_name_list = []
-            for i in range(0, elem_num):
+            for i in section:
                 elem_i = m.conf(i)
                 ename, etype = elem_i['name'], elem_i['type']
                 if ename in elem_name_list:
@@ -121,7 +155,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                     elem_k.add('IonChargeStates')
                     elem_k.add('NCharge')
                 p = []
-                for k, v in elem_i.items():
+                for k, v in sorted(elem_i.items()):
                     if k in elem_k and k not in ['name', 'type']:
                         if isinstance(v, np.ndarray):
                             v = v.tolist()
@@ -135,14 +169,14 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                 line = line.strip(', ') + ';'
                 lines.append(line)
 
-            dline = '(' + ', '.join(([e['name'] for e in mconfe])) + ')'
+            dline = '(' + ', '.join(([m.conf(i)['name'] for i in section])) + ')'
 
             blname = mconf['name']
             lines.append('{0}: LINE = {1};'.format(blname, dline))
             lines.append('USE: {0};'.format(blname))
 
         except:
-            print("Failed to generate lattice file.")
+            _LOGGER.error("Failed to generate lattice file.")
             return None
 
     else:
@@ -150,7 +184,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         try:
             names = get_all_names(_machine=m)
 
-            with open(original, 'rb') as f:
+            with open(original, 'r') as f:
                 fline = f.readlines()
 
             def gps(l):
@@ -177,7 +211,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                     if (p['='] != -1 and p['='] < p['#']) and \
                         (p[': '] == -1 or (p['='] < p[': '] < p['#'])):
                         bp = l[0:p['=']].replace(' ', '')
-                        if mc_src.has_key(bp):
+                        if bp in mc_src:
                             if bp == 'Eng_Data_Dir':
                                 nl = l[0:-1]
                             elif mc_src['vector_variable'] == bp[0:-1]:
@@ -197,7 +231,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                 v = mc_src[bp]
                                 if isinstance(v, np.ndarray):
                                     v = str(v.tolist())
-                                elif isinstance(v, (str, unicode)):
+                                elif isinstance(v, basestring):
                                     v = '"' + str(v) + '"'
                                 else:
                                     v = str(v)
@@ -216,11 +250,11 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                 keys.add('IonChargeStates')
                                 keys.add('NCharge')
 
-                            for k in keys:
+                            for k in sorted(keys):
                                 v = c[k]
                                 if isinstance(v, np.ndarray):
                                     v = str(v.tolist())
-                                elif isinstance(v, (str, unicode)):
+                                elif isinstance(v, basestring):
                                     v = '"' + str(v) + '"'
                                 else:
                                     v = str(v)
@@ -242,25 +276,25 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                     flg = 0
                     n += 1
         except:
-            print("Failed to generate lattice file with original file.")
+            _LOGGER.error("Failed to generate lattice file with original file.")
             return None
 
     all_lines = '\n'.join(lines)
     try:
         if latfile is None and out is None:
             sout = sys.stdout
+            print(all_lines, file=sout)
+            retval = sout.name
         elif out is None:
-            sout = open(latfile, 'w')
+            with open(latfile, 'wb') as sout:
+                sout.write(all_lines.encode())
+                retval = sout.name
         else:
             sout = out
-        print(all_lines, file=sout)
+            print(all_lines, file=sout)
+            retval = 'string'
     except:
-        print("Failed to write to %s" % latfile)
+        _LOGGER.error("Failed to write to %s" % latfile)
         return None
-
-    try:
-        retval = sout.name
-    except:
-        retval = 'string'
 
     return retval
