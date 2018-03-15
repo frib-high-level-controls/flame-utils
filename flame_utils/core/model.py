@@ -422,7 +422,7 @@ class ModelFlame(object):
         """
         m = self._mach_ins
         if bmstate is None:
-            s = self._mach_states.clone()
+            s = self.bmstate.clone()
         else:
             s = bmstate.clone()
 
@@ -489,7 +489,7 @@ class ModelFlame(object):
         get_element : Get FLAME lattice element configuration.
         """
         m = configure(self._mach_ins, econf)
-        self._mach_ins = m
+        self.machine = conf_update(m)
 
     def clone_machine(self):
         """Clone FLAME Machine object.
@@ -499,7 +499,7 @@ class ModelFlame(object):
         ret :
             FLAME Machine object.
         """
-        return Machine(conf_update(self._mach_ins.conf()))
+        return conf_update(m)
 
     def insert_element(self, index=None, element=None, econf=None):
         """Insert new element to the machine.
