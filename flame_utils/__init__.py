@@ -4,6 +4,9 @@ potential requirment of modeling accelerator with FLAME code.
 from .core import *
 from .io import *
 from .misc import *
+import logging
+
+logging.basicConfig(format="%(levelname)s: %(asctime)s: %(name)s: %(message)s")
 
 __all__ = [
     'BeamState', 'ModelFlame', 'collect_data', 'configure',
