@@ -108,7 +108,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             lines = []
 
             for k in mconf_ks:
-                v = mc_src[k]
+                v = mc_src[k] if k in mc_src else mconf[k]
                 if isinstance(v, np.ndarray):
                     v = v.tolist()
                 if isinstance(v, str):
@@ -171,7 +171,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
 
             dline = '(' + ', '.join(([m.conf(i)['name'] for i in section])) + ')'
 
-            blname = mconf['name']
+            blname = mconf.get('name', 'default')
             lines.append('{0}: LINE = {1};'.format(blname, dline))
             lines.append('USE: {0};'.format(blname))
 

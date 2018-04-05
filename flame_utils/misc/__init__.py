@@ -3,7 +3,8 @@ from .machsetter import is_zeros_states
 from .machsetter import machine_setter
 from .alias import alias
 from .confupdate import conf_update
+from .message import disable_warnings
 
 __all__ = ['machine_setter', 'flatten', 'get_intersection',
-           'alias', 'conf_update'
+           'alias', 'conf_update', 'disable_warnings',
 ]
