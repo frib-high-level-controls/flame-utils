@@ -1,3 +1,14 @@
+flame-utils (0.3.1-1) unstable; urgency=medium
+
+  * Bump up version to 0.3.1.
+  * Fix sim_type issue when generate Machine from GLPSparser
+  * Fix name issue when get config from GLPSPrinter.
+  * Fix warning message.
+  * Add function to disable logging message.
+  * Fix configure method of ModelFlame class.
+
+ -- Tong Zhang <zhangt@frib.msu.edu>  Thu, 05 Apr 2018 09:31:20 -0400
+
 flame-utils (0.3.0-1) unstable; urgency=medium
 
   * Support both Python 2.7 and Python 3.x, see PR #21
