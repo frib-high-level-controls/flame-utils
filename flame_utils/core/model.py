@@ -151,11 +151,9 @@ def configure(machine=None, econf=None, **kws):
     """
     _latfile = kws.get('latfile', None)
     _machine = machine
-    m = machine_setter(_latfile, _machine, 'configure')
-    if m is None:
+    _m = machine_setter(_latfile, _machine, 'configure')
+    if _m is None:
         return None
-
-    _m = Machine(m.conf())
 
     _c_idx, _c_dict = kws.get('c_idx'), kws.get('c_dict')
     if _c_idx is not None and _c_dict is not None:
@@ -487,9 +485,12 @@ class ModelFlame(object):
         --------
         configure : Configure FLAME machine.
         get_element : Get FLAME lattice element configuration.
+
+        Note
+        ----
+        Pass `econf` with a list of dict for applying batch configuring.
         """
         m = configure(self._mach_ins, econf)
-        self.machine = conf_update(m)
 
     def clone_machine(self):
         """Clone FLAME Machine object.
