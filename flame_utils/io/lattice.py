@@ -201,7 +201,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             while n < len(fline):
                 l = fline[n]
                 rl = l.replace(' ', '')
-                l = l[0:-1]
+                l = l.rstrip()
                 if rl == '\n' or rl[0] == '#':
                     lines.append(l)
                     n += 1
