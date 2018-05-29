@@ -1,3 +1,12 @@
+flame-utils (0.3.3-1) unstable; urgency=medium
+
+  * MNT: Bump up version to 0.3.3.
+  * update test files
+  * bugfix: remove blank space at the end of line
+  * bugfix: remove newline character
+
+ -- Tong Zhang <zhangt@frib.msu.edu>  Tue, 29 May 2018 11:09:34 -0400
+
 flame-utils (0.3.2-1) unstable; urgency=medium
 
   * MNT: Bump up version to 0.3.2.
