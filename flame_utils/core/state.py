@@ -39,21 +39,93 @@ class BeamState(object):
 
     All attributes of states:
 
-     - ``pos``,
-     - ``ref_beta``, ``ref_bg``, ``ref_gamma``, ``ref_IonEk``, ``ref_IonEs``,
-       ``ref_IonQ``, ``ref_IonW``, ``ref_IonZ``, ``ref_phis``,
-       ``ref_SampleIonK``,
-     - ``beta``, ``bg``, ``gamma``, ``IonEk``, ``IonEs``, ``IonQ``, ``IonW``,
-       ``IonZ``, ``phis``, ``SampleIonK``,
-     - ``moment0`` (``cenvector_all``), ``moment0_rms`` (``rmsvector``), ``moment0_env`` (``cenvector``),
-     - ``moment1`` (``beammatrix_all``), ``moment1_env`` (``beammatrix``),
-     - ``dEk0`` (``dEkcen_all``), ``dEk0_env`` (``dEkcen``), ``dEk0_rms`` (``dEkrms``), ``dEkrms_all``
-     - ``phi0`` (``phicen_all``), ``phi0_env`` (``phicen``), ``phi0_rms`` (``phirms``), ``phirms_all``
-     - ``x0`` (``xcen_all``), ``x0_env`` (``xcen``), ``x0_rms`` (``xrms``), ``xrms_all``,
-     - ``xp0`` (``xpcen_all``), ``xp0_env`` (``xpcen``), ``xp0_rms`` (``xprms``), ``xprms_all``,
-     - ``y0`` (``ycen_all``), ``y0_env`` (``ycen``), ``y0_rms`` (``yrms``), ``yrms_all``,
-     - ``yp0`` (``ypcen_all``), ``yp0_env`` (``ypcen``), ``yp0_rms`` (``yprms``), ``yprms_all``,
-     - ``last_caviphi0`` (since version 1.1.1)
+    - Reference beam information
+
+        - :py:func:`pos <flame_utils.core.state.BeamState.pos>`,
+          :py:func:`ref_IonZ <flame_utils.core.state.BeamState.ref_IonZ>`,
+          :py:func:`ref_IonQ <flame_utils.core.state.BeamState.ref_IonQ>`,
+          :py:func:`ref_IonEk <flame_utils.core.state.BeamState.ref_IonEk>`,
+          :py:func:`ref_IonEs <flame_utils.core.state.BeamState.ref_IonEs>`,
+          :py:func:`ref_IonW <flame_utils.core.state.BeamState.ref_IonW>`,
+          :py:func:`ref_phis <flame_utils.core.state.BeamState.ref_phis>`,
+          :py:func:`ref_beta <flame_utils.core.state.BeamState.ref_beta>`,
+          :py:func:`ref_gamma <flame_utils.core.state.BeamState.ref_gamma>`,
+          :py:func:`ref_bg <flame_utils.core.state.BeamState.ref_bg>`,
+          :py:func:`ref_SampleIonK <flame_utils.core.state.BeamState.ref_SampleIonK>`,
+          :py:func:`last_caviphi0 <flame_utils.core.state.BeamState.last_caviphi0>` (since version 1.1.1)
+
+    - Actual beam information
+
+        - :py:func:`IonZ <flame_utils.core.state.BeamState.IonZ>`,
+          :py:func:`IonQ <flame_utils.core.state.BeamState.IonQ>`,
+          :py:func:`IonEk <flame_utils.core.state.BeamState.IonEk>`,
+          :py:func:`IonEs <flame_utils.core.state.BeamState.IonEs>`,
+          :py:func:`IonW <flame_utils.core.state.BeamState.IonW>`,
+          :py:func:`phis <flame_utils.core.state.BeamState.phis>`,
+          :py:func:`beta <flame_utils.core.state.BeamState.beta>`,
+          :py:func:`gamma <flame_utils.core.state.BeamState.gamma>`,
+          :py:func:`bg <flame_utils.core.state.BeamState.bg>`,
+          :py:func:`SampleIonK <flame_utils.core.state.BeamState.SampleIonK>`
+
+        - :py:func:`moment0 <flame_utils.core.state.BeamState.moment0>`
+          (:py:func:`cenvector_all <flame_utils.core.state.BeamState.cenvector_all>`),
+          :py:func:`moment0_env <flame_utils.core.state.BeamState.moment0_env>`
+          (:py:func:`cenvector <flame_utils.core.state.BeamState.cenvector>`),
+          :py:func:`moment0_rms <flame_utils.core.state.BeamState.moment0_rms>`
+          (:py:func:`rmsvector <flame_utils.core.state.BeamState.rmsvector>`),
+          :py:func:`moment1 <flame_utils.core.state.BeamState.moment1>`
+          (:py:func:`beammatrix_all <flame_utils.core.state.BeamState.beammatrix_all>`),
+          :py:func:`moment1_env <flame_utils.core.state.BeamState.moment1_env>`
+          (:py:func:`beammatrix <flame_utils.core.state.BeamState.beammatrix>`)
+
+        - :py:func:`x0 <flame_utils.core.state.BeamState.x0>`
+          (:py:func:`xcen_all <flame_utils.core.state.BeamState.xcen_all>`),
+          :py:func:`x0_env <flame_utils.core.state.BeamState.x0_env>`
+          (:py:func:`xcen <flame_utils.core.state.BeamState.xcen>`),
+          :py:func:`xrms_all <flame_utils.core.state.BeamState.xrms_all>`,
+          :py:func:`x0_rms <flame_utils.core.state.BeamState.x0_rms>`
+          (:py:func:`xrms <flame_utils.core.state.BeamState.xrms>`)
+
+        - :py:func:`xp0 <flame_utils.core.state.BeamState.xp0>`
+          (:py:func:`xpcen_all <flame_utils.core.state.BeamState.xpcen_all>`),
+          :py:func:`xp0_env <flame_utils.core.state.BeamState.xp0_env>`
+          (:py:func:`xpcen <flame_utils.core.state.BeamState.xpcen>`),
+          :py:func:`xprms_all <flame_utils.core.state.BeamState.xprms_all>`,
+          :py:func:`xp0_rms <flame_utils.core.state.BeamState.xp0_rms>`
+          (:py:func:`xprms <flame_utils.core.state.BeamState.xprms>`)
+
+        - :py:func:`y0 <flame_utils.core.state.BeamState.y0>`
+          (:py:func:`ycen_all <flame_utils.core.state.BeamState.ycen_all>`),
+          :py:func:`y0_env <flame_utils.core.state.BeamState.y0_env>`
+          (:py:func:`ycen <flame_utils.core.state.BeamState.ycen>`),
+          :py:func:`yrms_all <flame_utils.core.state.BeamState.yrms_all>`,
+          :py:func:`y0_rms <flame_utils.core.state.BeamState.y0_rms>`
+          (:py:func:`yrms <flame_utils.core.state.BeamState.yrms>`)
+
+        - :py:func:`yp0 <flame_utils.core.state.BeamState.yp0>`
+          (:py:func:`ypcen_all <flame_utils.core.state.BeamState.ypcen_all>`),
+          :py:func:`yp0_env <flame_utils.core.state.BeamState.yp0_env>`
+          (:py:func:`ypcen <flame_utils.core.state.BeamState.ypcen>`),
+          :py:func:`yprms_all <flame_utils.core.state.BeamState.yprms_all>`,
+          :py:func:`yp0_rms <flame_utils.core.state.BeamState.yp0_rms>`
+          (:py:func:`yprms <flame_utils.core.state.BeamState.yprms>`)
+
+        - :py:func:`phi0 <flame_utils.core.state.BeamState.phi0>`
+          (:py:func:`phicen_all <flame_utils.core.state.BeamState.phicen_all>`),
+          :py:func:`phi0_env <flame_utils.core.state.BeamState.phi0_env>`
+          (:py:func:`phicen <flame_utils.core.state.BeamState.phicen>`),
+          :py:func:`phirms_all <flame_utils.core.state.BeamState.phirms_all>`,
+          :py:func:`phi0_rms <flame_utils.core.state.BeamState.phi0_rms>`
+          (:py:func:`phirms <flame_utils.core.state.BeamState.phirms>`)
+
+        - :py:func:`dEk0 <flame_utils.core.state.BeamState.dEk0>`
+          (:py:func:`dEkcen_all <flame_utils.core.state.BeamState.dEkcen_all>`),
+          :py:func:`dEk0_env <flame_utils.core.state.BeamState.dEk0_env>`
+          (:py:func:`dEkcen <flame_utils.core.state.BeamState.dEkcen>`),
+          :py:func:`dEkrms_all <flame_utils.core.state.BeamState.dEkrms_all>`,
+          :py:func:`dEk0_rms <flame_utils.core.state.BeamState.dEk0_rms>`
+          (:py:func:`dEkrms <flame_utils.core.state.BeamState.dEkrms>`)
+
 
     Warning
     -------
@@ -183,7 +255,7 @@ class BeamState(object):
 
     @property
     def pos(self):
-        """float: longitudinally propagating position, [m]"""
+        """float: longitudinal reference beam position, [m]"""
         return getattr(self._states, 'pos')
 
     @pos.setter
@@ -193,7 +265,7 @@ class BeamState(object):
     @property
     def ref_beta(self):
         """float: speed in the unit of light velocity in vacuum of reference
-        charge state, Lorentz beta"""
+        charge state, Lorentz beta, [1]"""
         return getattr(self._states, 'ref_beta')
 
     @ref_beta.setter
@@ -202,7 +274,7 @@ class BeamState(object):
 
     @property
     def ref_bg(self):
-        """float: multiplication of beta and gamma of reference charge state"""
+        """float: multiplication of beta and gamma of reference charge state, [1]"""
         return getattr(self._states, 'ref_bg')
 
     @ref_bg.setter
@@ -211,7 +283,7 @@ class BeamState(object):
 
     @property
     def ref_gamma(self):
-        """float: relativistic energy of reference charge state, Lorentz gamma"""
+        """float: Lorentz factor of reference charge state, Lorentz gamma, [1]"""
         return getattr(self._states, 'ref_gamma')
 
     @ref_gamma.setter
@@ -250,7 +322,8 @@ class BeamState(object):
 
     @property
     def ref_IonW(self):
-        """float: total energy of reference charge state, [eV/u],
+        """float: total energy of reference charge state, [eV/u]
+
         i.e. :math:`W = E_s + E_k`"""
         return getattr(self._states, 'ref_IonW')
 
@@ -260,7 +333,8 @@ class BeamState(object):
 
     @property
     def ref_IonZ(self):
-        """float: reference charge state, measured by charge to mass ratio,
+        """float: reference charge state, measured by charge to mass ratio, [1]
+
         e.g. :math:`^{33^{+}}_{238}U: Q[33]/A[238]`"""
         return getattr(self._states, 'ref_IonZ')
 
@@ -270,8 +344,7 @@ class BeamState(object):
 
     @property
     def ref_phis(self):
-        """float: absolute synchrotron phase of reference charge state,
-        [rad]"""
+        """float: absolute synchrotron phase of reference charge state, [rad]"""
         return getattr(self._states, 'ref_phis')
 
     @ref_phis.setter
@@ -281,7 +354,7 @@ class BeamState(object):
     @property
     def ref_SampleIonK(self):
         """float: wave-vector in cavities with different beta values of
-        reference charge state"""
+        reference charge state, [rad]"""
         return getattr(self._states, 'ref_SampleIonK')
 
     @ref_SampleIonK.setter
@@ -291,7 +364,7 @@ class BeamState(object):
     @property
     def beta(self):
         """Array: speed in the unit of light velocity in vacuum of all charge
-        states, Lorentz beta"""
+        states, Lorentz beta, [1]"""
         return getattr(self._states, 'beta')
 
     @beta.setter
@@ -300,7 +373,7 @@ class BeamState(object):
 
     @property
     def bg(self):
-        """Array: multiplication of beta and gamma of all charge states"""
+        """Array: multiplication of beta and gamma of all charge states, [1]"""
         return getattr(self._states, 'bg')
 
     @bg.setter
@@ -309,7 +382,7 @@ class BeamState(object):
 
     @property
     def gamma(self):
-        """Array: relativistic energy of all charge states, Lorentz gamma"""
+        """Array: Lorentz factor of all charge states, Lorentz gamma, [1]"""
         return getattr(self._states, 'gamma')
 
     @gamma.setter
@@ -336,7 +409,7 @@ class BeamState(object):
 
     @property
     def IonQ(self):
-        """Array: macro particle number of all charge states
+        """Array: macro particle number of all charge states, [1]
 
         Note
         ----
@@ -351,6 +424,7 @@ class BeamState(object):
     @property
     def IonW(self):
         """Array: total energy of all charge states, [eV/u],
+
         i.e. :math:`W = E_s + E_k`"""
         return getattr(self._states, 'IonW')
 
@@ -360,7 +434,7 @@ class BeamState(object):
 
     @property
     def IonZ(self):
-        """Array: all charge states, measured by charge to mass ratio
+        """Array: all charge states, measured by charge to mass ratio, [1]
 
         Note
         ----
@@ -384,7 +458,7 @@ class BeamState(object):
     @property
     def SampleIonK(self):
         """Array: wave-vector in cavities with different beta values of all
-        charge states"""
+        charge states, [rad]"""
         return getattr(self._states, 'SampleIonK')
 
     @SampleIonK.setter
@@ -393,22 +467,23 @@ class BeamState(object):
 
     @property
     def moment0_env(self):
-        """Array: weight average of centroid for all charge states, array of
-        ``[x, x', y, y', phi, dEk, 1]``, with the units of
+        """Array: weighted averages of beam centroids for all charge states
+
+        defined as ``[x, x', y, y', phi, dEk, 1]``, with the units of
         ``[mm, rad, mm, rad, rad, MeV/u, 1]``.
 
         Note
         ----
         The physics meanings for each column are:
 
-        - ``x``: x position in transverse plane;
-        - ``x'``: x divergence;
-        - ``y``: y position in transverse plane;
-        - ``y'``: y divergence;
-        - ``phi``: longitudinal beam length, measured in RF frequency;
+        - ``x``: x position in transverse plane
+        - ``x'``: x momentum
+        - ``y``: y position in transverse plane
+        - ``y'``: y momentum
+        - ``phi``: synchrotron phase deviation, measured in RF frequency;
         - ``dEk``: kinetic energy deviation w.r.t. reference charge state;
         - ``1``: should be always 1, for the convenience of handling
-          corrector (i.e. ``orbtrim`` element)
+          dipole kick (i.e. ``orbtrim`` element)
         """
         return getattr(self._states, 'moment0_env')
 
@@ -418,24 +493,32 @@ class BeamState(object):
 
     @property
     def moment0_rms(self):
-        """Array: rms beam envelope, part of statistical results from
-        ``moment1``.
+        """Array: weighted averages of rms beam envelopes, part of statistical results
+        from :py:func:`moment1 <flame_utils.core.state.BeamState.moment1>`.
+
+        defined as ``[x, x', y, y', phi, dEk, 1]``, with the units of
+        ``[mm, rad, mm, rad, rad, MeV/u, 1]``.
 
         Note
         ----
-        The square of ``moment0_rms`` should be equal to the diagonal
-        elements of ``moment1``.
+        The square of :py:func:`moment0_rms <flame_utils.core.state.BeamState.moment0_rms>`
+        should be equal to the diagonal elements of :py:func:`moment1 
+        <flame_utils.core.state.BeamState.moment1>`.
 
         See Also
         --------
-        moment1 : correlation tensor of all charge states
+        :py:func:`moment1 <flame_utils.core.state.BeamState.moment1>` :
+        beam matrixes of all charge states
         """
         return getattr(self._states, 'moment0_rms')
 
     @property
     def moment0(self):
-        """Array: centroid for all charge states, array of
-        ``[x, x', y, y', phi, dEk, 1]``"""
+        """Array: beam centroids of all charge states
+
+        defined as ``[x, x', y, y', phi, dEk, 1]``, with the units of
+        ``[mm, rad, mm, rad, rad, MeV/u, 1]``.
+        """
         return getattr(self._states, 'moment0')
 
     @moment0.setter
@@ -444,8 +527,9 @@ class BeamState(object):
 
     @property
     def moment1(self):
-        r"""Array: correlation tensor of all charge states, for each charge
-        state, the correlation matrix could be written as:
+        r"""Array: beam matrixes of all charge states
+
+        for each charge state, the beam matrix could be written as:
 
         .. math::
 
@@ -467,7 +551,13 @@ class BeamState(object):
 
     @property
     def moment1_env(self):
-        """Array: averaged correlation tensor of all charge states"""
+        """Array: weighted average of beam matrix for all charge states
+
+        See Also
+        --------
+        :py:func:`moment1 <flame_utils.core.state.BeamState.moment1>` :
+        beam matrixes of all charge states
+        """
         return getattr(self._states, 'moment1_env')
         
     @moment1_env.setter
@@ -476,126 +566,136 @@ class BeamState(object):
 
     @property
     def x0(self):
-        """Array: x centroid for all charge states, [mm]"""
+        """Array: x centroids of all charge states, [mm]"""
         return self._states.moment0[0]
 
     @property
     def xp0(self):
-        """Array: x centroid divergence for all charge states, [rad]"""
+        """Array: x momentums of all charge states, [rad]"""
         return self._states.moment0[1]
 
     @property
     def y0(self):
-        """Array: y centroid for all charge states, [mm]"""
+        """Array: y centroids of all charge states, [mm]"""
         return self._states.moment0[2]
 
     @property
     def yp0(self):
-        """Array: y centroid divergence for all charge states, [rad]"""
+        """Array: y momentums of all charge states, [rad]"""
         return self._states.moment0[3]
 
     @property
     def phi0(self):
-        """Array: longitudinal beam length, measured in RF frequency for all
+        """Array: synchrotron phase deviations (measured in RF) of all
         charge states, [rad]"""
         return self._states.moment0[4]
 
     @property
     def dEk0(self):
-        """Array: kinetic energy deviation w.r.t. reference charge state,
-        for all charge states, [MeV/u]"""
+        """Array: kinetic energy deviations w.r.t. reference charge state,
+        of all charge states, [MeV/u]"""
         return self._states.moment0[5]
 
     @property
     def x0_env(self):
-        """Array: weight average of all charge states for ``x``, [mm]"""
+        """Array: weight average of x centroids
+        (:py:func:`x0 <flame_utils.core.state.BeamState.x0>`), [mm]"""
         return self._states.moment0_env[0]
 
     @property
     def xp0_env(self):
-        """Array: weight average of all charge states for ``x'``, [rad]"""
+        """Array: weight average of x momentums
+        (:py:func:`xp0 <flame_utils.core.state.BeamState.xp0>`), [rad]"""
         return self._states.moment0_env[1]
 
     @property
     def y0_env(self):
-        """Array: weight average of all charge states for ``y``, [mm]"""
+        """Array: weight average of all y centroids
+        (:py:func:`y0 <flame_utils.core.state.BeamState.y0>`), [mm]"""
         return self._states.moment0_env[2]
 
     @property
     def yp0_env(self):
-        """Array: weight average of all charge states for ``y'``, [rad]"""
+        """Array: weight average of y momentums
+        (:py:func:`yp0 <flame_utils.core.state.BeamState.yp0>`), [rad]"""
         return self._states.moment0_env[3]
 
     @property
     def phi0_env(self):
-        """Array: weight average of all charge states for :math:`\phi`,
-        [mm]"""
+        """Array: weight average of synchrotron phase deviations
+        (:py:func:`phi0 <flame_utils.core.state.BeamState.phi0>`), [mm]"""
         return self._states.moment0_env[4]
 
     @property
     def dEk0_env(self):
-        """Array: weight average of all charge states for :math:`\delta E_k`,
-        [MeV/u]"""
+        """Array: weight average of kinetic energy deviations
+        (:py:func:`dEk0 <flame_utils.core.state.BeamState.dEk0>`), [MeV/u]"""
         return self._states.moment0_env[5]
 
     @property
     def xrms_all(self):
-        """Array: general rms beam envelope for ``x`` of all charge states, [mm]"""
+        """Array: rms beam envelopes for x position of all charge states, [mm]"""
         return np.sqrt(self._states.moment1[0, 0, :])
 
     @property
     def xprms_all(self):
-        """Array: general rms beam envelope for ``x'`` of all charge states, [rad]"""
+        """Array: rms beam envelopes for x momentum of all charge states, [rad]"""
         return np.sqrt(self._states.moment1[1, 1, :])
 
     @property
     def yrms_all(self):
-        """Array: general rms beam envelope for ``y`` of all charge states, [mm]"""
+        """Array: rms envelopes for y position of all charge states, [mm]"""
         return np.sqrt(self._states.moment1[2, 2, :])
 
     @property
     def yprms_all(self):
-        """Array: general rms beam envelope for ``y'`` of all charge states, [rad]"""
+        """Array: rms envelopes for y momentum of all charge states, [rad]"""
         return np.sqrt(self._states.moment1[3, 3, :])
 
     @property
     def phirms_all(self):
-        """Array: general rms beam envelope for :math:`\phi` of all charge states, [mm]"""
+        """Array: rms envelopes for synchrotron phase deviation of all charge states, [rad]"""
         return np.sqrt(self._states.moment1[4, 4, :])
 
     @property
     def dEkrms_all(self):
-        """Array: general rms beam envelope for :math:`\delta E_k` of all charge states, [MeV/u]"""
+        """Array: rms envelopes for kinetic energy deviation of all charge states, [MeV/u]"""
         return np.sqrt(self._states.moment1[5, 5, :])
 
     @property
     def x0_rms(self):
-        """float: general rms beam envelope for ``x``, [mm]"""
+        """float: weighted average of rms envelopes for x position
+        (:py:func:`xrms_all <flame_utils.core.state.BeamState.xrms_all>`), [mm]"""
         return self._states.moment0_rms[0]
 
     @property
     def xp0_rms(self):
-        """float: general rms beam envelope for ``x'``, [rad]"""
+        """float: weighted average of rms envelopes for x momentum
+        (:py:func:`xprms_all <flame_utils.core.state.BeamState.xprms_all>`), [rad]"""
         return self._states.moment0_rms[1]
 
     @property
     def y0_rms(self):
-        """float: general rms beam envelope for ``y``, [mm]"""
+        """float: weighted average of rms envelopes for y position,
+        (:py:func:`yrms_all <flame_utils.core.state.BeamState.yrms_all>`), [mm]"""
         return self._states.moment0_rms[2]
 
     @property
     def yp0_rms(self):
-        """float: general rms beam envelope for ``y'``, [rad]"""
+        """float: weighted average of rms envelopes for y momentum
+        (:py:func:`yprms_all <flame_utils.core.state.BeamState.yprms_all>`), [rad]"""
         return self._states.moment0_rms[3]
 
     @property
     def phi0_rms(self):
-        """float: general rms beam envelope for :math:`\phi`, [mm]"""
+        """float: weighted average of rms envelopes for synchrotron phase deviation
+        (:py:func:`phirms_all <flame_utils.core.state.BeamState.phirms_all>`), [rad]"""
         return self._states.moment0_rms[4]
 
     @property
     def dEk0_rms(self):
-        """float: general rms beam envelope for :math:`\delta E_k`, [MeV/u]"""
+        """float: weighted average of rms envelopes for kinetic energy deviation
+        (:py:func:`dEkrms_all <flame_utils.core.state.BeamState.dEkrms_all>`), [MeV/u]"""
         return self._states.moment0_rms[5]
 
     @property
