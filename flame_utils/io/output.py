@@ -32,13 +32,15 @@ def convert_results(res, **kws):
     return [(i, BeamState(s)) for (i, s) in res]
 
 
-def collect_data(result, **kws):
+def collect_data(result, *args, **kws):
     """Collect data of interest from propagation results.
 
     Parameters
     ----------
     result :
         Propagation results with ``BeamState`` object.
+    args :
+        Names of attribute, separated by comma.
 
     Keyword Arguments
     -----------------
@@ -160,19 +162,25 @@ def collect_data(result, **kws):
 
     Note
     ----
-    Set the data of interest with ``k=True`` as input will return the defined
-    ``k`` value.
+    1. Set the data of interest with ``k=True`` as input will return the defined
+       ``k`` value.
+    2. Invalid attribute names will be ignored.
 
     Examples
     --------
     >>> # get x0 and y0 array
     >>> collect_data(r, x0=True, y0=True)
+    >>> # which is equivalent as:
+    >>> collect_data(r, 'x0', 'y0')
+    >>> # or:
+    >>> collect_data(r, 'x0', y0=True)
 
     See Also
     --------
     BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.
     """
-    valid_keys = [k for k, v in kws.items() if v is not None]
+    valid_keys = [k for k in set(args).union(kws)
+                  if hasattr(result[0][1], k)]
     try:
         return {ik: np.array([getattr(s, ik) for (i, s) in result]) for ik in valid_keys}
     except:
