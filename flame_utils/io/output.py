@@ -180,7 +180,7 @@ def collect_data(result, *args, **kws):
     BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.
     """
     valid_keys = [k for k in set(args).union(kws)
-                  if hasattr(result[0][1], k)]
+                  if hasattr(BeamState(result[0][1]), k)]
     try:
         return {ik: np.array([getattr(s, ik) for (i, s) in result]) for ik in valid_keys}
     except:
