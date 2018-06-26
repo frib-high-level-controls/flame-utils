@@ -278,6 +278,12 @@ class TestModelFlame(unittest.TestCase):
         r0 = m0.propagate(s0, 0, 100, observe=range(100))
 
         data0 = collect_data(r0, pos=True, x0=True, IonEk=True)
+        data0_1 = collect_data(r0, 'pos', 'x0', 'IonEk')
+        data0_2 = collect_data(r0, 'pos', 'x0', IonEk=True)
+
+        for k in ('pos', 'x0', 'IonEk'):
+            self.assertEqual(data0[k][1:].tolist(), data0_1[k][1:].tolist())
+            self.assertEqual(data0[k][1:].tolist(), data0_2[k][1:].tolist())
 
         fm = ModelFlame(latfile)
         r, s = fm.run(from_element=1, to_element=99, monitor=range(100))

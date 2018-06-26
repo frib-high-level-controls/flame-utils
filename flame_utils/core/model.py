@@ -459,19 +459,21 @@ class ModelFlame(object):
         return convert_results(res, **kws)
 
     @staticmethod
-    def collect_data(result, **kws):
+    def collect_data(result, *args, **kws):
         """Collect data of interest from propagation results.
 
         Parameters
         ----------
         result :
             Propagation results with ``BeamState`` object.
+        args :
+            Names of attribute, separated by comma.
 
         See Also
         --------
         collect_data : Get data of interest from results.
         """
-        return collect_data(result, **kws)
+        return collect_data(result, *args, **kws)
 
     def configure(self, econf):
         """Configure FLAME model.
