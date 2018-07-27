@@ -497,8 +497,8 @@ class ModelFlame(object):
     def clone_machine(self):
         """Clone FLAME Machine object.
 
-        Return
-        ------
+        Returns
+        -------
         ret :
             FLAME Machine object.
         """
