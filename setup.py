@@ -28,7 +28,7 @@ installrequires = [
 
 setup(
         name=app_name,
-        version="0.3.3",
+        version="0.3.5",
         description=app_description,
         long_description=app_long_description,
         author=app_author,
