@@ -201,8 +201,10 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
 
     Note
     ----
-    If more than one optional paramters (index, name, type, _pattern) are
-    provided, only return element that meets all these definitions.
+    1. If more than one optional paramters (index, name, type, _pattern) are
+       provided, only return element that meets all these definitions.
+    2. If getting by multiple indices/names/types, the order of returned list
+       is void.
 
     Examples
     --------
