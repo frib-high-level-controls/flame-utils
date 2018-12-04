@@ -191,7 +191,7 @@ class TestModelFlame(unittest.TestCase):
         with open(latfile, 'rb') as f:
             m0 = Machine(f)
         s0 = m0.allocState({})
-        m0.propagate(s0, 0, -1)
+        m0.propagate(s0, 0, len(m0))
         fm = ModelFlame(latfile)
         r,s = fm.run()
         self.assertEqual(r, [])
@@ -206,7 +206,7 @@ class TestModelFlame(unittest.TestCase):
         s0 = m0.allocState({})
         fm = ModelFlame(latfile)
         obs = fm.get_index_by_type(type='bpm')['bpm']
-        r0 = m0.propagate(s0, 0, -1, observe=obs)
+        r0 = m0.propagate(s0, 0, len(m0), observe=obs)
         r,s = fm.run(monitor=obs)
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
@@ -261,7 +261,7 @@ class TestModelFlame(unittest.TestCase):
 
         s0 = m0.allocState({})
         m0.propagate(s0, 0, 1)
-        r0 = m0.propagate(s0, 1, -1, observe=obs)
+        r0 = m0.propagate(s0, 1, len(m0), observe=obs)
         rs0 = [ts for (ti,ts) in r0] 
         rs = [ts for (ti,ts) in r] 
         for (is1, is2) in zip(rs0, rs):
@@ -301,7 +301,7 @@ class TestModelFlame(unittest.TestCase):
         e_cor_idx = 10
         m0.reconfigure(10, {'theta_x': 0.005})
         m0.propagate(s0, 0, 1)
-        r0 = m0.propagate(s0, 1, -1, range(len(m0)))
+        r0 = m0.propagate(s0, 1, len(m0), range(len(m0)))
 
         fm = ModelFlame(latfile)
         e = fm.get_element(index=10)[0]
