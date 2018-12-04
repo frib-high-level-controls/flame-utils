@@ -103,7 +103,8 @@ class TestGetElement(unittest.TestCase):
               ]
 
         e1 = get_element(name=enames, latfile=self.latfile)
-        self.assertEqual(e1, e0)
+        self.assertEqual(sorted(e1, key=lambda x:x['index']),
+                         sorted(e0, key=lambda x:x['index']))
 
     def test_one_index(self):
         idx = 10
@@ -181,7 +182,7 @@ class TestGetElement(unittest.TestCase):
         ]
         e1 = get_element(index=eidx, type=etyp, latfile=self.latfile)
         self.assertEqual(e1, e0)
-        
+
         e2 = get_element(index=eidx, type=etyp, latfile=self.latfile, name='LS1_CA01:BPM_D1144')
         self.assertEqual(e2, [e0[0]])
 
@@ -208,7 +209,7 @@ class TestGetIndexByType(unittest.TestCase):
         etyp1 = 'no_exist_type'
         e1 = get_index_by_type(type=etyp1, latfile=self.latfile)
         self.assertEqual(e1, {etyp1: []})
-    
+
     def test_one_type(self):
         for etyp in get_all_types(latfile=self.latfile):
             e = get_index_by_type(type=etyp, latfile=self.latfile)
@@ -218,8 +219,7 @@ class TestGetIndexByType(unittest.TestCase):
         all_types = get_all_types(latfile=self.latfile)
         for n in range(2, len(all_types)):
             etyps = [random.choice(all_types) for _ in range(n)]
-            e = get_index_by_type(type=etyps, 
-                                             latfile=self.latfile)
+            e = get_index_by_type(type=etyps, latfile=self.latfile)
             e0 = {t: self.m.find(type=t) for t in etyps}
             self.assertEqual(e, e0)
 
@@ -235,7 +235,7 @@ class TestGetIndexByName(unittest.TestCase):
         ename = ''
         e = get_index_by_name(name=ename, latfile=self.latfile)
         self.assertEqual(e, {ename: []})
-        
+
         ename1 = 'no_exist_name'
         e = get_index_by_name(name=ename1, latfile=self.latfile)
         self.assertEqual(e, {ename1: []})
