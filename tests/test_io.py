@@ -106,6 +106,7 @@ class TestGenerateLatfile(unittest.TestCase):
                 self.assertEqual(getattr(s1, k).tolist(),
                                  getattr(s0, k).tolist())
 
+    @unittest.skip("output precision depends on the python version")
     def test_generate_latfile_original3(self):
         sio = StringIO()
         sioname = generate_latfile(self.mc, original=self.testcfile, out=sio)

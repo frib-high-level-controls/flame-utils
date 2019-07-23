@@ -454,7 +454,7 @@ class ModelFlame(object):
         elif monitor == 'all':
             obs = range(len(m))
         elif monitor is not None:
-            if not isinstance(monitor, (list, tuple)):
+            if isinstance(monitor, (int, basestring)):
                 monitor = [monitor]
             for elem in monitor:
                 if isinstance(elem, basestring):
