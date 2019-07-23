@@ -56,7 +56,7 @@ class TestBeamState(unittest.TestCase):
         ms = BeamState()
         ms.state = s
         compare_mstates(self, ms, s)
-    
+
     def test_init_with_machine(self):
         with open(self.latfile, 'rb') as f:
             m = Machine(f)
@@ -64,7 +64,7 @@ class TestBeamState(unittest.TestCase):
         s = m.allocState({})
         m.propagate(s, 0, 1)
         compare_mstates(self, ms, s)
- 
+
     def test_init_with_latfile(self):
         with open(self.latfile, 'rb') as f:
             m = Machine(f)
@@ -119,7 +119,27 @@ class TestBeamState(unittest.TestCase):
         ms = BeamState(latfile=self.latfile)
         for k in ('xrms', 'yrms', 'xprms', 'yprms', 'phirms', 'dEkrms'):
             self.assertEqual(getattr(ms, k), getattr(ms, k + '_all')[0])
-        
+
+    def test_twiss_parameter(self):
+        ms = BeamState(latfile=self.latfile)
+        self.assertAlmostEqual(ms.xtwsb, ms.xrms*ms.xrms/ms.xeps)
+        self.assertAlmostEqual(ms.ytwsb, ms.yrms*ms.yrms/ms.yeps)
+        self.assertAlmostEqual(ms.ztwsb, ms.phirms*ms.phirms/ms.zeps)
+        self.assertAlmostEqual(ms.xtwsa, -ms.moment1_env[0, 1]/ms.xeps*1e3)
+        self.assertAlmostEqual(ms.ytwsa, -ms.moment1_env[2, 3]/ms.yeps*1e3)
+        self.assertAlmostEqual(ms.ztwsa, -ms.moment1_env[4, 5]/ms.zeps)
+        ms.set_twiss('x', alpha=0.2, beta=3.0, emittance=5.0, cs=0)
+        ms.set_twiss('y', alpha=0.2, beta=3.0, emittance=5.0, cs=0)
+        ms.set_twiss('z', alpha=0.2, beta=3.0, emittance=5.0, cs=0)
+        self.assertAlmostEqual(ms.xtwsa_all[0], 0.2)
+        self.assertAlmostEqual(ms.ytwsa_all[0], 0.2)
+        self.assertAlmostEqual(ms.ztwsa_all[0], 0.2)
+        self.assertAlmostEqual(ms.xtwsb_all[0], 3.0)
+        self.assertAlmostEqual(ms.ytwsb_all[0], 3.0)
+        self.assertAlmostEqual(ms.ztwsb_all[0], 3.0)
+        self.assertAlmostEqual(ms.xeps_all[0], 5.0)
+        self.assertAlmostEqual(ms.yeps_all[0], 5.0)
+        self.assertAlmostEqual(ms.zeps_all[0], 5.0)
 
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
@@ -163,7 +183,7 @@ class TestModelFlame(unittest.TestCase):
         etypes = {'quadrupole', 'bpm', 'drift', 'source', 'rfcavity',
                   'sbend', 'orbtrim', 'solenoid', 'stripper'}
         self.assertEqual(set(fm.get_all_types()), etypes)
-    
+
     def test_get_index_by_name(self):
         fm = ModelFlame(self.testfile)
         m = fm.machine
@@ -186,7 +206,7 @@ class TestModelFlame(unittest.TestCase):
 
     def test_run_1(self):
         """ test_run_1: propagate from the first to last, monitor None
-        """ 
+        """
         latfile = self.testfile
         with open(latfile, 'rb') as f:
             m0 = Machine(f)
@@ -208,8 +228,8 @@ class TestModelFlame(unittest.TestCase):
         obs = fm.get_index_by_type(type='bpm')['bpm']
         r0 = m0.propagate(s0, 0, len(m0), observe=obs)
         r,s = fm.run(monitor=obs)
-        rs0 = [ts for (ti,ts) in r0] 
-        rs = [ts for (ti,ts) in r] 
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
         compare_mstates(self, s, s0)
@@ -240,8 +260,8 @@ class TestModelFlame(unittest.TestCase):
         r, s = fm.run(from_element=10, to_element=20, monitor=range(10,21))
         compare_mstates(self, s0, s)
 
-        rs0 = [ts for (ti,ts) in r0] 
-        rs = [ts for (ti,ts) in r] 
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
 
@@ -251,7 +271,7 @@ class TestModelFlame(unittest.TestCase):
         latfile = self.testfile
         with open(latfile, 'rb') as f:
             m0 = Machine(f)
-        ms = BeamState(machine=m0) 
+        ms = BeamState(machine=m0)
 
         fm = ModelFlame()
         fm.bmstate = ms
@@ -262,8 +282,41 @@ class TestModelFlame(unittest.TestCase):
         s0 = m0.allocState({})
         m0.propagate(s0, 0, 1)
         r0 = m0.propagate(s0, 1, len(m0), observe=obs)
-        rs0 = [ts for (ti,ts) in r0] 
-        rs = [ts for (ti,ts) in r] 
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
+        for (is1, is2) in zip(rs0, rs):
+            compare_mstates(self, is1, is2)
+        compare_mstates(self, s, s0)
+
+    def test_run_6(self):
+        """ test_run_6: optional monitor setting 'all'
+        """
+        latfile = self.testfile
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
+        s0 = m0.allocState({})
+        fm = ModelFlame(latfile)
+        r0 = m0.propagate(s0, 0, len(m0), observe=range(1, len(m0)))
+        r,s = fm.run(monitor='all')
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
+        for (is1, is2) in zip(rs0, rs):
+            compare_mstates(self, is1, is2)
+        compare_mstates(self, s, s0)
+
+    def test_run_7(self):
+        """ test_run_7: optional monitor setting 'type'
+        """
+        latfile = self.testfile
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
+        s0 = m0.allocState({})
+        fm = ModelFlame(latfile)
+        obs = fm.get_index_by_type(type='bpm')['bpm']
+        r0 = m0.propagate(s0, 0, len(m0), observe=obs)
+        r,s = fm.run(monitor='bpm')
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
         compare_mstates(self, s, s0)
@@ -292,7 +345,7 @@ class TestModelFlame(unittest.TestCase):
         self.assertEqual(data0['pos'][1:].tolist(), data['pos'].tolist())
         self.assertEqual(data0['x0'][1:].tolist(), data['x0'].tolist())
         self.assertEqual(data0['IonEk'][1:].tolist(), data['IonEk'].tolist())
- 
+
     def test_configure(self):
         latfile = self.testfile
         with open(latfile, 'rb') as f:
@@ -309,11 +362,30 @@ class TestModelFlame(unittest.TestCase):
         fm.configure(e)
         r, s = fm.run(monitor=range(len(m0)))
 
-        rs0 = [ts for (ti,ts) in r0] 
-        rs = [ts for (ti,ts) in r] 
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
 
+    def test_reconfigure(self):
+        latfile = self.testfile
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
+        s0 = m0.allocState({})
+        e_cor_idx = 10
+        e_name = m0.conf(e_cor_idx)['name']
+        m0.reconfigure(10, {'theta_x': 0.005})
+        m0.propagate(s0, 0, 1)
+        r0 = m0.propagate(s0, 1, len(m0), range(len(m0)))
+
+        fm = ModelFlame(latfile)
+        fm.reconfigure(e_name, {'theta_x': 0.005})
+        r, s = fm.run(monitor=range(len(m0)))
+
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
+        for (is1, is2) in zip(rs0, rs):
+            compare_mstates(self, is1, is2)
 
 class TestStateToSource(unittest.TestCase):
     def setUp(self):
@@ -327,14 +399,14 @@ class TestStateToSource(unittest.TestCase):
         sconf = generate_source(ms)
         sconf0 = fm.get_element(type='source')[0]
         compare_source_element(self, sconf, sconf0)
-        
+
         r0, s0 = fm.run(monitor=range(len(fm.machine)))
         fm.configure(sconf)
         r, s = fm.run(monitor=range(len(fm.machine)))
         compare_mstates(self, s, s0)
 
-        rs0 = [ts for (ti,ts) in r0] 
-        rs = [ts for (ti,ts) in r] 
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
 

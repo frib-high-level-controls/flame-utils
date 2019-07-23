@@ -19,6 +19,7 @@ from flame_utils.misc import machine_setter
 from flame_utils.misc import conf_update
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
+from flame_utils.io import generate_latfile
 
 from .element import get_all_names
 from .element import get_all_types
@@ -30,7 +31,6 @@ from .element import insert_element
 from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
-
 
 def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
               monitor=None, **kws):
@@ -392,14 +392,15 @@ class ModelFlame(object):
             object, if not set, will use the one from ``ModelFlame`` object
             itself, usually is created at the initialization stage,
             see :func:`init_machine()`.
-        from_element : int
-            Element index of start point, if not set, will be the first element
+        from_element : int or str
+            Element index or name of start point, if not set, will be the first element
             if not set, will be 0 for zero states, or 1.
-        to_element : int
-            Element index of end point, if not set, will be the last element.
-        monitor : list[int]
-            List of element indice selected as states monitors, if set -1,
-            will be a list of only last element.
+        to_element : int or str
+            Element index or name of end point, if not set, will be the last element.
+        monitor : list[int] or list[str] or 'all'
+            List of element indice or names selected as states monitors, if set -1,
+            will be a list of only last element. if set 'all',
+            will be a list of all elements.
 
         Returns
         -------
@@ -424,12 +425,38 @@ class ModelFlame(object):
         else:
             s = bmstate.clone()
 
+        if isinstance(from_element, basestring):
+            eid = m.find(basestring)
+            if len(eid) == 0:
+                _LOGGER.error(from_element + ' does not found.')
+            from_element = min(eid)
+
+        if isinstance(to_element, basestring):
+            eid = m.find(basestring)
+            if len(eid) == 0:
+                _LOGGER.error(to_element + ' does not found.')
+            to_element = min(eid)
+
         if is_zeros_states(s):
             vstart = 0 if from_element is None else from_element
         else:
             vstart = 1 if from_element is None else from_element
         vend = len(m) - 1 if to_element is None else to_element
-        obs = [vend] if monitor is -1 else monitor
+
+        obs = []
+        if monitor == -1:
+            obs = [vend]
+        elif monitor == 'all':
+            obs = range(len(m))
+        elif monitor is not None:
+            if not isinstance(monitor, (list, tuple)):
+                monitor = [monitor]
+            for elem in monitor:
+                if isinstance(elem, basestring):
+                    obs += self._mach_ins.find(name = elem)
+                    obs += self._mach_ins.find(type = elem)
+                else:
+                    obs.append(int(elem))
 
         vmax = vend - vstart + 1
         if isinstance(s, BeamState):
@@ -494,6 +521,36 @@ class ModelFlame(object):
         """
         m = configure(self._mach_ins, econf)
 
+    def reconfigure(self, index, properties):
+        """Reconfigure FLAME model.
+
+        Parameters
+        ----------
+        index : int or str
+            Element index (or name) to reconfigure.
+        properties : dict
+            Element property to reconfigure.
+
+        See Also
+        --------
+        configure : Configure FLAME machine.
+        get_element : Get FLAME lattice element configuration.
+
+        """
+        if not isinstance(index, (list, tuple)):
+            index = [index]
+
+        idx = []
+        for elem in index:
+            if isinstance(elem, basestring):
+                idx += self._mach_ins.find(name = elem)
+                idx += self._mach_ins.find(type = elem)
+            else:
+                idx.append(int(elem))
+
+        for i in idx:
+            m = configure(self._mach_ins, c_idx = i, c_dict = properties)
+
     def clone_machine(self):
         """Clone FLAME Machine object.
 
@@ -528,3 +585,40 @@ class ModelFlame(object):
 
         if new_m is not None:
             self._mach_ins = new_m
+
+    def generate_latfile(self, latfile=None, original=None, **kws):
+        """Generate lattice file for the usage of FLAME code.
+
+        Parameters
+        ----------
+        latfile :
+            File name for generated lattice file.
+        original :
+            File name for original lattice file to keep user comments and indents. (optional)
+        state :
+            BeamState object, accept FLAME internal State object also. (optional)
+        out :
+            New stream paramter, file stream. (optional)
+        start :
+            Start element (id or name) of generated lattice. (optional)
+        end :
+            End element (id or name) of generated lattice. (optional)
+
+        Returns
+        -------
+        filename : str
+            None if failed to generate lattice file, or the out file name.
+
+        Note
+        ----
+        - If *latfile* is not defined, will overwrite the input lattice file;
+        - If *start* is defined, user should define *state* also.
+        - If user define *start* only, the initial beam state is the same as the *machine*.
+        """
+        if latfile is None:
+            latfile = self.lat_file
+
+        if original is None:
+            original = self.lat_file
+
+        return generate_latfile(self._mach_ins, latfile=latfile, original=original, **kws)
