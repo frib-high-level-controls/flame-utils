@@ -14,6 +14,11 @@ from flame import Machine
 
 import logging
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
 from flame_utils.misc import conf_update
