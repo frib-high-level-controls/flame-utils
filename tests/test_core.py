@@ -141,6 +141,7 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(ms.yeps_all[0], 5.0)
         self.assertAlmostEqual(ms.zeps_all[0], 5.0)
 
+
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
         testfile = os.path.join(curdir, 'lattice/test_0.lat')
@@ -387,6 +388,17 @@ class TestModelFlame(unittest.TestCase):
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
 
+    def test_configure_source1(self):
+        """Update source, as well as Ion_Z (and others)
+        """
+        latfile = self.testfile
+        fm = ModelFlame(lat_file=latfile)
+        s = generate_source(fm.bmstate)
+        s['properties']['IonChargeStates'] = np.asarray([0.1, ])
+        fm.configure(econf=s)
+        self.assertEqual(fm.bmstate.IonZ, np.asarray([0.1, ]))
+
+
 class TestStateToSource(unittest.TestCase):
     def setUp(self):
         testfile = os.path.join(curdir, 'lattice/test_0.lat')
@@ -409,6 +421,7 @@ class TestStateToSource(unittest.TestCase):
         rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
             compare_mstates(self, is1, is2)
+
 
 class TestInsertElemInModelFlame(unittest.TestCase):
     def setUp(self):
