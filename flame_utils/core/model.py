@@ -621,9 +621,9 @@ class ModelFlame(object):
         - If user define *start* only, the initial beam state is the same as the *machine*.
         """
         if latfile is None:
-            latfile = self.lat_file
+            latfile = self._lat_file
 
         if original is None:
-            original = self.lat_file
+            original = self._lat_file
 
         return generate_latfile(self._mach_ins, latfile=latfile, original=original, **kws)
