@@ -92,6 +92,18 @@ def collect_data(result, *args, **kws):
     SampleIonK : Array
         Wave-vector in cavities with different beta values of all charge
         states.
+    x0_env, xcen : float
+        Weight average of all charge states for x', [rad].
+    y0_env, ycen : float
+        Weight average of all charge states for y, [mm].
+    xp0_env, xpcen : float
+        Weight average of all charge states for x', [rad].
+    yp0_env, ypcen : float
+        Weight average of all charge states for y', [rad].
+    phi0_env, phicen, zcen: float
+        Weight average of all charge states for :math:`\phi`, [rad].
+    dEk0_env, dEkcen, zpcen : float
+        Weight average of all charge states for :math:`\delta E_k`, [MeV/u].
     x0, xcen_all : Array
         X centroid for all charge states, [mm].
     y0, ycen_all : Array
@@ -100,10 +112,10 @@ def collect_data(result, *args, **kws):
         X centroid divergence for all charge states, [rad].
     yp0, ypcen_all : Array
         Y centroid divergence for all charge states, [rad].
-    phi0, phicen_all : Array
+    phi0, phicen_all, zcen_all : Array
         Longitudinal beam length, measured in RF frequency for all charge
         states, [rad].
-    dEk0, dEkcen_all : Array
+    dEk0, dEkcen_all, zpcen_all : Array
         Kinetic energy deviation w.r.t. reference charge state, for all charge
         states, [MeV/u].
     x0_rms, xrms : float
@@ -114,9 +126,9 @@ def collect_data(result, *args, **kws):
         General rms beam envelope for x', [rad].
     yp0_rms, yprms : float
         General rms beam envelope for y', [rad].
-    phi0_rms, phirms : float
+    phi0_rms, phirms, zrms : float
         General rms beam envelope for :math:`\phi`, [rad].
-    dEk0_rms, dEkrms : float
+    dEk0_rms, dEkrms, zprms : float
         General rms beam envelope for :math:`\delta E_k`, [MeV/u].
     xrms_all : Array
         General rms beam envelope for x of all charge states, [mm].
@@ -130,18 +142,6 @@ def collect_data(result, *args, **kws):
         General rms beam envelope for :math:`\phi` of all charge states, [rad].
     dEkrms_all : Array
         General rms beam envelope for :math:`\delta E_k` of all charge states, [MeV/u].
-    x0_env, xcen : Array
-        Weight average of all charge states for x', [rad].
-    y0_env, ycen : Array
-        Weight average of all charge states for y, [mm].
-    xp0_env, xpcen : Array
-        Weight average of all charge states for x', [rad].
-    yp0_env, ypcen : Array
-        Weight average of all charge states for y', [rad].
-    phi0_env, phicen : Array
-        Weight average of all charge states for :math:`\phi`, [mm].
-    dEk0_env, dEkcen : Array
-        Weight average of all charge states for :math:`\delta E_k`, [MeV/u].
     moment0_env, cenvector : Array
         Weight average of centroid for all charge states, array of
         ``[x, x', y, y', phi, dEk, 1]``, with the units of
@@ -154,6 +154,70 @@ def collect_data(result, *args, **kws):
         Correlation tensor of all charge states, for each charge state.
     moment1_env, beammatrix : Array
         Correlation tensor of all charge states, average over all charge states.
+    xemittance, xeps : float
+        Weight average of geometrical x emittance, [mm-mrad].
+    yemittance, yeps : float
+        Weight average of geometrical y emittance, [mm-mrad].
+    zemittance, zeps : float
+        Weight average of geometrical z emittance, [rad-MeV/u].
+    xnemittance, xepsn : float
+        Weight average of normalized x emittance, [mm-mrad].
+    ynemittance, yepsn : float
+        Weight average of normalized y emittance, [mm-mrad].
+    znemittance, zepsn : float
+        Weight average of normalized z emittance, [rad-MeV/u].
+    xemittance_all, xeps_all : Array
+        Geometrical x emittance of all charge states, [mm-mrad].
+    yemittance_all, yeps_all : Array
+        Geometrical y emittance of all charge states, [mm-mrad].
+    zemittance_all, zeps_all : Array
+        Geometrical z emittance of all charge states, [rad-MeV/u].
+    xnemittance_all, xepsn_all : Array
+        Normalized x emittance of all charge states, [mm-mrad].
+    ynemittance_all, yepsn_all : Array
+        Normalized y emittance of all charge states, [mm-mrad].
+    znemittance_all, zepsn_all : Array
+        Normalized z emittance of all charge states, [rad-MeV/u].
+    xtwiss_beta, xtwsb : float
+        Weight average of twiss beta x, [m/rad].
+    ytwiss_beta, ytwsb : float
+        Weight average of twiss beta y, [m/rad].
+    ztwiss_beta, ztwsb : float
+        Weight average of twiss beta z, [rad/MeV/u].
+    xtwiss_alpha, xtwsa : float
+        Weight average of twiss alpha x, [1].
+    ytwiss_alpha, ytwsa : float
+        Weight average of twiss alpha y, [1].
+    ztwiss_alpha, ztwsa : float
+        Weight average of twiss alpha z, [1].
+    xtwiss_beta_all, xtwsb_all : Array
+        Twiss beta x of all charge states, [m/rad].
+    ytwiss_beta_all, ytwsb_all : Array
+        Twiss beta y of all charge states, [m/rad].
+    ztwiss_beta_all, ztwsb_all : Array
+        Twiss beta z of all charge states, [rad/MeV/u].
+    xtwiss_alpha_all, xtwsa_all : Array
+        Twiss alpha x of all charge states, [1].
+    ytwiss_alpha_all, ytwsa_all : Array
+        Twiss alpha y of all charge states, [1].
+    ztwiss_alpha_all, ztwsa_all : Array
+        Twiss alpha z of all charge states, [1].
+    couple_xy, cxy : float
+        Weigth average of normalized x-y coupling term, [1].
+    couple_xpy, cxpy : float
+        Weigth average of normalized xp-y coupling term, [1].
+    couple_xyp, cxyp : float
+        Weigth average of normalized x-yp coupling term, [1].
+    couple_xpyp, cxpyp : float
+        Weigth average of normalized xp-yp coupling term, [1].
+    couple_xy_all, cxy_all : Array
+        Normalized x-y coupling term of all charge states, [1].
+    couple_xpy_all, cxpy_all : Array
+        Normalized xp-y coupling term of all charge states, [1].
+    couple_xyp_all, cxyp_all : Array
+        Normalized x-yp coupling term of all charge states, [1].
+    couple_xpyp_all, cxpyp_all : Array
+        Normalized xp-yp coupling term of all charge states, [1].
 
     Returns
     -------
