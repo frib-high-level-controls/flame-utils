@@ -431,13 +431,13 @@ class ModelFlame(object):
             s = bmstate.clone()
 
         if isinstance(from_element, basestring):
-            eid = m.find(basestring)
+            eid = m.find(from_element)
             if len(eid) == 0:
                 _LOGGER.error(from_element + ' does not found.')
             from_element = min(eid)
 
         if isinstance(to_element, basestring):
-            eid = m.find(basestring)
+            eid = m.find(to_element)
             if len(eid) == 0:
                 _LOGGER.error(to_element + ' does not found.')
             to_element = min(eid)
@@ -591,7 +591,7 @@ class ModelFlame(object):
         if new_m is not None:
             self._mach_ins = new_m
 
-    def generate_latfile(self, latfile=None, original=None, **kws):
+    def generate_latfile(self, latfile=None, original=None, state=None, **kws):
         """Generate lattice file for the usage of FLAME code.
 
         Parameters
@@ -621,9 +621,12 @@ class ModelFlame(object):
         - If user define *start* only, the initial beam state is the same as the *machine*.
         """
         if latfile is None:
-            latfile = self.lat_file
+            latfile = self._lat_file
 
         if original is None:
-            original = self.lat_file
+            original = self._lat_file
 
-        return generate_latfile(self._mach_ins, latfile=latfile, original=original, **kws)
+        if state is None:
+            state = self.bmstate
+
+        return generate_latfile(self._mach_ins, state=state, latfile=latfile, original=original, **kws)
