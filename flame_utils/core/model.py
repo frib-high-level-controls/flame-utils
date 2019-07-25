@@ -429,6 +429,7 @@ class ModelFlame(object):
             s = self.bmstate.clone()
         else:
             s = bmstate.clone()
+        s0 = s.clone()
 
         if isinstance(from_element, basestring):
             eid = m.find(from_element)
@@ -468,7 +469,11 @@ class ModelFlame(object):
             r, s = propagate(m, s, from_element=vstart, to_element=vend, monitor=obs)
         else:
             r = m.propagate(s, start=vstart, max=vmax, observe=obs)
-        r = self.convert_results(r)
+        if vstart != 0 and (vstart-1) in obs:
+            r0 = [(vstart-1, s0)]
+        else:
+            r0 = []
+        r = self.convert_results(r0+r)
         return r, s
 
     @staticmethod
