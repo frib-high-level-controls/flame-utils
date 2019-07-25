@@ -24,6 +24,8 @@ addons:
     - python3-nose
     - python-coverage
     - python3-coverage
+    - python-tk
+    - python3-tk
 
 before_install:
     - VERSION=1.5.1
