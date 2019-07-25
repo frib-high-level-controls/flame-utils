@@ -869,7 +869,7 @@ class BeamState(object):
 
         Note
         ----
-        'neps' is ignored if both 'eps' and 'neps' are input.
+        'nemittance' is ignored if both 'emittance' and 'nemittance' are input.
         """
         eps = emittance
         neps = nemittance
