@@ -297,7 +297,7 @@ class TestModelFlame(unittest.TestCase):
             m0 = Machine(f)
         s0 = m0.allocState({})
         fm = ModelFlame(latfile)
-        r0 = m0.propagate(s0, 0, len(m0), observe=range(1, len(m0)))
+        r0 = m0.propagate(s0, 0, len(m0), observe=range(len(m0)))
         r,s = fm.run(monitor='all')
         rs0 = [ts for (ti,ts) in r0]
         rs = [ts for (ti,ts) in r]
@@ -336,16 +336,16 @@ class TestModelFlame(unittest.TestCase):
         data0_2 = collect_data(r0, 'pos', 'x0', IonEk=True)
 
         for k in ('pos', 'x0', 'IonEk'):
-            self.assertEqual(data0[k][1:].tolist(), data0_1[k][1:].tolist())
-            self.assertEqual(data0[k][1:].tolist(), data0_2[k][1:].tolist())
+            self.assertEqual(data0[k].tolist(), data0_1[k].tolist())
+            self.assertEqual(data0[k].tolist(), data0_2[k].tolist())
 
         fm = ModelFlame(latfile)
         r, s = fm.run(from_element=1, to_element=99, monitor=range(100))
         data = fm.collect_data(r, pos=True, x0=True, IonEk=True)
 
-        self.assertEqual(data0['pos'][1:].tolist(), data['pos'].tolist())
-        self.assertEqual(data0['x0'][1:].tolist(), data['x0'].tolist())
-        self.assertEqual(data0['IonEk'][1:].tolist(), data['IonEk'].tolist())
+        self.assertEqual(data0['pos'].tolist(), data['pos'].tolist())
+        self.assertEqual(data0['x0'].tolist(), data['x0'].tolist())
+        self.assertEqual(data0['IonEk'].tolist(), data['IonEk'].tolist())
 
     def test_configure(self):
         latfile = self.testfile
@@ -354,8 +354,7 @@ class TestModelFlame(unittest.TestCase):
         s0 = m0.allocState({})
         e_cor_idx = 10
         m0.reconfigure(10, {'theta_x': 0.005})
-        m0.propagate(s0, 0, 1)
-        r0 = m0.propagate(s0, 1, len(m0), range(len(m0)))
+        r0 = m0.propagate(s0, 0, len(m0), range(len(m0)))
 
         fm = ModelFlame(latfile)
         e = fm.get_element(index=10)[0]
@@ -376,8 +375,7 @@ class TestModelFlame(unittest.TestCase):
         e_cor_idx = 10
         e_name = m0.conf(e_cor_idx)['name']
         m0.reconfigure(10, {'theta_x': 0.005})
-        m0.propagate(s0, 0, 1)
-        r0 = m0.propagate(s0, 1, len(m0), range(len(m0)))
+        r0 = m0.propagate(s0, 0, len(m0), range(len(m0)))
 
         fm = ModelFlame(latfile)
         fm.reconfigure(e_name, {'theta_x': 0.005})

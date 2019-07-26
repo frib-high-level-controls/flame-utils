@@ -429,15 +429,16 @@ class ModelFlame(object):
             s = self.bmstate.clone()
         else:
             s = bmstate.clone()
+        s0 = s.clone()
 
         if isinstance(from_element, basestring):
-            eid = m.find(basestring)
+            eid = m.find(from_element)
             if len(eid) == 0:
                 _LOGGER.error(from_element + ' does not found.')
             from_element = min(eid)
 
         if isinstance(to_element, basestring):
-            eid = m.find(basestring)
+            eid = m.find(to_element)
             if len(eid) == 0:
                 _LOGGER.error(to_element + ' does not found.')
             to_element = min(eid)
@@ -468,7 +469,11 @@ class ModelFlame(object):
             r, s = propagate(m, s, from_element=vstart, to_element=vend, monitor=obs)
         else:
             r = m.propagate(s, start=vstart, max=vmax, observe=obs)
-        r = self.convert_results(r)
+        if vstart != 0 and (vstart-1) in obs:
+            r0 = [(vstart-1, s0)]
+        else:
+            r0 = []
+        r = self.convert_results(r0+r)
         return r, s
 
     @staticmethod
@@ -598,7 +603,7 @@ class ModelFlame(object):
         if new_m is not None:
             self._mach_ins = new_m
 
-    def generate_latfile(self, latfile=None, original=None, **kws):
+    def generate_latfile(self, latfile=None, original=None, state=None, **kws):
         """Generate lattice file for the usage of FLAME code.
 
         Parameters
@@ -633,4 +638,7 @@ class ModelFlame(object):
         if original is None:
             original = self._lat_file
 
-        return generate_latfile(self._mach_ins, latfile=latfile, original=original, **kws)
+        if state is None:
+            state = self.bmstate
+
+        return generate_latfile(self._mach_ins, state=state, latfile=latfile, original=original, **kws)

@@ -231,6 +231,10 @@ class BeamState(object):
                      "Zeros initial states, get true values by " \
                      "parameter '_latfile' or '_machine'.")
 
+        dummy_lat = {'sim_type':'MomentMatrix',
+                     'elements':[{'name':'mk', 'type':'marker'}]}
+        self.dm = flame.Machine(dummy_lat)
+
     @property
     def state(self):
         """flame._internal.State: FLAME state object, also could be
@@ -922,6 +926,8 @@ class BeamState(object):
             for i, v in zip(idx, cp):
                 self.set_couple(i, j, v, cs = cs)
 
+        self.dm.propagate(self.state)
+
     @staticmethod
     def _couple_index(coor1, coor2):
         """Get index from coordinate information"""
@@ -1000,6 +1006,7 @@ class BeamState(object):
         mat[c1, c2, cs] = mat[c2, c1, cs] = value*fac
 
         self._states.moment1 = mat
+        self.dm.propagate(self.state)
 
 def generate_source(state, sconf=None):
     """Generate/Update FLAME source element from FLAME beam state object.
