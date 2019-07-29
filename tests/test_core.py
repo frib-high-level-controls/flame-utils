@@ -141,6 +141,15 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(ms.yeps_all[0], 5.0)
         self.assertAlmostEqual(ms.zeps_all[0], 5.0)
 
+    def test_transmat(self):
+        with open(self.latfile, 'rb') as f:
+            m = Machine(f)
+        s = m.allocState({})
+        m.propagate(s, 0, 10)
+        ms = BeamState(s)
+        left_val = ms.transfer_matrix
+        right_val = s.transmat
+        self.assertTrue((left_val == right_val).all())
 
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
