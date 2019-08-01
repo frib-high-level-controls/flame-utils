@@ -18,4 +18,4 @@ __all__ = [
     'hplot', 'PlotLat'
 ]
 
-__version__ = "0.3.7"
+__version__ = "0.3.8"

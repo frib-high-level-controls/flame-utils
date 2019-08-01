@@ -60,7 +60,7 @@ class BeamState(object):
      - ``xp0`` (``xpcen_all``), ``xp0_env`` (``xpcen``), ``xprms_all``, ``xp0_rms`` (``xprms``)
      - ``y0`` (``ycen_all``), ``y0_env`` (``ycen``), ``yrms_all``, ``y0_rms`` (``yrms``)
      - ``yp0`` (``ypcen_all``), ``yp0_env`` (``ypcen``), ``yprms_all``, ``yp0_rms`` (``yprms``)
-     - ``last_caviphi0``
+     - ``last_caviphi0``, ``transfer_matrix``
      - ``xemittance_all`` (``xeps_all``), ``xemittance`` (``xeps``),
        ``xnemittance_all`` (``xepsn_all``), ``xnemittance`` (``xepsn``)
      - ``yemittance_all`` (``yeps_all``), ``yemittance`` (``yeps``),
@@ -171,6 +171,7 @@ class BeamState(object):
         'rmsvector': 'moment0_rms',
         'beammatrix_all': 'moment1',
         'beammatrix': 'moment1_env',
+        'transmat': 'transfer_matrix',
         'xeps': 'xemittance',
         'yeps': 'yemittance',
         'zeps': 'zemittance',
@@ -674,6 +675,11 @@ class BeamState(object):
             print("python-flame version should be at least 1.1.1")
             ret = None
         return ret
+
+    @property
+    def transfer_matrix(self):
+        """Array: Transfer matrix of the last element"""
+        return self._states.transmat
 
     def clone(self):
         """Return a copy of Beamstate object.
