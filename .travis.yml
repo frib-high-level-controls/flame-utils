@@ -1,11 +1,11 @@
 language: python
 
 sudo: required
-dist: trusty
+dist: xenial
 
 python:
     - "2.7"
-    - "3.4"
+    - "3.5"
 
 virtualenv:
     system_site_packages: true
@@ -18,6 +18,8 @@ addons:
     - libhdf5-dev
     - python-numpy
     - python3-numpy
+    - python-scipy
+    - python3-scipy
     - python-matplotlib
     - python3-matplotlib
     - python-nose
@@ -28,11 +30,10 @@ addons:
     - python3-tk
 
 before_install:
-    - VERSION=1.5.1
     - cwd=$(pwd)
-    - git clone -b trusty https://github.com/archman/packages.git
-    - cd packages/trusty
-    - sudo dpkg -i *${VERSION}*.deb
+    - git clone -b xenial https://github.com/archman/packages.git
+    - cd packages/xenial
+    - sudo dpkg -i *flame*.deb
     - cd ${cwd}
 
 script:
