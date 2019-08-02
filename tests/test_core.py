@@ -151,6 +151,7 @@ class TestBeamState(unittest.TestCase):
         right_val = s.transmat
         self.assertTrue((left_val == right_val).all())
 
+
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
         testfile = os.path.join(curdir, 'lattice/test_0.lat')
@@ -404,6 +405,30 @@ class TestModelFlame(unittest.TestCase):
         s['properties']['IonChargeStates'] = np.asarray([0.1, ])
         fm.configure(econf=s)
         self.assertEqual(fm.bmstate.IonZ, np.asarray([0.1, ]))
+
+    def test_transfer_matrix(self):
+        """Calculate transfer matrix from A to B.
+        """
+        cs = 0
+        latfile = self.testfile
+        fm = ModelFlame(latfile)
+        r, s = fm.run(from_element=1, to_element=3, monitor=[1,2,3])
+        s1 = r[0][-1]
+        s2 = r[1][-1]
+        s3 = r[2][-1]
+        m21 = fm.get_transfer_matrix(from_element=1, to_element=2,
+                                     charge_state_index=cs)
+        m31 = fm.get_transfer_matrix(from_element=1, to_element=3,
+                                     charge_state_index=cs)
+        self.assertEqual(m21.tolist(),
+                         s2.transfer_matrix[:, :, cs].tolist())
+        self.assertEqual(m31.tolist(),
+                         np.dot(
+                            s3.transfer_matrix[:, :, cs],
+                            s2.transfer_matrix[:, :, cs]).tolist())
+        for i in range(7):
+            self.assertAlmostEqual(np.dot(m31, s1.moment0[:,0])[i],
+                                   s3.moment0[:,0][i])
 
 
 class TestStateToSource(unittest.TestCase):
