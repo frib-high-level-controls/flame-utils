@@ -413,16 +413,22 @@ class TestModelFlame(unittest.TestCase):
         latfile = self.testfile
         fm = ModelFlame(latfile)
         r, s = fm.run(from_element=1, to_element=3, monitor=[1,2,3])
+        s1 = r[0][-1]
+        s2 = r[1][-1]
+        s3 = r[2][-1]
         m21 = fm.get_transfer_matrix(from_element=1, to_element=2,
                                      charge_state_index=cs)
         m31 = fm.get_transfer_matrix(from_element=1, to_element=3,
                                      charge_state_index=cs)
         self.assertEqual(m21.tolist(),
-                         r[1][-1].transfer_matrix[:, :, cs].tolist())
+                         s2.transfer_matrix[:, :, cs].tolist())
         self.assertEqual(m31.tolist(),
                          np.dot(
-                            r[2][-1].transfer_matrix[:, :, cs],
-                            r[1][-1].transfer_matrix[:, :, cs]).tolist())
+                            s3.transfer_matrix[:, :, cs],
+                            s2.transfer_matrix[:, :, cs]).tolist())
+        for i in range(7):
+            self.assertAlmostEqual(np.dot(m31, s1.moment0[:,0])[i],
+                                   s3.moment0[:,0][i])
 
 
 class TestStateToSource(unittest.TestCase):
