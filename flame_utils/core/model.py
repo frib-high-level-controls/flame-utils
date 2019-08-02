@@ -12,6 +12,8 @@ from __future__ import unicode_literals
 import flame
 from flame import Machine
 
+from functools import reduce
+import numpy as np
 import logging
 
 try:
@@ -398,13 +400,14 @@ class ModelFlame(object):
             itself, usually is created at the initialization stage,
             see :func:`init_machine()`.
         from_element : int or str
-            Element index or name of start point, if not set, will be the first element
-            if not set, will be 0 for zero states, or 1.
+            Element index or name of start point, if not set, will be the
+            first element (0 for zero states, or 1).
         to_element : int or str
-            Element index or name of end point, if not set, will be the last element.
+            Element index or name of end point, if not set, will be the last
+            element.
         monitor : list[int] or list[str] or 'all'
-            List of element indice or names selected as states monitors, if set -1,
-            will be a list of only last element. if set 'all',
+            List of element indice or names selected as states monitors, if
+            set -1, will be a list of only last element. if set 'all',
             will be a list of all elements.
 
         Returns
@@ -642,3 +645,26 @@ class ModelFlame(object):
             state = self.bmstate
 
         return generate_latfile(self._mach_ins, state=state, latfile=latfile, original=original, **kws)
+
+    def get_transfer_matrix(self, from_element=None, to_element=None,
+                            charge_state_index=0):
+        """Calculate the complete transfer matrix from one element
+        (*from_element*) to another (*to_element*).
+
+        Parameters
+        ----------
+        from_element : int or str
+            Element index or name of start point, if not set, will be the
+            first element (0 for zero states, or 1).
+        to_element : int or str
+            Element index or name of end point, if not set, will be the last
+            element.
+        charge_state_index : int
+            Index of charge state.
+        """
+        r, s = self.run(from_element=from_element, to_element=to_element,
+                        monitor=range(from_element, to_element + 1))
+        cs = charge_state_index
+        matrice = reversed([i.transfer_matrix[:, :, cs] for _, i in r[1:]])
+        return reduce(np.dot, matrice)
+
