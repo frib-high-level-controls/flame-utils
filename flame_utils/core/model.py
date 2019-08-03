@@ -473,12 +473,12 @@ class ModelFlame(object):
                     obs.append(int(elem))
 
         if isinstance(s, BeamState):
-            if bmstate is None and from_element > 1:
+            if bmstate is None and vstart > 1:
                 r, s = propagate(m, s, from_element=1, to_element= vstart-1)
             s0 = s.clone()
             r, s = propagate(m, s, from_element=vstart, to_element=vend, monitor=obs)
         else:
-            if bmstate is None and from_element > 1:
+            if bmstate is None and vstart > 1:
                 r, s = m.propagate(s, start=1, max= vstart-1)
             s0 = s.clone()
             r = m.propagate(s, start=vstart, max=vmax, observe=obs)
