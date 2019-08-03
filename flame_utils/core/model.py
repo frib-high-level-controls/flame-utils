@@ -389,7 +389,8 @@ class ModelFlame(object):
         """
         return get_index_by_name(name=name, _machine=self._mach_ins, rtype=rtype)
 
-    def run(self, bmstate=None, from_element=None, to_element=None, monitor=None):
+    def run(self, bmstate=None, from_element=None, to_element=None, monitor=None,
+            include_initial_state=True):
         """Simulate model.
 
         Parameters
@@ -407,8 +408,11 @@ class ModelFlame(object):
             element.
         monitor : list[int] or list[str] or 'all'
             List of element indice or names selected as states monitors, if
-            set -1, will be a list of only last element. if set 'all',
-            will be a list of all elements.
+            set -1, it returns the finite beam state. if set 'all', it returns
+            all beam states between `from_element` and `to_element`.
+        include_initial_state : bool
+            Include initial beam state to the list of the results if `monitor`
+            contains the initial location (default is True).
 
         Returns
         -------
@@ -428,11 +432,6 @@ class ModelFlame(object):
         propagate : Propagate ``BeamState`` object for FLAME machine object.
         """
         m = self._mach_ins
-        if bmstate is None:
-            s = self.bmstate.clone()
-        else:
-            s = bmstate.clone()
-        s0 = s.clone()
 
         if isinstance(from_element, basestring):
             eid = m.find(from_element)
@@ -446,11 +445,17 @@ class ModelFlame(object):
                 _LOGGER.error(to_element + ' does not found.')
             to_element = min(eid)
 
+        if bmstate is None:
+            s = self.bmstate.clone()
+        else:
+            s = bmstate.clone()
+
         if is_zeros_states(s):
             vstart = 0 if from_element is None else from_element
         else:
             vstart = 1 if from_element is None else from_element
         vend = len(m) - 1 if to_element is None else to_element
+        vmax = vend - vstart + 1
 
         obs = []
         if monitor == -1:
@@ -467,12 +472,18 @@ class ModelFlame(object):
                 else:
                     obs.append(int(elem))
 
-        vmax = vend - vstart + 1
         if isinstance(s, BeamState):
+            if bmstate is None and from_element > 1:
+                r, s = propagate(m, s, from_element=1, to_element= vstart-1)
+            s0 = s.clone()
             r, s = propagate(m, s, from_element=vstart, to_element=vend, monitor=obs)
         else:
+            if bmstate is None and from_element > 1:
+                r, s = m.propagate(s, start=1, max= vstart-1)
+            s0 = s.clone()
             r = m.propagate(s, start=vstart, max=vmax, observe=obs)
-        if vstart != 0 and (vstart-1) in obs:
+
+        if include_initial_state and vstart != 0 and (vstart-1) in obs:
             r0 = [(vstart-1, s0)]
         else:
             r0 = []

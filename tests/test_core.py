@@ -264,7 +264,7 @@ class TestModelFlame(unittest.TestCase):
         with open(latfile, 'rb') as f:
             m0 = Machine(f)
         s0 = m0.allocState({})
-        m0.propagate(s0, 0, 1)
+        m0.propagate(s0, 0, 10)
         r0 = m0.propagate(s0, 10, 11, observe=range(10, 21))
 
         fm = ModelFlame(latfile)
