@@ -408,8 +408,8 @@ class ModelFlame(object):
             element.
         monitor : list[int] or list[str] or 'all'
             List of element indice or names selected as states monitors, if
-            set -1, it returns the finite beam state. if set 'all', it returns
-            all beam states between `from_element` and `to_element`.
+            set -1, will be a list of only last element. if set 'all',
+            will be a list of all elements.
         include_initial_state : bool
             Include initial beam state to the list of the results if `monitor`
             contains the initial location (default is True).
