@@ -264,7 +264,7 @@ class TestModelFlame(unittest.TestCase):
         with open(latfile, 'rb') as f:
             m0 = Machine(f)
         s0 = m0.allocState({})
-        m0.propagate(s0, 0, 1)
+        m0.propagate(s0, 0, 10)
         r0 = m0.propagate(s0, 10, 11, observe=range(10, 21))
 
         fm = ModelFlame(latfile)
@@ -326,6 +326,23 @@ class TestModelFlame(unittest.TestCase):
         obs = fm.get_index_by_type(type='bpm')['bpm']
         r0 = m0.propagate(s0, 0, len(m0), observe=obs)
         r,s = fm.run(monitor='bpm')
+        rs0 = [ts for (ti,ts) in r0]
+        rs = [ts for (ti,ts) in r]
+        for (is1, is2) in zip(rs0, rs):
+            compare_mstates(self, is1, is2)
+        compare_mstates(self, s, s0)
+
+    def test_run_8(self):
+        """ test_run_8: include_initial_state
+        """
+        latfile = self.testfile
+        with open(latfile, 'rb') as f:
+            m0 = Machine(f)
+        s0 = m0.allocState({})
+        fm = ModelFlame(latfile)
+        m0.propagate(s0, 0, 1)
+        r0 = m0.propagate(s0, 1, len(m0), observe=range(len(m0)))
+        r,s = fm.run(monitor='all', include_initial_state=False)
         rs0 = [ts for (ti,ts) in r0]
         rs = [ts for (ti,ts) in r]
         for (is1, is2) in zip(rs0, rs):
