@@ -195,6 +195,18 @@ class TestModelFlame(unittest.TestCase):
                   'sbend', 'orbtrim', 'solenoid', 'stripper'}
         self.assertEqual(set(fm.get_all_types()), etypes)
 
+    def test_find(self):
+        fm = ModelFlame(self.testfile)
+        m = fm.machine
+        all_types = fm.get_all_types()
+        for i in range(2, 20):
+            e = fm.find(m.conf(i)['name'])[0]
+            self.assertEqual(i, e)
+        for ntype in all_types:
+            e0 = m.find(type=ntype)
+            e  = fm.find(type=ntype)
+            self.assertEqual(e, e0)
+
     def test_get_index_by_name(self):
         fm = ModelFlame(self.testfile)
         m = fm.machine

@@ -424,8 +424,8 @@ class PlotLat:
         elif elem['type'] == 'solenoid':
             scl = elem['B']
         elif elem['type'] == 'quadrupole':
-            scl = elem['B2']
-        elif elem['type'] == 'sextuple':
+            scl = elem['B2'] if 'B2' in elem else 1.0
+        elif elem['type'] == 'sextupole':
             scl = elem['B3']
         elif elem['type'] == 'sbend':
             scl = elem['phi']
@@ -438,7 +438,7 @@ class PlotLat:
 
 
     def generate(self, start=None, end=None, xlim=None, ycen=0.0, yscl=1.0, aspect=5.0,
-                 legend=True, option=True):
+                 legend=True, option=True, axes = None):
         """Generate matplotlib Axes class object from lattice file.
 
         Parameter
@@ -470,8 +470,12 @@ class PlotLat:
 
         """
 
-        self._fig = plt.figure()
-        self.axes = self._fig.add_subplot(111)
+        if axes is None:
+            self._fig = plt.figure()
+            self.axes = self._fig.add_subplot(111)
+        else:
+            self.axes = axes
+
         pos = self._starting_offset
         bp = ycen
         indexes = range(len(self.M))[start:end]
@@ -490,7 +494,7 @@ class PlotLat:
 
                 if foundelm.count(elem['type']) == 0:
                     foundelm.append(elem['type'])
-                    if legend:
+                    if legend and info['flag']:
                         self.axes.fill_between([0,0],[0,0],[0,0], color=info['color'], label=info['name'])
 
                 if info['flag']:
@@ -508,7 +512,7 @@ class PlotLat:
                         self.axes.add_patch(ptc.Rectangle((pos, bpp), dL, ht,
                                                            edgecolor='none',facecolor=info['color']))
                     else:
-                        self.axes.add_line(lin.Line2D([pos,pos],[-yscl*0.1+bp, yscl*0.1+bp],color=info['color']))
+                        self.axes.add_line(lin.Line2D([pos,pos],[-yscl*0.3+bp, yscl*0.3+bp],color=info['color']))
 
             pos += dL
 
@@ -526,9 +530,6 @@ class PlotLat:
         else :
             ncol = 4
 
-        if legend:
-            self.axes.legend(ncol=ncol, loc=10, bbox_to_anchor=(0.5, -0.2*ancscl))
-
         if option:
             if xlim != None:
                 self.axes.set_xlim(xlim)
@@ -536,6 +537,10 @@ class PlotLat:
             else :
                 self.axes.set_xlim((0.0,pos))
                 ancscl = pos
+
+            if legend:
+                self.axes.legend(ncol=ncol, loc=10, bbox_to_anchor=(0.5, -0.2*ancscl))
+
             self.axes.set_aspect(aspect)
             self.axes.set_ylim((-1.0,1.0))
             self.axes.set_yticks(())

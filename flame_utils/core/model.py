@@ -275,7 +275,7 @@ class ModelFlame(object):
 
         Returns
         -------
-        res : tuple
+        tuple
             Tuple of ``(m, s)``, where ``m`` is FLAME machine instance,
             and ``s`` is initial machine states.
         """
@@ -286,17 +286,38 @@ class ModelFlame(object):
             m.propagate(s, 0, 1)
             _LOGGER.info("ModelFlame: Initialization succeeded.")
             return m, s
-        except:
+        except Exception as err:
+            _LOGGER.error(err)
             _LOGGER.warning(
                 "ModelFlame: Lattice file is not valid, do it manually.")
             return None, None
+
+    def find(self, *args, **kws):
+        """Find element indexs.
+
+        Parameters
+        ----------
+        type : str or list of str
+            Single element type name or list[tuple] of element type names.
+
+        Returns
+        -------
+        list
+            Dict, key is type name, value if indice list of each type name,
+            list, of indices list, with the order of type.
+
+        See Also
+        --------
+        get_index_by_type : Get element(s) index by type(s).
+        """
+        return self._mach_ins.find(*args, **kws)
 
     def get_element(self, name=None, index=None, type=None, **kws):
         """Element inspection, get properties.
 
         Returns
         -------
-        res : list of dict
+        list of dict
             List of dict of properties or empty list.
 
         See Also
@@ -322,7 +343,7 @@ class ModelFlame(object):
 
         Returns
         -------
-        res : list of str
+        list of str
             List of element type names
 
         See Also
@@ -336,7 +357,7 @@ class ModelFlame(object):
 
         Returns
         -------
-        res : list of str
+        list of str
             List of element names.
 
         See Also
@@ -357,7 +378,7 @@ class ModelFlame(object):
 
         Returns
         -------
-        ind : dict or list
+        dict or list
             Dict, key is type name, value if indice list of each type name,
             list, of indices list, with the order of type.
 
@@ -520,6 +541,11 @@ class ModelFlame(object):
         args :
             Names of attribute, separated by comma.
 
+        Returns
+        -------
+        dict
+            Dict of ``{k1:v1, k2,v2...}``, keys are from keyword parameters.
+
         See Also
         --------
         collect_data : Get data of interest from results.
@@ -587,7 +613,7 @@ class ModelFlame(object):
 
         Returns
         -------
-        ret :
+        Machine
             FLAME Machine object.
         """
         return conf_update(m)
@@ -637,8 +663,8 @@ class ModelFlame(object):
 
         Returns
         -------
-        filename : str
-            None if failed to generate lattice file, or the out file name.
+        str
+            Generated filename, None if failed to generate lattice file.
 
         Note
         ----
@@ -672,8 +698,13 @@ class ModelFlame(object):
             element.
         charge_state_index : int
             Index of charge state.
+
+        Returns
+        -------
+        2D array
+            Transfer matrix.
         """
-        r, s = self.run(from_element=from_element, to_element=to_element,
+        r, s = self.run(to_element=to_element,
                         monitor=range(from_element, to_element + 1))
         cs = charge_state_index
         matrice = reversed([i.transfer_matrix[:, :, cs] for _, i in r[1:]])
