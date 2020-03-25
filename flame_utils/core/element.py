@@ -12,6 +12,7 @@ from __future__ import unicode_literals
 import logging
 import os
 import re
+import sys
 import flame
 
 from collections import Counter
