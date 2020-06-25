@@ -982,8 +982,9 @@ class BeamState(object):
             mat = self._states.moment1_env
         else:
             mat = self._states.moment1[:, :, cs]
-        fac = np.sqrt(mat[c1, c1]*mat[c2, c2])
-        term = mat[c1, c2]/fac if fac != 0.0 else 0.0
+
+        fac = mat[c1, c1]*mat[c2, c2]
+        term = mat[c1, c2]/np.sqrt(fac) if fac > 0.0 else 0.0
 
         return term
 
@@ -1008,8 +1009,9 @@ class BeamState(object):
             return None
 
         mat = self._states.moment1
-        fac = np.sqrt(mat[c1, c1, cs]*mat[c2, c2, cs])
-        mat[c1, c2, cs] = mat[c2, c1, cs] = value*fac
+        fac = mat[c1, c1, cs]*mat[c2, c2, cs]
+        term = value*np.sqrt(fac) if fac > 0.0 else 0.0
+        mat[c1, c2, cs] = mat[c2, c1, cs] = term
 
         self._states.moment1 = mat
         self.dm.propagate(self.state)
