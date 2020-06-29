@@ -224,8 +224,8 @@ def collect_data(result, *args, **kws):
     dict
         Dict of ``{k1:v1, k2,v2...}``, keys are from keyword parameters.
 
-    Note
-    ----
+    Notes
+    -----
     1. Set the data of interest with ``k=True`` as input will return the defined
        ``k`` value.
     2. Invalid attribute names will be ignored.

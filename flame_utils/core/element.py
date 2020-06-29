@@ -199,13 +199,6 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
     res : list of dict or []
         List of dict of properties or empty list
 
-    Note
-    ----
-    1. If more than one optional paramters (index, name, type, _pattern) are
-       provided, only return element that meets all these definitions.
-    2. If getting by multiple indices/names/types, the order of returned list
-       is void.
-
     Examples
     --------
     >>> from flame import Machine
@@ -234,9 +227,14 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
       'bg': 0.191062, 'name': 'FS1_BBS:DH_D2394_10', 'phi': 4.5, 'phi1': 0.0,
       'phi2': 7.0, 'type': 'sbend'}}]
 
-    Warning
-    -------
-    Invalid element names or type names will be ignored.
+    Notes
+    -----
+    -   1. If more than one optional paramters (index, name, type, _pattern) are
+           provided, only return element that meets all these definitions.
+        2. If getting by multiple indices/names/types, the order of returned list
+           is void.
+
+    -   Invalid element names or type names will be ignored.
 
     See Also
     --------
@@ -328,8 +326,8 @@ def get_index_by_type(type='', latfile=None, rtype='dict', _machine=None):
         Dict, key is type name, value if indice list of each type name,
         list, of indices list, with the order of type.
 
-    Note
-    ----
+    Notes
+    -----
     If *rtype* is ``list``, list of list would be returned instead of a dict,
     ``flatten()`` function could be used to flatten the list.
 
@@ -388,8 +386,8 @@ def get_index_by_name(name='', latfile=None, rtype='dict', _machine=None):
         dict of element indices, key is name, value is index,
         list of element indices list
 
-    Note
-    ----
+    Notes
+    -----
     If *rtype* is ``list``, list of list would be returned instead of a dict,
     ``flatten()`` function could be used to flatten the list.
 

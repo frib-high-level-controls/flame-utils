@@ -27,7 +27,7 @@ except NameError:
     basestring = str
 
 def hplot(*args, **kws):
-    """Plot beam state history.
+    """Plot beam state history with input arguments.
 
     Parameters
     ----------
@@ -46,9 +46,9 @@ def hplot(*args, **kws):
     cs : int
         Index of the charge state to plot.
 
-    Note
-    ----
-    List of ``BeamState`` arguments
+    Notes
+    -----
+    List of supported :py:func:`BeamState <flame_utils.core.state.BeamState>` arguments
 
     pos : float
         Longitudinally propagating position, [m].
@@ -225,6 +225,10 @@ def hplot(*args, **kws):
     couple_xpyp_all, cxpyp_all : Array
         Normalized xp-yp coupling term of all charge states, [1].
 
+    Examples
+    --------
+    >>> fm = ModelFlame(lat_file = 'userfile.lat')
+    >>> hplot('xrms', 'yrms', machine=fm)
     """
     ldct = {'rms': 'RMS',
             'cen': 'centroid',
@@ -364,8 +368,8 @@ class PlotLat:
     starting_offset : float (0.0), optional
         Position offset of starting point in the lattice file
 
-    Class attributes
-    ----------------
+    Attributes
+    ----------
     types : dict
         Element type list of the lattice. Each element type contains
         on-off 'flag', plotting 'color', and y-axis 'scale'.
@@ -441,8 +445,8 @@ class PlotLat:
                  legend=True, option=True, axes = None):
         """Generate matplotlib Axes class object from lattice file.
 
-        Parameter
-        ---------
+        Parameters
+        ----------
         start : int
             Index of the lattice start.
         end : int
@@ -460,8 +464,8 @@ class PlotLat:
         option : bool
             Add optional setting for the plot.
 
-        Class attribute
-        ---------------
+        Attributes
+        ----------
         axes : callable
             Axes class object of matplotlib.
 
