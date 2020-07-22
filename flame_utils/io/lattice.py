@@ -51,14 +51,6 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     filename : str
         None if failed to generate lattice file, or the out file name.
 
-    Note
-    ----
-    - If *latfile* and *out* are not defined, will print all output to screen;
-    - If *latfile* and *out* are all defined, *out* stream is preferred;
-    - For other cases, choose one that is defined.
-    - If *start* is defined, user should define *state* also.
-    - If user define *start* only, the initial beam state is the same as the *machine*.
-
     Examples
     --------
     >>> from flame import Machine
@@ -71,16 +63,19 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
     >>> fout = open('out.lat', 'w')
     >>> generate_latfile(m, out=fout)
 
-    Note
-    ----
-    Parameter *out* can also be ``StringIO``, and get string by ``getvalue()``.
+    Notes
+    -----
+    - If *latfile* and *out* are not defined, will print all output to screen;
+    - If *latfile* and *out* are all defined, *out* stream is preferred;
+    - For other cases, choose one that is defined.
+    - If *start* is defined, user should define *state* also.
+    - If user define *start* only, the initial beam state is the same as the *machine*.
+    - Parameter *out* can also be ``StringIO``, and get string by ``getvalue()``.
 
-    Warning
-    -------
-    To get element configuration only by ``m.conf(i)`` method,
-    where ``m`` is ``flame.Machine`` object, ``i`` is element index,
-    when some re-configuring operation is done, ``m.conf(i)`` will be update,
-    but ``m.conf()["elements"]`` remains with the initial values.
+    - To get element configuration only by ``m.conf(i)`` method,
+      where ``m`` is ``flame.Machine`` object, ``i`` is element index,
+      when some re-configuring operation is done, ``m.conf(i)`` will be update,
+      but ``m.conf()["elements"]`` remains with the initial values.
     """
     m = machine
     try:
