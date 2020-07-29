@@ -516,7 +516,7 @@ class ModelFlame(object):
         Machine
             FLAME Machine object.
         """
-        return conf_update(m)
+        return conf_update(self._mach_ins)
 
     def insert_element(self, index=None, element=None, econf=None):
         """Insert new element to the machine.
