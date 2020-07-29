@@ -33,4 +33,14 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
+        export PYTHONPATH=../
+        cd tests
         pytest
+    - name: Publish documentation
+      run: |
+        pip install sphinx sphinx_rtd_theme
+        pwd
+        ls
+        cd docs
+        export PYTHONPATH=../
+        make html
