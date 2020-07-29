@@ -1,26 +1,9 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Path setup --------------------------------------------------------------
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, '/home/k/software/flame-utils/flame_utils')
-
-
 # -- Project information -----------------------------------------------------
 import flame_utils
 
-project = 'flame_utils'
-copyright = '2020, Author'
-author = 'Author'
+project = u'flame-utils'
+copyright = u'2018-2020, Facility for Rare Isotope Beams, Michigan State University'
+author = u'Kei Fukushima, Tong Zhang'
 
 version = flame_utils.__version__
 
@@ -59,6 +42,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_favicon = "frib-favicon.ico"
+html_last_updated_fmt = '%b %d, %Y'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

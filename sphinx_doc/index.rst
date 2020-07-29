@@ -3,21 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-`flame_utils <https://github.com/frib-high-level-controls/flame-utils/tree/dev>`_ documentation
-===============================================================================================
+Welcome to flame-utils documentation
+====================================
 
 - `FLAME source <https://github.com/frib-high-level-controls/FLAME>`_
 - `FLAME documentation <https://kryv.github.io/FLAMEdoc/>`_
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+   :maxdepth: 3
 
    tutorial
    element
    beamstate
    modelflame
    plotlat
+   api
 
 Indices and tables
 ==================
