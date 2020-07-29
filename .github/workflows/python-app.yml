@@ -38,7 +38,7 @@ jobs:
         pytest
     - name: Publish documentation
       run: |
-        pip install sphinx sphinx_rtd_theme
+        pip install sphinx sphinx_rtd_theme numpydoc
         pwd
         ls
         cd docs
