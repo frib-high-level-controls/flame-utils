@@ -42,81 +42,110 @@ KEY_MAPPING = {
 class BeamState(object):
     """FLAME beam state, from which simulated results could be retrieved.
 
-    All attributes of states:
+   Class attributes of reference beam parameter:
 
-     - ``pos``,
-     - ``ref_beta``, ``ref_bg``, ``ref_gamma``, ``ref_IonEk``, ``ref_IonEs``,
-       ``ref_IonQ``, ``ref_IonW``, ``ref_IonZ``, ``ref_phis``,
-       ``ref_SampleIonK``,
-     - ``beta``, ``bg``, ``gamma``, ``IonEk``, ``IonEs``, ``IonQ``, ``IonW``,
-       ``IonZ``, ``phis``, ``SampleIonK``,
-     - ``moment0`` (``cenvector_all``), ``moment0_rms`` (``rmsvector``), ``moment0_env`` (``cenvector``),
-     - ``moment1`` (``beammatrix_all``), ``moment1_env`` (``beammatrix``),
-     - ``dEk0`` (``dEkcen_all``, ``zpcen_all``), ``dEk0_env`` (``dEkcen``, ``zpcen``),
-       ``dEkrms_all`` (``zprms_all``), ``dEk0_rms`` (``dEkrms``, ``zprms``)
-     - ``phi0`` (``phicen_all``, ``zcen_all``), ``phi0_env`` (``phicen``, ``zcen``),
-       ``phirms_all`` (``zrms_all``), ``phi0_rms`` (``phirms``, ``zrms``)
-     - ``x0`` (``xcen_all``), ``x0_env`` (``xcen``), ``xrms_all``, ``x0_rms`` (``xrms``)
-     - ``xp0`` (``xpcen_all``), ``xp0_env`` (``xpcen``), ``xprms_all``, ``xp0_rms`` (``xprms``)
-     - ``y0`` (``ycen_all``), ``y0_env`` (``ycen``), ``yrms_all``, ``y0_rms`` (``yrms``)
-     - ``yp0`` (``ypcen_all``), ``yp0_env`` (``ypcen``), ``yprms_all``, ``yp0_rms`` (``yprms``)
-     - ``last_caviphi0``, ``transfer_matrix``
-     - ``xemittance_all`` (``xeps_all``), ``xemittance`` (``xeps``),
-       ``xnemittance_all`` (``xepsn_all``), ``xnemittance`` (``xepsn``)
-     - ``yemittance_all`` (``yeps_all``), ``yemittance`` (``yeps``),
-       ``ynemittance_all`` (``yepsn_all``), ``ynemittance`` (``yepsn``)
-     - ``zemittance_all`` (``zeps_all``), ``zemittance`` (``zeps``),
-       ``znemittance_all`` (``zepsn_all``), ``znemittance`` (``zepsn``)
-     - ``xtwiss_beta_all`` (``xtwsb_all``), ``xtwiss_beta`` (``xtwsb``),
-       ``xtwiss_alpha_all`` (``xtwsa_all``),  ``xtwiss_alpha`` (``xtwsa``)
-     - ``ytwiss_beta_all`` (``ytwsb_all``), ``ytwiss_beta`` (``ytwsb``),
-       ``ytwiss_alpha_all`` (``ytwsa_all``),  ``ytwiss_alpha`` (``ytwsa``)
-     - ``ztwiss_beta_all`` (``ztwsb_all``), ``ztwiss_beta`` (``ztwsb``),
-       ``ztwiss_alpha_all`` (``ztwsa_all``),  ``ztwiss_alpha`` (``ztwsa``)
-     - ``couple_xy_all`` (``cxy_all``), ``couple_xy`` (``cxy``),
-       ``couple_xpy_all`` (``cxpy_all``), ``couple_xpy`` (``cxpy``),
-       ``couple_xyp_all`` (``cxyp_all``), ``couple_xyp`` (``cxyp``),
-       ``couple_xpyp_all`` (``cxpyp_all``), ``couple_xpyp`` (``cxpyp``)
+    .. autosummary ::
+        pos
+        ref_beta
+        ref_bg
+        ref_gamma
+        ref_IonEk
+        ref_IonEs
+        ref_IonQ
+        ref_IonW
+        ref_IonZ
+        ref_phis
+        ref_SampleIonK
 
-    Warning
-    -------
-    1. These attributes are only valid for the case of ``sim_type`` being
-       defined as ``MomentMatrix``, which is de facto the exclusive option
-       used at FRIB.
-    2. If the attribute is an array, new array value should be assigned
-       instead of by element indexing way, e.g.
 
-       >>> bs = BeamState(s)
-       >>> print(bs.moment0)
-       array([[ -7.88600000e-04],
-              [  1.08371000e-05],
-              [  1.33734000e-02],
-              [  6.67853000e-06],
-              [ -1.84773000e-04],
-              [  3.09995000e-04],
-              [  1.00000000e+00]])
-       >>> # the right way to just change the first element of the array
-       >>> m_tmp = bs.moment0
-       >>> m_tmp[0] = 0
-       >>> bs.moment0 = m_tmp
-       >>> print(bs.moment0)
-       array([[  0.00000000e+00],
-              [  1.08371000e-05],
-              [  1.33734000e-02],
-              [  6.67853000e-06],
-              [ -1.84773000e-04],
-              [  3.09995000e-04],
-              [  1.00000000e+00]])
-       >>> # while this way does not work: ms.moment0[0] = 0
+   Class attributes of actual beam parameter:
 
+    .. autosummary ::
+        beta
+        bg
+        gamma
+        IonEk
+        IonEs
+        IonQ
+        IonW
+        IonZ
+        phis
+        SampleIonK
+        moment0
+        moment0_rms
+        moment0_env
+        moment1
+        moment1_env
+        xcen
+        xrms
+        xpcen
+        xprms
+        ycen
+        yrms
+        ypcen
+        yprms
+        zcen
+        zrms
+        zpcen
+        zprms
+        xcen_all
+        xrms_all
+        xpcen_all
+        xprms_all
+        ycen_all
+        yrms_all
+        ypcen_all
+        yprms_all
+        zcen_all
+        zrms_all
+        zpcen_all
+        zprms_all
+        xemittance
+        xnemittance
+        yemittance
+        ynemittance
+        zemittance
+        znemittance
+        xemittance_all
+        xnemittance_all
+        yemittance_all
+        ynemittance_all
+        zemittance_all
+        znemittance_all
+        xtwiss_beta
+        xtwiss_alpha
+        ytwiss_beta
+        ytwiss_alpha
+        ztwiss_beta
+        ztwiss_alpha
+        xtwiss_beta_all
+        xtwiss_alpha_all
+        ytwiss_beta_all
+        ytwiss_alpha_all
+        ztwiss_beta_all
+        ztwiss_alpha_all
+        couple_xy
+        couple_xpy
+        couple_xyp
+        couple_xpyp
+        couple_xy_all
+        couple_xpy_all
+        couple_xyp_all
+        couple_xpyp_all
+        last_caviphi0
+        transfer_matrix
+
+    Configuration methods
+
+    .. autosummary ::
+        clone
+        set_twiss
+        set_couple
 
     Parameters
     ----------
     s :
-        FLAME state object, created by `allocState()`.
-
-    Keyword Arguments
-    -----------------
+        FLAME state object Created by `allocState()`
     bmstate :
         BeamState object, priority: high
     machine :
@@ -124,20 +153,47 @@ class BeamState(object):
     latfile :
         FLAME lattice file name, priority: low
 
-    Note
-    ----
-    If more than one keyword parameters are provided,
-    the selection policy follows the priority from high to low.
+    Notes
+    -----
+    -   If more than one keyword parameters are provided,
+        the selection policy follows the priority from high to low.
 
-    Warning
-    -------
-    If only ``s`` is assigned with all-zeros states (usually created by
-    ``allocState({})`` method), then please note that this state can only
-    propagate from the first element, i.e. ``SOURCE``
-    (``from_element`` parameter of ``run()`` or ``propagate()`` should be 0),
-    or errors happen; the better initialization should be passing one of
-    keyword parameters of ``machine`` and ``latfile`` to initialize the
-    state to be significant for the ``propagate()`` method.
+    -   If only ``s`` is assigned with all-zeros states (usually created by
+        ``allocState({})`` method), then please note that this state can only
+        propagate from the first element, i.e. ``SOURCE``
+        (``from_element`` parameter of ``run()`` or ``propagate()`` should be 0),
+        or errors happen; the better initialization should be passing one of
+        keyword parameters of ``machine`` and ``latfile`` to initialize the
+        state to be significant for the ``propagate()`` method.
+
+    -   1. These attributes are only valid for the case of ``sim_type`` being
+           defined as ``MomentMatrix``, which is de facto the exclusive option
+           used at FRIB.
+        2. If the attribute is an array, new array value should be assigned
+           instead of by element indexing way, e.g.
+
+        >>> bs = BeamState(s)
+        >>> print(bs.moment0)
+        array([[ -7.88600000e-04],
+                [  1.08371000e-05],
+                [  1.33734000e-02],
+                [  6.67853000e-06],
+                [ -1.84773000e-04],
+                [  3.09995000e-04],
+                [  1.00000000e+00]])
+        >>> # the right way to just change the first element of the array
+        >>> m_tmp = bs.moment0
+        >>> m_tmp[0] = 0
+        >>> bs.moment0 = m_tmp
+        >>> print(bs.moment0)
+        array([[  0.00000000e+00],
+                [  1.08371000e-05],
+                [  1.33734000e-02],
+                [  6.67853000e-06],
+                [ -1.84773000e-04],
+                [  3.09995000e-04],
+                [  1.00000000e+00]])
+        >>> # while this way does not work: ms.moment0[0] = 0
     """
     _aliases = {
         'xcen_all': 'x0',
@@ -406,8 +462,8 @@ class BeamState(object):
     def IonQ(self):
         """Array: macro particle number of all charge states
 
-        Note
-        ----
+        Notes
+        -----
         This is what ``NCharge`` means in the FLAME lattice file.
         """
         return getattr(self._states, 'IonQ')
@@ -430,8 +486,8 @@ class BeamState(object):
     def IonZ(self):
         """Array: all charge states, measured by charge to mass ratio
 
-        Note
-        ----
+        Notes
+        -----
         This is what ``IonChargeStates`` means in the FLAME lattice file.
         """
         return getattr(self._states, 'IonZ')
@@ -465,8 +521,8 @@ class BeamState(object):
         ``[x, x', y, y', phi, dEk, 1]``, with the units of
         ``[mm, rad, mm, rad, rad, MeV/u, 1]``.
 
-        Note
-        ----
+        Notes
+        -----
         The physics meanings for each column are:
 
         - ``x``: x position in transverse plane;
@@ -489,8 +545,8 @@ class BeamState(object):
         """Array: rms beam envelope, part of statistical results from
         ``moment1``.
 
-        Note
-        ----
+        Notes
+        -----
         The square of ``moment0_rms`` should be equal to the diagonal
         elements of ``moment1``.
 
@@ -576,54 +632,54 @@ class BeamState(object):
 
     @property
     def x0_env(self):
-        """Array: weight average of all charge states for ``x``, [mm]"""
+        """float: weight average of all charge states for :math:`x`, [mm]"""
         return self._states.moment0_env[0]
 
     @property
     def xp0_env(self):
-        """Array: weight average of all charge states for ``x'``, [rad]"""
+        """float: weight average of all charge states for :math:`x'`, [rad]"""
         return self._states.moment0_env[1]
 
     @property
     def y0_env(self):
-        """Array: weight average of all charge states for ``y``, [mm]"""
+        """float: weight average of all charge states for :math:`y`, [mm]"""
         return self._states.moment0_env[2]
 
     @property
     def yp0_env(self):
-        """Array: weight average of all charge states for ``y'``, [rad]"""
+        """float: weight average of all charge states for :math:`y'`, [rad]"""
         return self._states.moment0_env[3]
 
     @property
     def phi0_env(self):
-        """Array: weight average of all charge states for :math:`\phi`,
+        """float: weight average of all charge states for :math:`\phi`,
         [rad]"""
         return self._states.moment0_env[4]
 
     @property
     def dEk0_env(self):
-        """Array: weight average of all charge states for :math:`\delta E_k`,
+        """float: weight average of all charge states for :math:`\delta E_k`,
         [MeV/u]"""
         return self._states.moment0_env[5]
 
     @property
     def xrms_all(self):
-        """Array: general rms beam envelope for ``x`` of all charge states, [mm]"""
+        """Array: general rms beam envelope for :math:`x` of all charge states, [mm]"""
         return np.sqrt(self._states.moment1[0, 0, :])
 
     @property
     def xprms_all(self):
-        """Array: general rms beam envelope for ``x'`` of all charge states, [rad]"""
+        """Array: general rms beam envelope for :math:`x'` of all charge states, [rad]"""
         return np.sqrt(self._states.moment1[1, 1, :])
 
     @property
     def yrms_all(self):
-        """Array: general rms beam envelope for ``y`` of all charge states, [mm]"""
+        """Array: general rms beam envelope for :math:`y` of all charge states, [mm]"""
         return np.sqrt(self._states.moment1[2, 2, :])
 
     @property
     def yprms_all(self):
-        """Array: general rms beam envelope for ``y'`` of all charge states, [rad]"""
+        """Array: general rms beam envelope for :math:`y'` of all charge states, [rad]"""
         return np.sqrt(self._states.moment1[3, 3, :])
 
     @property
@@ -638,22 +694,22 @@ class BeamState(object):
 
     @property
     def x0_rms(self):
-        """float: general rms beam envelope for ``x``, [mm]"""
+        """float: general rms beam envelope for :math:`x`, [mm]"""
         return self._states.moment0_rms[0]
 
     @property
     def xp0_rms(self):
-        """float: general rms beam envelope for ``x'``, [rad]"""
+        """float: general rms beam envelope for :math:`x'`, [rad]"""
         return self._states.moment0_rms[1]
 
     @property
     def y0_rms(self):
-        """float: general rms beam envelope for ``y``, [mm]"""
+        """float: general rms beam envelope for :math:`y`, [mm]"""
         return self._states.moment0_rms[2]
 
     @property
     def yp0_rms(self):
-        """float: general rms beam envelope for ``y'``, [rad]"""
+        """float: general rms beam envelope for :math:`y'`, [rad]"""
         return self._states.moment0_rms[3]
 
     @property
@@ -740,17 +796,17 @@ class BeamState(object):
 
     @property
     def xnemittance_all(self):
-        """float: normalized x emittance of all charge states, [mm-mrad]"""
+        """Array: normalized x emittance of all charge states, [mm-mrad]"""
         return self.ref_bg*self.xeps_all
 
     @property
     def ynemittance_all(self):
-        """float: normalized y emittance of all charge states, [mm-mrad]"""
+        """Array: normalized y emittance of all charge states, [mm-mrad]"""
         return self.ref_bg*self.yeps_all
 
     @property
     def znemittance_all(self):
-        """float: normalized z emittance of all charge states, [rad-MeV/u]"""
+        """Array: normalized z emittance of all charge states, [rad-MeV/u]"""
         return self.ref_bg*self.zeps_all
 
     @property
@@ -770,17 +826,17 @@ class BeamState(object):
 
     @property
     def xtwiss_beta_all(self):
-        """float: twiss beta x of all charge states, [m/rad]"""
+        """Array: twiss beta x of all charge states, [m/rad]"""
         return self._states.moment1[0, 0, :]/self.xeps_all
 
     @property
     def ytwiss_beta_all(self):
-        """float: twiss beta y of all charge states, [m/rad]"""
+        """Array: twiss beta y of all charge states, [m/rad]"""
         return self._states.moment1[2, 2, :]/self.yeps_all
 
     @property
     def ztwiss_beta_all(self):
-        """float: twiss beta z of all charge states, [rad/MeV/u]"""
+        """Array: twiss beta z of all charge states, [rad/MeV/u]"""
         return self._states.moment1[4, 4, :]/self.zeps_all
 
     @property
@@ -800,17 +856,17 @@ class BeamState(object):
 
     @property
     def xtwiss_alpha_all(self):
-        """float: twiss alpha x of all charge states, [1]"""
+        """Array: twiss alpha x of all charge states, [1]"""
         return -self._states.moment1[0, 1, :]/self.xeps_all*1e3
 
     @property
     def ytwiss_alpha_all(self):
-        """float: twiss alpha y of all charge states, [1]"""
+        """Array: twiss alpha y of all charge states, [1]"""
         return -self._states.moment1[2, 3, :]/self.yeps_all*1e3
 
     @property
     def ztwiss_alpha_all(self):
-        """float: twiss alpha z of all charge states, [1]"""
+        """Array: twiss alpha z of all charge states, [1]"""
         return -self._states.moment1[4, 5, :]/self.zeps_all
 
     @property
@@ -835,22 +891,22 @@ class BeamState(object):
 
     @property
     def couple_xy_all(self):
-        """float: normalized x-y coupling term of all charge states, [1]"""
+        """Array: normalized x-y coupling term of all charge states, [1]"""
         return np.array([self.get_couple('x', 'y', cs=i) for i in range(len(self.bg))])
 
     @property
     def couple_xpy_all(self):
-        """float: normalized xp-y coupling term of all charge states, [1]"""
+        """Array: normalized xp-y coupling term of all charge states, [1]"""
         return np.array([self.get_couple('xp', 'y', cs=i) for i in range(len(self.bg))])
 
     @property
     def couple_xyp_all(self):
-        """float: normalized x-yp coupling term of all charge states, [1]"""
+        """Array: normalized x-yp coupling term of all charge states, [1]"""
         return np.array([self.get_couple('x', 'yp', cs=i) for i in range(len(self.bg))])
 
     @property
     def couple_xpyp_all(self):
-        """float: normalized xp-yp coupling term of all charge states, [1]"""
+        """Array: normalized xp-yp coupling term of all charge states, [1]"""
         return np.array([self.get_couple('xp', 'yp', cs=i) for i in range(len(self.bg))])
 
     def set_twiss(self, coor, alpha = None, beta = None, rmssize = None, emittance = None, nemittance = None, cs = 0):
@@ -873,8 +929,8 @@ class BeamState(object):
         cs : int
             Index of the charge state to set parameter.
 
-        Note
-        ----
+        Notes
+        -----
         'nemittance' is ignored if both 'emittance' and 'nemittance' are input.
         """
         eps = emittance
@@ -982,8 +1038,9 @@ class BeamState(object):
             mat = self._states.moment1_env
         else:
             mat = self._states.moment1[:, :, cs]
-        fac = np.sqrt(mat[c1, c1]*mat[c2, c2])
-        term = mat[c1, c2]/fac if fac != 0.0 else 0.0
+
+        fac = mat[c1, c1]*mat[c2, c2]
+        term = mat[c1, c2]/np.sqrt(fac) if fac > 0.0 else 0.0
 
         return term
 
@@ -1008,8 +1065,9 @@ class BeamState(object):
             return None
 
         mat = self._states.moment1
-        fac = np.sqrt(mat[c1, c1, cs]*mat[c2, c2, cs])
-        mat[c1, c2, cs] = mat[c2, c1, cs] = value*fac
+        fac = mat[c1, c1, cs]*mat[c2, c2, cs]
+        term = value*np.sqrt(fac) if fac > 0.0 else 0.0
+        mat[c1, c2, cs] = mat[c2, c1, cs] = term
 
         self._states.moment1 = mat
         self.dm.propagate(self.state)
@@ -1029,8 +1087,8 @@ def generate_source(state, sconf=None):
     ret : dict
         FLAME source element configuration.
 
-    Warning
-    -------
+    Notes
+    -----
     All zeros state may not produce reasonable result, for this case, the
     recommended way is to create a `BeamState` object with `latfile` or
     `machine` keyword parameter, e.g. `s = BeamState(s0, machine=m)`, then

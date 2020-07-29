@@ -39,143 +39,36 @@ from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
 
-def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
-              monitor=None, **kws):
-    """Propagate ``BeamState``.
-
-    Parameters
-    ----------
-    machine :
-        FLAME machine object.
-    bmstate :
-        BeamState object.
-    from_element : int
-        Element index of start point, if not set, will be the first element.
-    to_element : int
-        Element index of end point, if not set, will be the last element.
-    monitor : list
-        List of element indice selected as states monitors, if set -1, will be
-        a list of only last element.
-
-    Keyword Arguments
-    -----------------
-    latfile : str
-        FLAME lattice file.
-
-    Returns
-    -------
-    tuple
-        None if failed, else tuple of ``(r, bs)``, where ``r`` is list of
-        results at each monitor points, ``bs`` is ``BeamState`` object
-        after the last monitor point.
-
-    See Also
-    --------
-    BeamState : FLAME beam state class created for ``MomentMatrix`` type.
-    """
-    _latfile = kws.get('latfile', None)
-    _machine = machine
-    _m = machine_setter(_latfile, _machine, 'propagate')
-    if _m is None:
-        return None
-    if bmstate is None:
-        bs = BeamState(_m.allocState({}))
-    else:
-        bs = bmstate
-
-    vstart = 0 if from_element is None else from_element
-    vend = len(_m) - 1 if to_element is None else to_element
-    obs = [vend] if monitor == -1 else monitor
-
-    vmax = vend - vstart + 1
-    s = bs.state
-    r = _m.propagate(s, start=vstart, max=vmax, observe=obs)
-    bs.state = s
-    return r, bs
-
-
-def configure(machine=None, econf=None, **kws):
-    """Configure FLAME machine.
-
-    Parameters
-    ----------
-    machine :
-        FLAME machine object.
-    econf : (list of) dict
-        Element configuration(s).
-
-    Keyword Arguments
-    -----------------
-    latfile : str
-        FLAME lattice file.
-    c_idx : int
-        Element index.
-    c_dict : dict
-        Configuration dict.
-
-    Returns
-    -------
-    m : New FLAME machine object
-        None if failed, else new machine object.
-
-    Note
-    ----
-    If wanna configure FLAME machine by conventional way, then *c_idx* and
-    *c_dict* could be used, e.g. reconfigure one corrector of ``m``:
-    ``configure(machine=m, c_idx=10, c_dict={'theta_x': 0.001})``
-    which is just the same as: ``m.reconfigure(10, {'theta_x': 0.001})``.
-
-    Examples
-    --------
-    >>> from flame import Machine
-    >>> from phantasy import flameutils
-    >>>
-    >>> latfile = 'test.lat'
-    >>> m = Machine(open(latfile, 'r'))
-    >>>
-    >>> # reconfigure one element
-    >>> e1 = flameutils.get_element(_machine=m, index=1)[0]
-    >>> print(e1)
-    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.02,
-     'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
-    >>> e1['properties']['aper'] = 0.04
-    >>> m = flameutils.configure(m, e1)
-    >>> print(flameutils.get_element(_machine=m, index=1)[0])
-    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.04,
-     'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
-    >>>
-    >>> # reconfiugre more than one element
-    >>> e_cor = flameutils.get_element(_machine=m, type='orbtrim')
-    >>> # set all horizontal correctors with theta_x = 0.001
-    >>> for e in e_cor:
-    >>>     if 'theta_x' in e['properties']:
-    >>>         e['properties']['theta_x'] = 0.001
-    >>> m = flameutils.configure(m, e_cor)
-
-    See Also
-    --------
-    get_element : Get FLAME lattice element configuration.
-    """
-    _latfile = kws.get('latfile', None)
-    _machine = machine
-    _m = machine_setter(_latfile, _machine, 'configure')
-    if _m is None:
-        return None
-
-    _c_idx, _c_dict = kws.get('c_idx'), kws.get('c_dict')
-    if _c_idx is not None and _c_dict is not None:
-        _m.reconfigure(_c_idx, _c_dict)
-    else:
-        if not isinstance(econf, list):
-            _m.reconfigure(econf['index'], econf['properties'])
-        else:
-            for e in econf:
-                _m.reconfigure(e['index'], e['properties'])
-    return _m
-
 
 class ModelFlame(object):
     """General FLAME modeling class.
+
+    Class attributes:
+
+    .. autosummary ::
+        latfile
+        machine
+        bmstate
+
+    Class methods
+
+    .. autosummary ::
+        generate_latfile
+        find
+        reconfigure
+        run
+        collect_data
+        insert_element
+        get_element
+        configure
+        get_all_types
+        get_all_names
+        get_index_by_type
+        get_index_by_name
+        get_transfer_matrix
+        convert_results
+        inspect_lattice
+        clone_machine
 
     Parameters
     ----------
@@ -245,7 +138,9 @@ class ModelFlame(object):
 
     @property
     def bmstate(self):
-        """BeamState: Could be initialized with FLAME internal state
+        """Initial beam condtion for the simulation.
+
+        BeamState: Could be initialized with FLAME internal state
         or BeamState object.
 
         See Also
@@ -442,8 +337,8 @@ class ModelFlame(object):
             points, ``s`` is ``BeamState`` object after the last monitor
             point.
 
-        Warning
-        -------
+        Notes
+        -----
         This method does not change the input *bmstate*, while ``propagate``
         changes.
 
@@ -565,8 +460,8 @@ class ModelFlame(object):
         configure : Configure FLAME machine.
         get_element : Get FLAME lattice element configuration.
 
-        Note
-        ----
+        Notes
+        -----
         Pass `econf` with a list of dict for applying batch configuring.
         """
         m = configure(self._mach_ins, econf)
@@ -587,6 +482,11 @@ class ModelFlame(object):
             Element index (or name) to reconfigure.
         properties : dict
             Element property to reconfigure.
+
+        Examples
+        --------
+        >>> # Set gradient of 'quad1' to 0.245
+        >>> fm.reconfigure('quad1', {'B2': 0.245})
 
         See Also
         --------
@@ -630,8 +530,8 @@ class ModelFlame(object):
         element : dict
             Lattice element dictionary.
 
-        Note
-        ----
+        Notes
+        -----
         User must input 'econf' or 'index and element'.
         If econf is defined, insert econf['properties'] element before econf['index'].
         """
@@ -666,8 +566,8 @@ class ModelFlame(object):
         str
             Generated filename, None if failed to generate lattice file.
 
-        Note
-        ----
+        Notes
+        -----
         - If *latfile* is not defined, will overwrite the input lattice file;
         - If *start* is defined, user should define *state* also.
         - If user define *start* only, the initial beam state is the same as the *machine*.
@@ -710,3 +610,137 @@ class ModelFlame(object):
         matrice = reversed([i.transfer_matrix[:, :, cs] for _, i in r[1:]])
         return reduce(np.dot, matrice)
 
+
+def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
+              monitor=None, **kws):
+    """Propagate ``BeamState``.
+
+    Parameters
+    ----------
+    machine :
+        FLAME machine object.
+    bmstate :
+        BeamState object.
+    from_element : int
+        Element index of start point, if not set, will be the first element.
+    to_element : int
+        Element index of end point, if not set, will be the last element.
+    monitor : list
+        List of element indice selected as states monitors, if set -1, will be
+        a list of only last element.
+
+    Keyword Arguments
+    -----------------
+    latfile : str
+        FLAME lattice file.
+
+    Returns
+    -------
+    tuple
+        None if failed, else tuple of ``(r, bs)``, where ``r`` is list of
+        results at each monitor points, ``bs`` is ``BeamState`` object
+        after the last monitor point.
+
+    See Also
+    --------
+    BeamState : FLAME beam state class created for ``MomentMatrix`` type.
+    """
+    _latfile = kws.get('latfile', None)
+    _machine = machine
+    _m = machine_setter(_latfile, _machine, 'propagate')
+    if _m is None:
+        return None
+    if bmstate is None:
+        bs = BeamState(_m.allocState({}))
+    else:
+        bs = bmstate
+
+    vstart = 0 if from_element is None else from_element
+    vend = len(_m) - 1 if to_element is None else to_element
+    obs = [vend] if monitor == -1 else monitor
+
+    vmax = vend - vstart + 1
+    s = bs.state
+    r = _m.propagate(s, start=vstart, max=vmax, observe=obs)
+    bs.state = s
+    return r, bs
+
+
+def configure(machine=None, econf=None, **kws):
+    """Configure FLAME machine.
+
+    Parameters
+    ----------
+    machine :
+        FLAME machine object.
+    econf : (list of) dict
+        Element configuration(s).
+
+    Keyword Arguments
+    -----------------
+    latfile : str
+        FLAME lattice file.
+    c_idx : int
+        Element index.
+    c_dict : dict
+        Configuration dict.
+
+    Returns
+    -------
+    m : New FLAME machine object
+        None if failed, else new machine object.
+
+    Notes
+    -----
+    If wanna configure FLAME machine by conventional way, then *c_idx* and
+    *c_dict* could be used, e.g. reconfigure one corrector of ``m``:
+    ``configure(machine=m, c_idx=10, c_dict={'theta_x': 0.001})``
+    which is just the same as: ``m.reconfigure(10, {'theta_x': 0.001})``.
+
+    Examples
+    --------
+    >>> from flame import Machine
+    >>> from phantasy import flameutils
+    >>>
+    >>> latfile = 'test.lat'
+    >>> m = Machine(open(latfile, 'r'))
+    >>>
+    >>> # reconfigure one element
+    >>> e1 = flameutils.get_element(_machine=m, index=1)[0]
+    >>> print(e1)
+    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.02,
+     'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
+    >>> e1['properties']['aper'] = 0.04
+    >>> m = flameutils.configure(m, e1)
+    >>> print(flameutils.get_element(_machine=m, index=1)[0])
+    {'index': 1, 'properties': {'L': 0.072, 'aper': 0.04,
+     'name': 'LS1_CA01:GV_D1124', 'type': 'drift'}}
+    >>>
+    >>> # reconfiugre more than one element
+    >>> e_cor = flameutils.get_element(_machine=m, type='orbtrim')
+    >>> # set all horizontal correctors with theta_x = 0.001
+    >>> for e in e_cor:
+    >>>     if 'theta_x' in e['properties']:
+    >>>         e['properties']['theta_x'] = 0.001
+    >>> m = flameutils.configure(m, e_cor)
+
+    See Also
+    --------
+    get_element : Get FLAME lattice element configuration.
+    """
+    _latfile = kws.get('latfile', None)
+    _machine = machine
+    _m = machine_setter(_latfile, _machine, 'configure')
+    if _m is None:
+        return None
+
+    _c_idx, _c_dict = kws.get('c_idx'), kws.get('c_dict')
+    if _c_idx is not None and _c_dict is not None:
+        _m.reconfigure(_c_idx, _c_dict)
+    else:
+        if not isinstance(econf, list):
+            _m.reconfigure(econf['index'], econf['properties'])
+        else:
+            for e in econf:
+                _m.reconfigure(e['index'], e['properties'])
+    return _m
