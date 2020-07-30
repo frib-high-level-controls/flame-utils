@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Plot function &mdash; flame-utils  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/frib-favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Application Programming Interface" href="api.html" />
+    <link rel="prev" title="ModelFlame Class" href="modelflame.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> flame-utils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="element.html">Lattice Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beamstate.html">BeamState Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelflame.html">ModelFlame Class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plot function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flame-utils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Plot function</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/plotlat.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-flame_utils.viz.plotlat">
+<span id="plot-function"></span><h1>Plot function<a class="headerlink" href="#module-flame_utils.viz.plotlat" title="Permalink to this headline">¶</a></h1>
+<p>This module provides lattice picture from FLAME lattice file(.lat) or FLAME Machine object.</p>
+<dl class="py function">
+<dt id="flame_utils.viz.plotlat.hplot">
+<code class="sig-prename descclassname">flame_utils.viz.plotlat.</code><code class="sig-name descname">hplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/viz/plotlat.html#hplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.viz.plotlat.hplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot beam state history with input arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>machine</strong><span class="classifier">object</span></dt><dd><p>FLAME machine or ModelFlame object.</p>
+</dd>
+<dt><strong>result :</strong></dt><dd><p>List of beam state, generated by Machine.propagete() or ModelFlame.run() method.</p>
+</dd>
+<dt><strong>args</strong><span class="classifier">str</span></dt><dd><p>Beam state attributes to plot, seprated by comma. (see Note)</p>
+</dd>
+<dt><strong>colors</strong><span class="classifier">dict</span></dt><dd><p>Color definition of each <code class="docutils literal notranslate"><span class="pre">args</span></code>.</p>
+</dd>
+<dt><strong>lattice</strong><span class="classifier">bool</span></dt><dd><p>Plot lattice layout.</p>
+</dd>
+<dt><strong>legend</strong><span class="classifier">bool</span></dt><dd><p>Plot legend of <code class="docutils literal notranslate"><span class="pre">args</span></code></p>
+</dd>
+<dt><strong>cs</strong><span class="classifier">int</span></dt><dd><p>Index of the charge state to plot.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>List of supported <a class="reference internal" href="beamstate.html#flame_utils.core.state.BeamState" title="flame_utils.core.state.BeamState"><code class="xref py py-func docutils literal notranslate"><span class="pre">BeamState</span></code></a> arguments</p>
+<dl class="simple">
+<dt>pos<span class="classifier">float</span></dt><dd><p>Longitudinally propagating position, [m].</p>
+</dd>
+<dt>ref_beta<span class="classifier">float</span></dt><dd><p>Speed in the unit of light velocity in vacuum of reference charge
+state, Lorentz beta.</p>
+</dd>
+<dt>ref_bg<span class="classifier">float</span></dt><dd><p>Multiplication of beta and gamma of reference charge state.</p>
+</dd>
+<dt>ref_gamma<span class="classifier">float</span></dt><dd><p>Relativistic energy of reference charge state, Lorentz gamma.</p>
+</dd>
+<dt>ref_IonEk<span class="classifier">float</span></dt><dd><p>Kinetic energy of reference charge state, [eV/u].</p>
+</dd>
+<dt>ref_IonEs<span class="classifier">float</span></dt><dd><p>Rest energy of reference charge state, [eV/u].</p>
+</dd>
+<dt>ref_IonQ<span class="classifier">int</span></dt><dd><p>Macro particle number of reference charge state.</p>
+</dd>
+<dt>ref_IonW<span class="classifier">float</span></dt><dd><p>Total energy of reference charge state, [eV/u],
+i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span>.</p>
+</dd>
+<dt>ref_IonZ<span class="classifier">float</span></dt><dd><p>Reference charge state, measured by charge to mass ratio, e.g.
+<span class="math notranslate nohighlight">\(^{33^{+}}_{238}U: Q[33]/A[238]\)</span>.</p>
+</dd>
+<dt>ref_phis<span class="classifier">float</span></dt><dd><p>Absolute synchrotron phase of reference charge state, [rad].</p>
+</dd>
+<dt>ref_SampleIonK<span class="classifier">float</span></dt><dd><p>Wave-vector in cavities with different beta values of reference charge
+state.</p>
+</dd>
+<dt>beta<span class="classifier">Array</span></dt><dd><p>Speed in the unit of light velocity in vacuum of all charge states,
+Lorentz beta.</p>
+</dd>
+<dt>bg<span class="classifier">Array</span></dt><dd><p>Multiplication of beta and gamma of all charge states.</p>
+</dd>
+<dt>gamma<span class="classifier">Array</span></dt><dd><p>Relativistic energy of all charge states, Lorentz gamma.</p>
+</dd>
+<dt>IonEk<span class="classifier">Array</span></dt><dd><p>Kinetic energy of all charge states, [eV/u].</p>
+</dd>
+<dt>IonEs<span class="classifier">Array</span></dt><dd><p>Rest energy of all charge states, [eV/u].</p>
+</dd>
+<dt>IonQ<span class="classifier">Array</span></dt><dd><p>Macro particle number of all charge states.</p>
+</dd>
+<dt>IonW<span class="classifier">Array</span></dt><dd><p>Total energy of all charge states, [eV/u], i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span>.</p>
+</dd>
+<dt>IonZ<span class="classifier">Array</span></dt><dd><p>All charge states, measured by charge to mass ratio</p>
+</dd>
+<dt>phis<span class="classifier">Array</span></dt><dd><p>Absolute synchrotron phase of all charge states, [rad]</p>
+</dd>
+<dt>SampleIonK<span class="classifier">Array</span></dt><dd><p>Wave-vector in cavities with different beta values of all charge
+states.</p>
+</dd>
+<dt>x0_env, xcen<span class="classifier">float</span></dt><dd><p>Weight average of all charge states for x’, [rad].</p>
+</dd>
+<dt>y0_env, ycen<span class="classifier">float</span></dt><dd><p>Weight average of all charge states for y, [mm].</p>
+</dd>
+<dt>xp0_env, xpcen<span class="classifier">float</span></dt><dd><p>Weight average of all charge states for x’, [rad].</p>
+</dd>
+<dt>yp0_env, ypcen<span class="classifier">float</span></dt><dd><p>Weight average of all charge states for y’, [rad].</p>
+</dd>
+<dt>phi0_env, phicen, zcen: float</dt><dd><p>Weight average of all charge states for <span class="math notranslate nohighlight">\(\phi\)</span>, [rad].</p>
+</dd>
+<dt>dEk0_env, dEkcen, zpcen<span class="classifier">float</span></dt><dd><p>Weight average of all charge states for <span class="math notranslate nohighlight">\(\delta E_k\)</span>, [MeV/u].</p>
+</dd>
+<dt>x0, xcen_all<span class="classifier">Array</span></dt><dd><p>X centroid for all charge states, [mm].</p>
+</dd>
+<dt>y0, ycen_all<span class="classifier">Array</span></dt><dd><p>Y centroid for all charge states, [mm].</p>
+</dd>
+<dt>xp0, xpcen_all<span class="classifier">Array</span></dt><dd><p>X centroid divergence for all charge states, [rad].</p>
+</dd>
+<dt>yp0, ypcen_all<span class="classifier">Array</span></dt><dd><p>Y centroid divergence for all charge states, [rad].</p>
+</dd>
+<dt>phi0, phicen_all, zcen_all<span class="classifier">Array</span></dt><dd><p>Longitudinal beam length, measured in RF frequency for all charge
+states, [rad].</p>
+</dd>
+<dt>dEk0, dEkcen_all, zpcen_all<span class="classifier">Array</span></dt><dd><p>Kinetic energy deviation w.r.t. reference charge state, for all charge
+states, [MeV/u].</p>
+</dd>
+<dt>x0_rms, xrms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for x, [mm].</p>
+</dd>
+<dt>y0_rms, yrms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for y, [mm].</p>
+</dd>
+<dt>xp0_rms, xprms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for x’, [rad].</p>
+</dd>
+<dt>yp0_rms, yprms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for y’, [rad].</p>
+</dd>
+<dt>phi0_rms, phirms, zrms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span>, [rad].</p>
+</dd>
+<dt>dEk0_rms, dEkrms, zprms<span class="classifier">float</span></dt><dd><p>General rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span>, [MeV/u].</p>
+</dd>
+<dt>xrms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for x of all charge states, [mm].</p>
+</dd>
+<dt>yrms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for y of all charge states, [mm].</p>
+</dd>
+<dt>xprms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for x’ of all charge states, [rad].</p>
+</dd>
+<dt>yprms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for y’ of all charge states, [rad].</p>
+</dd>
+<dt>phirms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span> of all charge states, [rad].</p>
+</dd>
+<dt>dEkrms_all<span class="classifier">Array</span></dt><dd><p>General rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span> of all charge states, [MeV/u].</p>
+</dd>
+<dt>moment0_env, cenvector<span class="classifier">Array</span></dt><dd><p>Weight average of centroid for all charge states, array of
+<code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code>, with the units of
+<code class="docutils literal notranslate"><span class="pre">[mm,</span> <span class="pre">rad,</span> <span class="pre">mm,</span> <span class="pre">rad,</span> <span class="pre">rad,</span> <span class="pre">MeV/u,</span> <span class="pre">1]</span></code>.</p>
+</dd>
+<dt>moment0, cenvector_all<span class="classifier">Array</span></dt><dd><p>Centroid for all charge states, array of <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code>.</p>
+</dd>
+<dt>moment0_rms, rmsvector<span class="classifier">Array</span></dt><dd><p>RMS beam envelope, part of statistical results from <code class="docutils literal notranslate"><span class="pre">moment1</span></code>.</p>
+</dd>
+<dt>moment1, beammatrix_all<span class="classifier">Array</span></dt><dd><p>Correlation tensor of all charge states, for each charge state.</p>
+</dd>
+<dt>moment1_env, beammatrix<span class="classifier">Array</span></dt><dd><p>Correlation tensor of all charge states, average over all charge states.</p>
+</dd>
+<dt>xemittance, xeps<span class="classifier">float</span></dt><dd><p>Weight average of geometrical x emittance, [mm-mrad].</p>
+</dd>
+<dt>yemittance, yeps<span class="classifier">float</span></dt><dd><p>Weight average of geometrical y emittance, [mm-mrad].</p>
+</dd>
+<dt>zemittance, zeps<span class="classifier">float</span></dt><dd><p>Weight average of geometrical z emittance, [rad-MeV/u].</p>
+</dd>
+<dt>xnemittance, xepsn<span class="classifier">float</span></dt><dd><p>Weight average of normalized x emittance, [mm-mrad].</p>
+</dd>
+<dt>ynemittance, yepsn<span class="classifier">float</span></dt><dd><p>Weight average of normalized y emittance, [mm-mrad].</p>
+</dd>
+<dt>znemittance, zepsn<span class="classifier">float</span></dt><dd><p>Weight average of normalized z emittance, [rad-MeV/u].</p>
+</dd>
+<dt>xemittance_all, xeps_all<span class="classifier">Array</span></dt><dd><p>Geometrical x emittance of all charge states, [mm-mrad].</p>
+</dd>
+<dt>yemittance_all, yeps_all<span class="classifier">Array</span></dt><dd><p>Geometrical y emittance of all charge states, [mm-mrad].</p>
+</dd>
+<dt>zemittance_all, zeps_all<span class="classifier">Array</span></dt><dd><p>Geometrical z emittance of all charge states, [rad-MeV/u].</p>
+</dd>
+<dt>xnemittance_all, xepsn_all<span class="classifier">Array</span></dt><dd><p>Normalized x emittance of all charge states, [mm-mrad].</p>
+</dd>
+<dt>ynemittance_all, yepsn_all<span class="classifier">Array</span></dt><dd><p>Normalized y emittance of all charge states, [mm-mrad].</p>
+</dd>
+<dt>znemittance_all, zepsn_all<span class="classifier">Array</span></dt><dd><p>Normalized z emittance of all charge states, [rad-MeV/u].</p>
+</dd>
+<dt>xtwiss_beta, xtwsb<span class="classifier">float</span></dt><dd><p>Weight average of twiss beta x, [m/rad].</p>
+</dd>
+<dt>ytwiss_beta, ytwsb<span class="classifier">float</span></dt><dd><p>Weight average of twiss beta y, [m/rad].</p>
+</dd>
+<dt>ztwiss_beta, ztwsb<span class="classifier">float</span></dt><dd><p>Weight average of twiss beta z, [rad/MeV/u].</p>
+</dd>
+<dt>xtwiss_alpha, xtwsa<span class="classifier">float</span></dt><dd><p>Weight average of twiss alpha x, [1].</p>
+</dd>
+<dt>ytwiss_alpha, ytwsa<span class="classifier">float</span></dt><dd><p>Weight average of twiss alpha y, [1].</p>
+</dd>
+<dt>ztwiss_alpha, ztwsa<span class="classifier">float</span></dt><dd><p>Weight average of twiss alpha z, [1].</p>
+</dd>
+<dt>xtwiss_beta_all, xtwsb_all<span class="classifier">Array</span></dt><dd><p>Twiss beta x of all charge states, [m/rad].</p>
+</dd>
+<dt>ytwiss_beta_all, ytwsb_all<span class="classifier">Array</span></dt><dd><p>Twiss beta y of all charge states, [m/rad].</p>
+</dd>
+<dt>ztwiss_beta_all, ztwsb_all<span class="classifier">Array</span></dt><dd><p>Twiss beta z of all charge states, [rad/MeV/u].</p>
+</dd>
+<dt>xtwiss_alpha_all, xtwsa_all<span class="classifier">Array</span></dt><dd><p>Twiss alpha x of all charge states, [1].</p>
+</dd>
+<dt>ytwiss_alpha_all, ytwsa_all<span class="classifier">Array</span></dt><dd><p>Twiss alpha y of all charge states, [1].</p>
+</dd>
+<dt>ztwiss_alpha_all, ztwsa_all<span class="classifier">Array</span></dt><dd><p>Twiss alpha z of all charge states, [1].</p>
+</dd>
+<dt>couple_xy, cxy<span class="classifier">float</span></dt><dd><p>Weigth average of normalized x-y coupling term, [1].</p>
+</dd>
+<dt>couple_xpy, cxpy<span class="classifier">float</span></dt><dd><p>Weigth average of normalized xp-y coupling term, [1].</p>
+</dd>
+<dt>couple_xyp, cxyp<span class="classifier">float</span></dt><dd><p>Weigth average of normalized x-yp coupling term, [1].</p>
+</dd>
+<dt>couple_xpyp, cxpyp<span class="classifier">float</span></dt><dd><p>Weigth average of normalized xp-yp coupling term, [1].</p>
+</dd>
+<dt>couple_xy_all, cxy_all<span class="classifier">Array</span></dt><dd><p>Normalized x-y coupling term of all charge states, [1].</p>
+</dd>
+<dt>couple_xpy_all, cxpy_all<span class="classifier">Array</span></dt><dd><p>Normalized xp-y coupling term of all charge states, [1].</p>
+</dd>
+<dt>couple_xyp_all, cxyp_all<span class="classifier">Array</span></dt><dd><p>Normalized x-yp coupling term of all charge states, [1].</p>
+</dd>
+<dt>couple_xpyp_all, cxpyp_all<span class="classifier">Array</span></dt><dd><p>Normalized xp-yp coupling term of all charge states, [1].</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fm</span> <span class="o">=</span> <span class="n">ModelFlame</span><span class="p">(</span><span class="n">lat_file</span> <span class="o">=</span> <span class="s1">&#39;userfile.lat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hplot</span><span class="p">(</span><span class="s1">&#39;xrms&#39;</span><span class="p">,</span> <span class="s1">&#39;yrms&#39;</span><span class="p">,</span> <span class="n">machine</span><span class="o">=</span><span class="n">fm</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="flame_utils.viz.plotlat.PlotLat">
+<em class="property">class </em><code class="sig-prename descclassname">flame_utils.viz.plotlat.</code><code class="sig-name descname">PlotLat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_scaling</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">starting_offset</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/viz/plotlat.html#PlotLat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.viz.plotlat.PlotLat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Lattice picture class from FLAME lattice file or FLAME Machine object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>source</strong><span class="classifier">str or callable</span></dt><dd><p>File path of the lattic file (str) or FLAME Machine object (callable)</p>
+</dd>
+<dt><strong>output</strong><span class="classifier">str (None), optional</span></dt><dd><p>Output file name. If defined, the lattice plot is generated automatically.</p>
+</dd>
+<dt><strong>auto_scaling</strong><span class="classifier">bool (True), optional</span></dt><dd><p>Flag for y-axis scaling by strength of the optical elements</p>
+</dd>
+<dt><strong>starting_offset</strong><span class="classifier">float (0.0), optional</span></dt><dd><p>Position offset of starting point in the lattice file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>types</strong><span class="classifier">dict</span></dt><dd><p>Element type list of the lattice. Each element type contains
+on-off ‘flag’, plotting ‘color’, and y-axis ‘scale’.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="flame_utils.viz.plotlat.PlotLat.generate">
+<code class="sig-name descname">generate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ycen</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">yscl</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">aspect</span><span class="o">=</span><span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">legend</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">option</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">axes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/viz/plotlat.html#PlotLat.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.viz.plotlat.PlotLat.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate matplotlib Axes class object from lattice file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Index of the lattice start.</p>
+</dd>
+<dt><strong>end</strong><span class="classifier">int</span></dt><dd><p>Index of the lattice end.</p>
+</dd>
+<dt><strong>xlim</strong><span class="classifier">list[2], optinal</span></dt><dd><p>Plot range of the lattice.</p>
+</dd>
+<dt><strong>ycen</strong><span class="classifier">float (0.0)</span></dt><dd><p>Vertical offset of the plot.</p>
+</dd>
+<dt><strong>yscl</strong><span class="classifier">float (1.0)</span></dt><dd><p>Plot scale of the element size</p>
+</dd>
+<dt><strong>aspect</strong><span class="classifier">float (5.0), optional</span></dt><dd><p>Aspect ratio of the picture.</p>
+</dd>
+<dt><strong>legend</strong><span class="classifier">bool</span></dt><dd><p>Add legend for the elements.</p>
+</dd>
+<dt><strong>option</strong><span class="classifier">bool</span></dt><dd><p>Add optional setting for the plot.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>axes</strong><span class="classifier">callable</span></dt><dd><p>Axes class object of matplotlib.</p>
+</dd>
+<dt><strong>total_length</strong><span class="classifier">float</span></dt><dd><p>Total length of the lattice.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flame_utils.viz.plotlat.PlotLat.output">
+<code class="sig-name descname">output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">window</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">fname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/viz/plotlat.html#PlotLat.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.viz.plotlat.PlotLat.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output the lattice picture to window and/or file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>window</strong><span class="classifier">bool (True)</span></dt><dd><p>Output flag to the window.</p>
+</dd>
+<dt><strong>fname</strong><span class="classifier">str, optional</span></dt><dd><p>File path of the output picutre.</p>
+</dd>
+<dt><strong>**kwargs :</strong></dt><dd><p>The same kwargs as pyplot.savefig() are available.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="Application Programming Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modelflame.html" class="btn btn-neutral float-left" title="ModelFlame Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University
+      <span class="lastupdated">
+        Last updated on Jul 30, 2020.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

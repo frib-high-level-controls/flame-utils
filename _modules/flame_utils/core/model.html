@@ -1,0 +1,958 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flame_utils.core.model &mdash; flame-utils  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/frib-favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> flame-utils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../element.html">Lattice Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beamstate.html">BeamState Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modelflame.html">ModelFlame Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plotlat.html">Plot function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">Application Programming Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flame-utils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flame_utils.core.model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flame_utils.core.model</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Simulation/modeling with FLAME.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">flame</span>
+<span class="kn">from</span> <span class="nn">flame</span> <span class="kn">import</span> <span class="n">Machine</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">basestring</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="kn">from</span> <span class="nn">flame_utils.misc</span> <span class="kn">import</span> <span class="n">is_zeros_states</span>
+<span class="kn">from</span> <span class="nn">flame_utils.misc</span> <span class="kn">import</span> <span class="n">machine_setter</span>
+<span class="kn">from</span> <span class="nn">flame_utils.misc</span> <span class="kn">import</span> <span class="n">conf_update</span>
+<span class="kn">from</span> <span class="nn">flame_utils.io</span> <span class="kn">import</span> <span class="n">collect_data</span>
+<span class="kn">from</span> <span class="nn">flame_utils.io</span> <span class="kn">import</span> <span class="n">convert_results</span>
+<span class="kn">from</span> <span class="nn">flame_utils.io</span> <span class="kn">import</span> <span class="n">generate_latfile</span>
+
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">get_all_names</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">get_all_types</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">get_element</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">get_index_by_name</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">get_index_by_type</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">inspect_lattice</span>
+<span class="kn">from</span> <span class="nn">.element</span> <span class="kn">import</span> <span class="n">insert_element</span>
+<span class="kn">from</span> <span class="nn">.state</span> <span class="kn">import</span> <span class="n">BeamState</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ModelFlame"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame">[docs]</a><span class="k">class</span> <span class="nc">ModelFlame</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;General FLAME modeling class.</span>
+
+<span class="sd">    Class attributes:</span>
+
+<span class="sd">    .. autosummary ::</span>
+<span class="sd">        latfile</span>
+<span class="sd">        machine</span>
+<span class="sd">        bmstate</span>
+
+<span class="sd">    Class methods</span>
+
+<span class="sd">    .. autosummary ::</span>
+<span class="sd">        generate_latfile</span>
+<span class="sd">        find</span>
+<span class="sd">        reconfigure</span>
+<span class="sd">        run</span>
+<span class="sd">        collect_data</span>
+<span class="sd">        insert_element</span>
+<span class="sd">        get_element</span>
+<span class="sd">        configure</span>
+<span class="sd">        get_all_types</span>
+<span class="sd">        get_all_names</span>
+<span class="sd">        get_index_by_type</span>
+<span class="sd">        get_index_by_name</span>
+<span class="sd">        get_transfer_matrix</span>
+<span class="sd">        convert_results</span>
+<span class="sd">        inspect_lattice</span>
+<span class="sd">        clone_machine</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lat_file : str</span>
+<span class="sd">        FLAME lattice file, if not set, None.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from flame import Machine</span>
+<span class="sd">    &gt;&gt;&gt; from flame_utlis import ModelFlame</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; latfile = &quot;lattice/test.lat&quot;</span>
+<span class="sd">    &gt;&gt;&gt; fm1 = ModelFlame()</span>
+<span class="sd">    &gt;&gt;&gt; # manually initialization</span>
+<span class="sd">    &gt;&gt;&gt; fm1.latfile = latfile</span>
+<span class="sd">    &gt;&gt;&gt; m = Machine(latfile)</span>
+<span class="sd">    &gt;&gt;&gt; fm1.machine = m</span>
+<span class="sd">    &gt;&gt;&gt; fm1.bmstate = m.allocState({})</span>
+<span class="sd">    &gt;&gt;&gt; # or by explicitly calling:</span>
+<span class="sd">    &gt;&gt;&gt; fm1.machine, fm1.bmstate = fm1.init_machine(latfile)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # initialize with valid lattice file</span>
+<span class="sd">    &gt;&gt;&gt; fm2 = ModelFlame(lat_file=latfile)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # (Recommanded) initialize with BeamState</span>
+<span class="sd">    &gt;&gt;&gt; fm = ModelFlame()</span>
+<span class="sd">    &gt;&gt;&gt; bs = BeamState(machine=m)</span>
+<span class="sd">    &gt;&gt;&gt; # now the attributes of ms could be arbitarily altered</span>
+<span class="sd">    &gt;&gt;&gt; fm.bmstate = bs</span>
+<span class="sd">    &gt;&gt;&gt; fm.machine = m</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # run fm</span>
+<span class="sd">    &gt;&gt;&gt; obs = fm.get_index_by_type(type=&#39;bpm&#39;)[&#39;bpm&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; r, s = fm.run(monitor=obs)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # get result, storing as a dict, e.g. data</span>
+<span class="sd">    &gt;&gt;&gt; data = fm.collect_data(r, pos=True, x0=True, y0=True)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lat_file</span> <span class="o">=</span> <span class="n">lat_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_machine</span><span class="p">(</span><span class="n">lat_file</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">latfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: FLAME lattice file name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lat_file</span>
+
+    <span class="nd">@latfile</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">latfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lat_file</span> <span class="o">=</span> <span class="n">fn</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;FLAME machine object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span>
+
+    <span class="nd">@machine</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">machine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">allocState</span><span class="p">({})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bmstate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initial beam condtion for the simulation.</span>
+
+<span class="sd">        BeamState: Could be initialized with FLAME internal state</span>
+<span class="sd">        or BeamState object.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        BeamState : FLAME beam state class created for ``MomentMatrix``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BeamState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span><span class="p">)</span>
+
+    <span class="nd">@bmstate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bmstate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">flame</span><span class="o">.</span><span class="n">_internal</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">BeamState</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mach_states</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">state</span>
+
+<div class="viewcode-block" id="ModelFlame.init_machine"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.init_machine">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">init_machine</span><span class="p">(</span><span class="n">latfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize FLAME machine.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        latfile :</span>
+<span class="sd">            FLAME lattice file.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            Tuple of ``(m, s)``, where ``m`` is FLAME machine instance,</span>
+<span class="sd">            and ``s`` is initial machine states.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">latfile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">allocState</span><span class="p">({})</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ModelFlame: Initialization succeeded.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;ModelFlame: Lattice file is not valid, do it manually.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ModelFlame.find"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find element indexs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        type : str or list of str</span>
+<span class="sd">            Single element type name or list[tuple] of element type names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Dict, key is type name, value if indice list of each type name,</span>
+<span class="sd">            list, of indices list, with the order of type.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_index_by_type : Get element(s) index by type(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_element"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Element inspection, get properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of dict</span>
+<span class="sd">            List of dict of properties or empty list.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_element : Get element from FLAME machine object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elem_list</span> <span class="o">=</span> <span class="n">get_element</span><span class="p">(</span><span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span>
+                                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem_list</span></div>
+
+<div class="viewcode-block" id="ModelFlame.inspect_lattice"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.inspect_lattice">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inspect FLAME machine and print out information.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        inspect_lattice : Inspect FLAME lattice file, print a brief report.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inspect_lattice</span><span class="p">(</span><span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_all_types"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_all_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all uniqe element types.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of str</span>
+<span class="sd">            List of element type names</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_all_types : Get all unique types from a FLAME machine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_all_types</span><span class="p">(</span><span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_all_names"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_all_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all uniqe element names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of str</span>
+<span class="sd">            List of element names.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_all_names : Get all uniqe names from a FLAME machine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_all_names</span><span class="p">(</span><span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_index_by_type"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_index_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_index_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get element(s) index by type(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        type : str or list of str</span>
+<span class="sd">            Single element type name or list[tuple] of element type names.</span>
+<span class="sd">        rtype : str</span>
+<span class="sd">            Return type, &#39;dict&#39; (default) or &#39;list&#39;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict or list</span>
+<span class="sd">            Dict, key is type name, value if indice list of each type name,</span>
+<span class="sd">            list, of indices list, with the order of type.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_index_by_type : Get element(s) index by type(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_index_by_type</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">,</span> <span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_index_by_name"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_index_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_index_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get index(s) by name(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : list or tuple of str</span>
+<span class="sd">            Single element name or list[tuple] of element names.</span>
+<span class="sd">        rtype : str</span>
+<span class="sd">            Return type, &#39;dict&#39; (default) or &#39;list&#39;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict or list</span>
+<span class="sd">            Dict of element indices, key is name, value is index,</span>
+<span class="sd">            list of element indices list.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_index_by_name : Get index(s) by element name(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_index_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">_machine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.run"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bmstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">include_initial_state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Simulate model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bmstate :</span>
+<span class="sd">            FLAME beam state object, also could be :class:`BeamState`</span>
+<span class="sd">            object, if not set, will use the one from ``ModelFlame`` object</span>
+<span class="sd">            itself, usually is created at the initialization stage,</span>
+<span class="sd">            see :func:`init_machine()`.</span>
+<span class="sd">        from_element : int or str</span>
+<span class="sd">            Element index or name of start point, if not set, will be the</span>
+<span class="sd">            first element (0 for zero states, or 1).</span>
+<span class="sd">        to_element : int or str</span>
+<span class="sd">            Element index or name of end point, if not set, will be the last</span>
+<span class="sd">            element.</span>
+<span class="sd">        monitor : list[int] or list[str] or &#39;all&#39;</span>
+<span class="sd">            List of element indice or names selected as states monitors, if</span>
+<span class="sd">            set -1, will be a list of only last element. if set &#39;all&#39;,</span>
+<span class="sd">            will be a list of all elements.</span>
+<span class="sd">        include_initial_state : bool</span>
+<span class="sd">            Include initial beam state to the list of the results if `monitor`</span>
+<span class="sd">            contains the initial location (default is True).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            Tuple of ``(r, s)``, where ``r`` is list of results at each monitor</span>
+<span class="sd">            points, ``s`` is ``BeamState`` object after the last monitor</span>
+<span class="sd">            point.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method does not change the input *bmstate*, while ``propagate``</span>
+<span class="sd">        changes.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        BeamState : FLAME BeamState class created for ``MomentMatrix`` type.</span>
+<span class="sd">        propagate : Propagate ``BeamState`` object for FLAME machine object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">from_element</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">eid</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">from_element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">from_element</span> <span class="o">+</span> <span class="s1">&#39; does not found.&#39;</span><span class="p">)</span>
+            <span class="n">from_element</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">eid</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">to_element</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">eid</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">to_element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">to_element</span> <span class="o">+</span> <span class="s1">&#39; does not found.&#39;</span><span class="p">)</span>
+            <span class="n">to_element</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">eid</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bmstate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bmstate</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">bmstate</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">is_zeros_states</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="n">vstart</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">from_element</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">from_element</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vstart</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">from_element</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">from_element</span>
+        <span class="n">vend</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">to_element</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">to_element</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">vend</span> <span class="o">-</span> <span class="n">vstart</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">obs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">monitor</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="p">[</span><span class="n">vend</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">monitor</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">monitor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">monitor</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)):</span>
+                <span class="n">monitor</span> <span class="o">=</span> <span class="p">[</span><span class="n">monitor</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">monitor</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                    <span class="n">obs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">elem</span><span class="p">)</span>
+                    <span class="n">obs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">obs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">BeamState</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">bmstate</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vstart</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">propagate</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">from_element</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span> <span class="n">vstart</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">s0</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">propagate</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">from_element</span><span class="o">=</span><span class="n">vstart</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span><span class="n">vend</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bmstate</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vstart</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span> <span class="n">vstart</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">s0</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">vstart</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">observe</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">include_initial_state</span> <span class="ow">and</span> <span class="n">vstart</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">vstart</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">obs</span><span class="p">:</span>
+            <span class="n">r0</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vstart</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s0</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r0</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_results</span><span class="p">(</span><span class="n">r0</span><span class="o">+</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="ModelFlame.convert_results"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.convert_results">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_results</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert all beam states of results generated by :func:`run()`</span>
+<span class="sd">        method to be ``BeamState`` object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        res : list of tuple</span>
+<span class="sd">            List of propagation results.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of tuple</span>
+<span class="sd">            Tuple of ``(r, s)``, where ``r`` is list of results at each monitor</span>
+<span class="sd">            points, ``s`` is ``BeamState`` object after the last monitor</span>
+<span class="sd">            point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">convert_results</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.collect_data"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.collect_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">collect_data</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collect data of interest from propagation results.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        result :</span>
+<span class="sd">            Propagation results with ``BeamState`` object.</span>
+<span class="sd">        args :</span>
+<span class="sd">            Names of attribute, separated by comma.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dict of ``{k1:v1, k2,v2...}``, keys are from keyword parameters.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        collect_data : Get data of interest from results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">collect_data</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.configure"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">econf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure FLAME model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        econf : (list of) dict</span>
+<span class="sd">            Element configuration(s), see :func:`get_element`.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        configure : Configure FLAME machine.</span>
+<span class="sd">        get_element : Get FLAME lattice element configuration.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Pass `econf` with a list of dict for applying batch configuring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">configure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">econf</span><span class="p">)</span>
+
+        <span class="c1"># update source as well if the econf is for source element,</span>
+        <span class="c1"># i.e. element with index of 0.</span>
+        <span class="k">if</span> <span class="n">econf</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;source&#39;</span><span class="p">:</span>
+            <span class="c1"># self.machine.propagate(self.bmstate.state, 0, 1)</span>
+            <span class="n">zero_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">allocState</span><span class="p">({})</span>
+            <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bmstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">from_element</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bmstate</span><span class="o">=</span><span class="n">zero_s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.reconfigure"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.reconfigure">[docs]</a>    <span class="k">def</span> <span class="nf">reconfigure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reconfigure FLAME model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int or str</span>
+<span class="sd">            Element index (or name) to reconfigure.</span>
+<span class="sd">        properties : dict</span>
+<span class="sd">            Element property to reconfigure.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; # Set gradient of &#39;quad1&#39; to 0.245</span>
+<span class="sd">        &gt;&gt;&gt; fm.reconfigure(&#39;quad1&#39;, {&#39;B2&#39;: 0.245})</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        configure : Configure FLAME machine.</span>
+<span class="sd">        get_element : Get FLAME lattice element configuration.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="n">elem</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">configure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">c_idx</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">c_dict</span> <span class="o">=</span> <span class="n">properties</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.clone_machine"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.clone_machine">[docs]</a>    <span class="k">def</span> <span class="nf">clone_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clone FLAME Machine object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Machine</span>
+<span class="sd">            FLAME Machine object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">conf_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.insert_element"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.insert_element">[docs]</a>    <span class="k">def</span> <span class="nf">insert_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">econf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Insert new element to the machine.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        econf : dict</span>
+<span class="sd">            Element configuration (see :func:`get_element`).</span>
+<span class="sd">        index : int or str</span>
+<span class="sd">            Insert element before the index (or element name).</span>
+<span class="sd">        element : dict</span>
+<span class="sd">            Lattice element dictionary.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        User must input &#39;econf&#39; or &#39;index and element&#39;.</span>
+<span class="sd">        If econf is defined, insert econf[&#39;properties&#39;] element before econf[&#39;index&#39;].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">econf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_m</span> <span class="o">=</span> <span class="n">insert_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_m</span> <span class="o">=</span> <span class="n">insert_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">econf</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">econf</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">new_m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span> <span class="o">=</span> <span class="n">new_m</span></div>
+
+<div class="viewcode-block" id="ModelFlame.generate_latfile"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.generate_latfile">[docs]</a>    <span class="k">def</span> <span class="nf">generate_latfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">original</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate lattice file for the usage of FLAME code.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        latfile :</span>
+<span class="sd">            File name for generated lattice file.</span>
+<span class="sd">        original :</span>
+<span class="sd">            File name for original lattice file to keep user comments and indents. (optional)</span>
+<span class="sd">        state :</span>
+<span class="sd">            BeamState object, accept FLAME internal State object also. (optional)</span>
+<span class="sd">        out :</span>
+<span class="sd">            New stream paramter, file stream. (optional)</span>
+<span class="sd">        start :</span>
+<span class="sd">            Start element (id or name) of generated lattice. (optional)</span>
+<span class="sd">        end :</span>
+<span class="sd">            End element (id or name) of generated lattice. (optional)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Generated filename, None if failed to generate lattice file.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - If *latfile* is not defined, will overwrite the input lattice file;</span>
+<span class="sd">        - If *start* is defined, user should define *state* also.</span>
+<span class="sd">        - If user define *start* only, the initial beam state is the same as the *machine*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">latfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">latfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lat_file</span>
+
+        <span class="k">if</span> <span class="n">original</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">original</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lat_file</span>
+
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bmstate</span>
+
+        <span class="k">return</span> <span class="n">generate_latfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mach_ins</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">latfile</span><span class="o">=</span><span class="n">latfile</span><span class="p">,</span> <span class="n">original</span><span class="o">=</span><span class="n">original</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelFlame.get_transfer_matrix"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.ModelFlame.get_transfer_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_transfer_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">charge_state_index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the complete transfer matrix from one element</span>
+<span class="sd">        (*from_element*) to another (*to_element*).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        from_element : int or str</span>
+<span class="sd">            Element index or name of start point, if not set, will be the</span>
+<span class="sd">            first element (0 for zero states, or 1).</span>
+<span class="sd">        to_element : int or str</span>
+<span class="sd">            Element index or name of end point, if not set, will be the last</span>
+<span class="sd">            element.</span>
+<span class="sd">        charge_state_index : int</span>
+<span class="sd">            Index of charge state.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        2D array</span>
+<span class="sd">            Transfer matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">to_element</span><span class="o">=</span><span class="n">to_element</span><span class="p">,</span>
+                        <span class="n">monitor</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">from_element</span><span class="p">,</span> <span class="n">to_element</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">charge_state_index</span>
+        <span class="n">matrice</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">transfer_matrix</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">cs</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">,</span> <span class="n">matrice</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="propagate"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.propagate">[docs]</a><span class="k">def</span> <span class="nf">propagate</span><span class="p">(</span><span class="n">machine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bmstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_element</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">monitor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Propagate ``BeamState``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    machine :</span>
+<span class="sd">        FLAME machine object.</span>
+<span class="sd">    bmstate :</span>
+<span class="sd">        BeamState object.</span>
+<span class="sd">    from_element : int</span>
+<span class="sd">        Element index of start point, if not set, will be the first element.</span>
+<span class="sd">    to_element : int</span>
+<span class="sd">        Element index of end point, if not set, will be the last element.</span>
+<span class="sd">    monitor : list</span>
+<span class="sd">        List of element indice selected as states monitors, if set -1, will be</span>
+<span class="sd">        a list of only last element.</span>
+
+<span class="sd">    Keyword Arguments</span>
+<span class="sd">    -----------------</span>
+<span class="sd">    latfile : str</span>
+<span class="sd">        FLAME lattice file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        None if failed, else tuple of ``(r, bs)``, where ``r`` is list of</span>
+<span class="sd">        results at each monitor points, ``bs`` is ``BeamState`` object</span>
+<span class="sd">        after the last monitor point.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    BeamState : FLAME beam state class created for ``MomentMatrix`` type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_latfile</span> <span class="o">=</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;latfile&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">_machine</span> <span class="o">=</span> <span class="n">machine</span>
+    <span class="n">_m</span> <span class="o">=</span> <span class="n">machine_setter</span><span class="p">(</span><span class="n">_latfile</span><span class="p">,</span> <span class="n">_machine</span><span class="p">,</span> <span class="s1">&#39;propagate&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">bmstate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">BeamState</span><span class="p">(</span><span class="n">_m</span><span class="o">.</span><span class="n">allocState</span><span class="p">({}))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">bmstate</span>
+
+    <span class="n">vstart</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">from_element</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">from_element</span>
+    <span class="n">vend</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">_m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">to_element</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">to_element</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="p">[</span><span class="n">vend</span><span class="p">]</span> <span class="k">if</span> <span class="n">monitor</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">monitor</span>
+
+    <span class="n">vmax</span> <span class="o">=</span> <span class="n">vend</span> <span class="o">-</span> <span class="n">vstart</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">state</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_m</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">vstart</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">observe</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span>
+    <span class="n">bs</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">bs</span></div>
+
+
+<div class="viewcode-block" id="configure"><a class="viewcode-back" href="../../../modelflame.html#flame_utils.configure">[docs]</a><span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="n">machine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">econf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configure FLAME machine.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    machine :</span>
+<span class="sd">        FLAME machine object.</span>
+<span class="sd">    econf : (list of) dict</span>
+<span class="sd">        Element configuration(s).</span>
+
+<span class="sd">    Keyword Arguments</span>
+<span class="sd">    -----------------</span>
+<span class="sd">    latfile : str</span>
+<span class="sd">        FLAME lattice file.</span>
+<span class="sd">    c_idx : int</span>
+<span class="sd">        Element index.</span>
+<span class="sd">    c_dict : dict</span>
+<span class="sd">        Configuration dict.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    m : New FLAME machine object</span>
+<span class="sd">        None if failed, else new machine object.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If wanna configure FLAME machine by conventional way, then *c_idx* and</span>
+<span class="sd">    *c_dict* could be used, e.g. reconfigure one corrector of ``m``:</span>
+<span class="sd">    ``configure(machine=m, c_idx=10, c_dict={&#39;theta_x&#39;: 0.001})``</span>
+<span class="sd">    which is just the same as: ``m.reconfigure(10, {&#39;theta_x&#39;: 0.001})``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from flame import Machine</span>
+<span class="sd">    &gt;&gt;&gt; from phantasy import flameutils</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; latfile = &#39;test.lat&#39;</span>
+<span class="sd">    &gt;&gt;&gt; m = Machine(open(latfile, &#39;r&#39;))</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # reconfigure one element</span>
+<span class="sd">    &gt;&gt;&gt; e1 = flameutils.get_element(_machine=m, index=1)[0]</span>
+<span class="sd">    &gt;&gt;&gt; print(e1)</span>
+<span class="sd">    {&#39;index&#39;: 1, &#39;properties&#39;: {&#39;L&#39;: 0.072, &#39;aper&#39;: 0.02,</span>
+<span class="sd">     &#39;name&#39;: &#39;LS1_CA01:GV_D1124&#39;, &#39;type&#39;: &#39;drift&#39;}}</span>
+<span class="sd">    &gt;&gt;&gt; e1[&#39;properties&#39;][&#39;aper&#39;] = 0.04</span>
+<span class="sd">    &gt;&gt;&gt; m = flameutils.configure(m, e1)</span>
+<span class="sd">    &gt;&gt;&gt; print(flameutils.get_element(_machine=m, index=1)[0])</span>
+<span class="sd">    {&#39;index&#39;: 1, &#39;properties&#39;: {&#39;L&#39;: 0.072, &#39;aper&#39;: 0.04,</span>
+<span class="sd">     &#39;name&#39;: &#39;LS1_CA01:GV_D1124&#39;, &#39;type&#39;: &#39;drift&#39;}}</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # reconfiugre more than one element</span>
+<span class="sd">    &gt;&gt;&gt; e_cor = flameutils.get_element(_machine=m, type=&#39;orbtrim&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; # set all horizontal correctors with theta_x = 0.001</span>
+<span class="sd">    &gt;&gt;&gt; for e in e_cor:</span>
+<span class="sd">    &gt;&gt;&gt;     if &#39;theta_x&#39; in e[&#39;properties&#39;]:</span>
+<span class="sd">    &gt;&gt;&gt;         e[&#39;properties&#39;][&#39;theta_x&#39;] = 0.001</span>
+<span class="sd">    &gt;&gt;&gt; m = flameutils.configure(m, e_cor)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_element : Get FLAME lattice element configuration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_latfile</span> <span class="o">=</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;latfile&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">_machine</span> <span class="o">=</span> <span class="n">machine</span>
+    <span class="n">_m</span> <span class="o">=</span> <span class="n">machine_setter</span><span class="p">(</span><span class="n">_latfile</span><span class="p">,</span> <span class="n">_machine</span><span class="p">,</span> <span class="s1">&#39;configure&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">_c_idx</span><span class="p">,</span> <span class="n">_c_dict</span> <span class="o">=</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;c_idx&#39;</span><span class="p">),</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;c_dict&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_c_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_c_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_m</span><span class="o">.</span><span class="n">reconfigure</span><span class="p">(</span><span class="n">_c_idx</span><span class="p">,</span> <span class="n">_c_dict</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">econf</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">_m</span><span class="o">.</span><span class="n">reconfigure</span><span class="p">(</span><span class="n">econf</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">econf</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">econf</span><span class="p">:</span>
+                <span class="n">_m</span><span class="o">.</span><span class="n">reconfigure</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">_m</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University
+      <span class="lastupdated">
+        Last updated on Jul 30, 2020.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

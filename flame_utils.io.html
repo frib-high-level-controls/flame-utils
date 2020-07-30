@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flame_utils.io package &mdash; flame-utils  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/frib-favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> flame-utils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="element.html">Lattice Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beamstate.html">BeamState Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelflame.html">ModelFlame Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotlat.html">Plot function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flame-utils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>flame_utils.io package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/flame_utils.io.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flame-utils-io-package">
+<h1>flame_utils.io package<a class="headerlink" href="#flame-utils-io-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-flame_utils.io.lattice">
+<span id="flame-utils-io-lattice-module"></span><h2>flame_utils.io.lattice module<a class="headerlink" href="#module-flame_utils.io.lattice" title="Permalink to this headline">¶</a></h2>
+<p>FLAME lattice operations.</p>
+<dl class="py function">
+<dt id="flame_utils.io.lattice.generate_latfile">
+<code class="sig-prename descclassname">flame_utils.io.lattice.</code><code class="sig-name descname">generate_latfile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">machine</span></em>, <em class="sig-param"><span class="n">latfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">original</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/io/lattice.html#generate_latfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.io.lattice.generate_latfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate lattice file for the usage of FLAME code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>machine :</strong></dt><dd><p>FLAME machine object.</p>
+</dd>
+<dt><strong>latfile :</strong></dt><dd><p>File name for generated lattice file.</p>
+</dd>
+<dt><strong>original :</strong></dt><dd><p>File name for original lattice file to keep user comments and indents. (optional)</p>
+</dd>
+<dt><strong>state :</strong></dt><dd><p>BeamState object, accept FLAME internal State object also. (optional)</p>
+</dd>
+<dt><strong>out :</strong></dt><dd><p>New stream paramter, file stream. (optional)</p>
+</dd>
+<dt><strong>start :</strong></dt><dd><p>Start element (id or name) of generated lattice. (optional)</p>
+</dd>
+<dt><strong>end :</strong></dt><dd><p>End element (id or name) of generated lattice. (optional)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>None if failed to generate lattice file, or the out file name.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If <em>latfile</em> and <em>out</em> are not defined, will print all output to screen;</p></li>
+<li><p>If <em>latfile</em> and <em>out</em> are all defined, <em>out</em> stream is preferred;</p></li>
+<li><p>For other cases, choose one that is defined.</p></li>
+<li><p>If <em>start</em> is defined, user should define <em>state</em> also.</p></li>
+<li><p>If user define <em>start</em> only, the initial beam state is the same as the <em>machine</em>.</p></li>
+<li><p>Parameter <em>out</em> can also be <code class="docutils literal notranslate"><span class="pre">StringIO</span></code>, and get string by <code class="docutils literal notranslate"><span class="pre">getvalue()</span></code>.</p></li>
+<li><p>To get element configuration only by <code class="docutils literal notranslate"><span class="pre">m.conf(i)</span></code> method,
+where <code class="docutils literal notranslate"><span class="pre">m</span></code> is <code class="docutils literal notranslate"><span class="pre">flame.Machine</span></code> object, <code class="docutils literal notranslate"><span class="pre">i</span></code> is element index,
+when some re-configuring operation is done, <code class="docutils literal notranslate"><span class="pre">m.conf(i)</span></code> will be update,
+but <code class="docutils literal notranslate"><span class="pre">m.conf()[&quot;elements&quot;]</span></code> remains with the initial values.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flame</span> <span class="kn">import</span> <span class="n">Machine</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">latfile</span> <span class="o">=</span> <span class="s1">&#39;test.lat&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">latfile</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfile1</span> <span class="o">=</span> <span class="n">generate_latfile</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">latfile</span><span class="o">=</span><span class="s1">&#39;out1.lat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">reconfigure</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;theta_x&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfile2</span> <span class="o">=</span> <span class="n">generate_latfile</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">latfile</span><span class="o">=</span><span class="s1">&#39;out2.lat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># recommand new way</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;out.lat&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_latfile</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-flame_utils.io.output">
+<span id="flame-utils-io-output-module"></span><h2>flame_utils.io.output module<a class="headerlink" href="#module-flame_utils.io.output" title="Permalink to this headline">¶</a></h2>
+<p>Output from FLAME.</p>
+<dl class="py function">
+<dt id="flame_utils.io.output.convert_results">
+<code class="sig-prename descclassname">flame_utils.io.output.</code><code class="sig-name descname">convert_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">res</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/io/output.html#convert_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.io.output.convert_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all beam states of results generated by <code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code> method
+to be <code class="docutils literal notranslate"><span class="pre">BeamState</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>res</strong><span class="classifier">list of tuple</span></dt><dd><p>List of propagation results.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of tuple</dt><dd><p>Tuple of <code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">s)</span></code>, where <code class="docutils literal notranslate"><span class="pre">r</span></code> is list of results at each monitor
+points, <code class="docutils literal notranslate"><span class="pre">s</span></code> is <code class="docutils literal notranslate"><span class="pre">BeamState</span></code> object after the last monitor point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="flame_utils.io.output.collect_data">
+<code class="sig-prename descclassname">flame_utils.io.output.</code><code class="sig-name descname">collect_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/io/output.html#collect_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.io.output.collect_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect data of interest from propagation results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>result :</strong></dt><dd><p>Propagation results with <code class="docutils literal notranslate"><span class="pre">BeamState</span></code> object.</p>
+</dd>
+<dt><strong>args :</strong></dt><dd><p>Names of attribute, separated by comma.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>Dict of <code class="docutils literal notranslate"><span class="pre">{k1:v1,</span> <span class="pre">k2,v2...}</span></code>, keys are from keyword parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">BeamState</span></code></dt><dd><p>FLAME beam state class for <code class="docutils literal notranslate"><span class="pre">MomentMatrix</span></code> simulation type.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<ol class="arabic simple">
+<li><p>Set the data of interest with <code class="docutils literal notranslate"><span class="pre">k=True</span></code> as input will return the defined
+<code class="docutils literal notranslate"><span class="pre">k</span></code> value.</p></li>
+<li><p>Invalid attribute names will be ignored.</p></li>
+</ol>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># get x0 and y0 array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collect_data</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># which is equivalent as:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collect_data</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;y0&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># or:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collect_data</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University
+      <span class="lastupdated">
+        Last updated on Jul 30, 2020.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
