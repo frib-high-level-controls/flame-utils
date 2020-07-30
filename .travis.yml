@@ -1,41 +1,23 @@
 language: python
 
-sudo: required
+os: linux
 dist: xenial
 
 python:
-    - "2.7"
+    # - "2.7" # drop support for Python 2.7
     - "3.5"
-
-virtualenv:
-    system_site_packages: true
-
-addons:
-  apt:
-    packages:
-    - libboost-program-options-dev
-    - libboost-filesystem-dev
-    - libhdf5-dev
-    - python-numpy
-    - python3-numpy
-    - python-scipy
-    - python3-scipy
-    - python-matplotlib
-    - python3-matplotlib
-    - python-nose
-    - python3-nose
-    - python-coverage
-    - python3-coverage
-    - python-tk
-    - python3-tk
+    - "3.6"
+    - "3.8"
 
 before_install:
-    - cwd=$(pwd)
-    - git clone -b xenial https://github.com/archman/packages.git
-    - cd packages/xenial
-    - sudo dpkg -i *flame*.deb
-    - cd ${cwd}
+    - python --version
+    - pip install -U pip
+    - pip install nose
+    - pip install -r requirements.txt
+
+install:
+    - pip install .
 
 script:
     - cd tests
-    - make test
+    - python -m nose

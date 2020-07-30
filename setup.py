@@ -18,29 +18,28 @@ app_platform = ["Linux"]
 app_author = "Tong Zhang"
 app_author_email = "zhangt@frib.msu.edu"
 app_license = read_license()
-app_url = "https://controls.frib.msu.edu/phantasy/"
+app_url = "https://github.com/frib-high-level-controls/flame-utils/"
 app_keywords = "FRIB HLA high-level python FLAME online-model"
 installrequires = [
     'numpy',
-#    'scipy',
-#    'matplotlib',
+    'matplotlib',
+    'flame-code',
 ]
 
 setup(
         name=app_name,
-        version="0.3.5",
+        version="0.3.10",
         description=app_description,
         long_description=app_long_description,
         author=app_author,
         author_email=app_author_email,
-        #url = app_url,
+        url = app_url,
         platforms=app_platform,
         license=app_license,
         keywords=app_keywords,
-        #scripts=app_scripts,
         packages=find_packages(exclude=['utest', 'demo', 'example']),
         classifiers=[
-            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3',
             'Topic :: Software Development :: Libraries :: Python Modules',
             'Topic :: Scientific/Engineering :: Physics'],
         tests_require=['nose'],

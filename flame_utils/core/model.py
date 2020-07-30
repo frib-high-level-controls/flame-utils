@@ -39,6 +39,7 @@ from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class ModelFlame(object):
     """General FLAME modeling class.
 
@@ -515,7 +516,7 @@ class ModelFlame(object):
         Machine
             FLAME Machine object.
         """
-        return conf_update(m)
+        return conf_update(self._mach_ins)
 
     def insert_element(self, index=None, element=None, econf=None):
         """Insert new element to the machine.
@@ -656,7 +657,7 @@ def propagate(machine=None, bmstate=None, from_element=None, to_element=None,
 
     vstart = 0 if from_element is None else from_element
     vend = len(_m) - 1 if to_element is None else to_element
-    obs = [vend] if monitor is -1 else monitor
+    obs = [vend] if monitor == -1 else monitor
 
     vmax = vend - vstart + 1
     s = bs.state
