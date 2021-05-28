@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>BeamState Class &mdash; flame-utils  documentation</title>
   
@@ -13,12 +13,17 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="_static/frib-favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -28,11 +33,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -54,7 +59,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> flame-utils
+            <a href="index.html" class="icon icon-home"> flame-utils
           
 
           
@@ -139,6 +144,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -150,7 +157,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/beamstate.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -170,8 +177,8 @@
 <span id="beam-parameter-control-and-output"></span><h2>Beam parameter control and output<a class="headerlink" href="#module-flame_utils.core.state" title="Permalink to this headline">¶</a></h2>
 <p>Abstracted FLAME beam state class.</p>
 <dl class="py class">
-<dt id="flame_utils.core.state.BeamState">
-<em class="property">class </em><code class="sig-prename descclassname">flame_utils.core.state.</code><code class="sig-name descname">BeamState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.BeamState" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">flame_utils.core.state.</span></span><span class="sig-name descname"><span class="pre">BeamState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.BeamState" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>FLAME beam state, from which simulated results could be retrieved.</p>
 <p>Class attributes of reference beam parameter:</p>
@@ -204,7 +211,7 @@
 <td><p>int: macro particle number of reference charge state, [1]</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#flame_utils.core.state.BeamState.ref_IonW" title="flame_utils.core.state.BeamState.ref_IonW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ref_IonW</span></code></a></p></td>
-<td><p>float: total energy of reference charge state, [eV/u], i.e.</p></td>
+<td><p>float: total energy of reference charge state, [eV/u], i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#flame_utils.core.state.BeamState.ref_IonZ" title="flame_utils.core.state.BeamState.ref_IonZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ref_IonZ</span></code></a></p></td>
 <td><p>float: reference charge state, measured by charge to mass ratio, e.g.</p></td>
@@ -245,7 +252,7 @@
 <td><p>Array: macro particle number of all charge states</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#flame_utils.core.state.BeamState.IonW" title="flame_utils.core.state.BeamState.IonW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IonW</span></code></a></p></td>
-<td><p>Array: total energy of all charge states, [eV/u], i.e.</p></td>
+<td><p>Array: total energy of all charge states, [eV/u], i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#flame_utils.core.state.BeamState.IonZ" title="flame_utils.core.state.BeamState.IonZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IonZ</span></code></a></p></td>
 <td><p>Array: all charge states, measured by charge to mass ratio</p></td>
@@ -528,154 +535,154 @@ instead of by element indexing way, e.g.</p></li>
 </div>
 </li>
 </ul>
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.state">
-<em class="property">property </em><code class="sig-name descname">state</code><a class="headerlink" href="#flame_utils.core.state.BeamState.state" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.state">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.state" title="Permalink to this definition">¶</a></dt>
 <dd><p>flame._internal.State: FLAME state object, also could be
 initialized with BeamState object</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.pos">
-<em class="property">property </em><code class="sig-name descname">pos</code><a class="headerlink" href="#flame_utils.core.state.BeamState.pos" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.pos">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pos</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.pos" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: longitudinally propagating position, [m]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_beta">
-<em class="property">property </em><code class="sig-name descname">ref_beta</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_beta" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_beta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_beta</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: speed in the unit of light velocity in vacuum of reference
 charge state, Lorentz beta, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_bg">
-<em class="property">property </em><code class="sig-name descname">ref_bg</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_bg" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_bg">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_bg</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_bg" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: multiplication of beta and gamma of reference charge state, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_gamma">
-<em class="property">property </em><code class="sig-name descname">ref_gamma</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_gamma" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_gamma">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_gamma</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_gamma" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: relativistic energy of reference charge state, Lorentz gamma, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_IonEk">
-<em class="property">property </em><code class="sig-name descname">ref_IonEk</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonEk" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_IonEk">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_IonEk</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonEk" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: kinetic energy of reference charge state, [eV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_IonEs">
-<em class="property">property </em><code class="sig-name descname">ref_IonEs</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonEs" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_IonEs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_IonEs</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonEs" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: rest energy of reference charge state, [eV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_IonQ">
-<em class="property">property </em><code class="sig-name descname">ref_IonQ</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonQ" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_IonQ">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_IonQ</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>int: macro particle number of reference charge state, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_IonW">
-<em class="property">property </em><code class="sig-name descname">ref_IonW</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonW" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_IonW">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_IonW</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonW" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: total energy of reference charge state, [eV/u],
 i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span></p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_IonZ">
-<em class="property">property </em><code class="sig-name descname">ref_IonZ</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonZ" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_IonZ">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_IonZ</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_IonZ" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: reference charge state, measured by charge to mass ratio,
 e.g. <span class="math notranslate nohighlight">\(^{33^{+}}_{238}U: Q(33)/A(238)\)</span>, [Q/A]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_phis">
-<em class="property">property </em><code class="sig-name descname">ref_phis</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_phis" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_phis">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_phis</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_phis" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: absolute synchrotron phase of reference charge state,
 [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ref_SampleIonK">
-<em class="property">property </em><code class="sig-name descname">ref_SampleIonK</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_SampleIonK" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ref_SampleIonK">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ref_SampleIonK</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ref_SampleIonK" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: wave-vector in cavities with different beta values of
 reference charge state, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.beta">
-<em class="property">property </em><code class="sig-name descname">beta</code><a class="headerlink" href="#flame_utils.core.state.BeamState.beta" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.beta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: speed in the unit of light velocity in vacuum of all charge
 states, Lorentz beta, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.bg">
-<em class="property">property </em><code class="sig-name descname">bg</code><a class="headerlink" href="#flame_utils.core.state.BeamState.bg" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.bg">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">bg</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.bg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: multiplication of beta and gamma of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.gamma">
-<em class="property">property </em><code class="sig-name descname">gamma</code><a class="headerlink" href="#flame_utils.core.state.BeamState.gamma" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.gamma">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.gamma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: relativistic energy of all charge states, Lorentz gamma, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.IonEk">
-<em class="property">property </em><code class="sig-name descname">IonEk</code><a class="headerlink" href="#flame_utils.core.state.BeamState.IonEk" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.IonEk">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">IonEk</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.IonEk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: kinetic energy of all charge states, [eV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.IonEs">
-<em class="property">property </em><code class="sig-name descname">IonEs</code><a class="headerlink" href="#flame_utils.core.state.BeamState.IonEs" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.IonEs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">IonEs</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.IonEs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: rest energy of all charge states, [eV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.IonQ">
-<em class="property">property </em><code class="sig-name descname">IonQ</code><a class="headerlink" href="#flame_utils.core.state.BeamState.IonQ" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.IonQ">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">IonQ</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.IonQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: macro particle number of all charge states</p>
 <p class="rubric">Notes</p>
 <p>This is what <code class="docutils literal notranslate"><span class="pre">NCharge</span></code> means in the FLAME lattice file.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.IonW">
-<em class="property">property </em><code class="sig-name descname">IonW</code><a class="headerlink" href="#flame_utils.core.state.BeamState.IonW" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.IonW">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">IonW</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.IonW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: total energy of all charge states, [eV/u],
 i.e. <span class="math notranslate nohighlight">\(W = E_s + E_k\)</span></p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.IonZ">
-<em class="property">property </em><code class="sig-name descname">IonZ</code><a class="headerlink" href="#flame_utils.core.state.BeamState.IonZ" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.IonZ">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">IonZ</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.IonZ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: all charge states, measured by charge to mass ratio</p>
 <p class="rubric">Notes</p>
 <p>This is what <code class="docutils literal notranslate"><span class="pre">IonChargeStates</span></code> means in the FLAME lattice file.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phis">
-<em class="property">property </em><code class="sig-name descname">phis</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phis" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phis">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phis</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: absolute synchrotron phase of all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.SampleIonK">
-<em class="property">property </em><code class="sig-name descname">SampleIonK</code><a class="headerlink" href="#flame_utils.core.state.BeamState.SampleIonK" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.SampleIonK">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">SampleIonK</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.SampleIonK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: wave-vector in cavities with different beta values of all
 charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.moment0_env">
-<em class="property">property </em><code class="sig-name descname">moment0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.moment0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">moment0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: weight average of centroid for all charge states, array of
 <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code>, with the units of
 <code class="docutils literal notranslate"><span class="pre">[mm,</span> <span class="pre">rad,</span> <span class="pre">mm,</span> <span class="pre">rad,</span> <span class="pre">rad,</span> <span class="pre">MeV/u,</span> <span class="pre">1]</span></code>.</p>
@@ -693,9 +700,9 @@ corrector (i.e. <code class="docutils literal notranslate"><span class="pre">orb
 </ul>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.moment0_rms">
-<em class="property">property </em><code class="sig-name descname">moment0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.moment0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">moment0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: rms beam envelope, part of statistical results from
 <code class="docutils literal notranslate"><span class="pre">moment1</span></code>.</p>
 <div class="admonition seealso">
@@ -710,16 +717,16 @@ corrector (i.e. <code class="docutils literal notranslate"><span class="pre">orb
 elements of <code class="docutils literal notranslate"><span class="pre">moment1</span></code>.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.moment0">
-<em class="property">property </em><code class="sig-name descname">moment0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.moment0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">moment0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.moment0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: centroid for all charge states, array of
 <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code></p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.moment1">
-<em class="property">property </em><code class="sig-name descname">moment1</code><a class="headerlink" href="#flame_utils.core.state.BeamState.moment1" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.moment1">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">moment1</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.moment1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: correlation tensor of all charge states, for each charge
 state, the correlation matrix could be written as:</p>
 <div class="math notranslate nohighlight">
@@ -734,235 +741,235 @@ state, the correlation matrix could be written as:</p>
 \end{array}\end{split}\]</div>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.moment1_env">
-<em class="property">property </em><code class="sig-name descname">moment1_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.moment1_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.moment1_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">moment1_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.moment1_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: averaged correlation tensor of all charge states</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.x0">
-<em class="property">property </em><code class="sig-name descname">x0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.x0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.x0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.x0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: x centroid for all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xp0">
-<em class="property">property </em><code class="sig-name descname">xp0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xp0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xp0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: x centroid divergence for all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.y0">
-<em class="property">property </em><code class="sig-name descname">y0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.y0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.y0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.y0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: y centroid for all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yp0">
-<em class="property">property </em><code class="sig-name descname">yp0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yp0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yp0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: y centroid divergence for all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phi0">
-<em class="property">property </em><code class="sig-name descname">phi0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phi0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phi0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: longitudinal beam length, measured in RF frequency for all
 charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEk0">
-<em class="property">property </em><code class="sig-name descname">dEk0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEk0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEk0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: kinetic energy deviation w.r.t. reference charge state,
 for all charge states, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.x0_env">
-<em class="property">property </em><code class="sig-name descname">x0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.x0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.x0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.x0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(x\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xp0_env">
-<em class="property">property </em><code class="sig-name descname">xp0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xp0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xp0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(x'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.y0_env">
-<em class="property">property </em><code class="sig-name descname">y0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.y0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.y0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.y0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(y\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yp0_env">
-<em class="property">property </em><code class="sig-name descname">yp0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yp0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yp0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(y'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phi0_env">
-<em class="property">property </em><code class="sig-name descname">phi0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phi0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phi0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\phi\)</span>,
 [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEk0_env">
-<em class="property">property </em><code class="sig-name descname">dEk0_env</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEk0_env">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEk0_env</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\delta E_k\)</span>,
 [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xrms_all">
-<em class="property">property </em><code class="sig-name descname">xrms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xrms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xrms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xrms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xrms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(x\)</span> of all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xprms_all">
-<em class="property">property </em><code class="sig-name descname">xprms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xprms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xprms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xprms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xprms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(x'\)</span> of all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yrms_all">
-<em class="property">property </em><code class="sig-name descname">yrms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yrms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yrms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yrms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yrms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(y\)</span> of all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yprms_all">
-<em class="property">property </em><code class="sig-name descname">yprms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yprms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yprms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yprms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yprms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(y'\)</span> of all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phirms_all">
-<em class="property">property </em><code class="sig-name descname">phirms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phirms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phirms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phirms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phirms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span> of all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEkrms_all">
-<em class="property">property </em><code class="sig-name descname">dEkrms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkrms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEkrms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEkrms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkrms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span> of all charge states, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.x0_rms">
-<em class="property">property </em><code class="sig-name descname">x0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.x0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.x0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.x0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(x\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xp0_rms">
-<em class="property">property </em><code class="sig-name descname">xp0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xp0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xp0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xp0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(x'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.y0_rms">
-<em class="property">property </em><code class="sig-name descname">y0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.y0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.y0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.y0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(y\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yp0_rms">
-<em class="property">property </em><code class="sig-name descname">yp0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yp0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yp0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yp0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(y'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phi0_rms">
-<em class="property">property </em><code class="sig-name descname">phi0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phi0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phi0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phi0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEk0_rms">
-<em class="property">property </em><code class="sig-name descname">dEk0_rms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEk0_rms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEk0_rms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEk0_rms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span>, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.last_caviphi0">
-<em class="property">property </em><code class="sig-name descname">last_caviphi0</code><a class="headerlink" href="#flame_utils.core.state.BeamState.last_caviphi0" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.last_caviphi0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">last_caviphi0</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.last_caviphi0" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: Last RF cavity’s driven phase, [deg]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.transfer_matrix">
-<em class="property">property </em><code class="sig-name descname">transfer_matrix</code><a class="headerlink" href="#flame_utils.core.state.BeamState.transfer_matrix" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.transfer_matrix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">transfer_matrix</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.transfer_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: Transfer matrix of the last element</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="flame_utils.core.state.BeamState.clone">
-<code class="sig-name descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.clone" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.clone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of Beamstate object.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xemittance">
-<em class="property">property </em><code class="sig-name descname">xemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical x emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yemittance">
-<em class="property">property </em><code class="sig-name descname">yemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical y emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zemittance">
-<em class="property">property </em><code class="sig-name descname">zemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical z emittance, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xemittance_all">
-<em class="property">property </em><code class="sig-name descname">xemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical x emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yemittance_all">
-<em class="property">property </em><code class="sig-name descname">yemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical y emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zemittance_all">
-<em class="property">property </em><code class="sig-name descname">zemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical z emittance of all charge states, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xnemittance">
-<em class="property">property </em><code class="sig-name descname">xnemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xnemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xnemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xnemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xnemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ynemittance">
-<em class="property">property </em><code class="sig-name descname">ynemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ynemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ynemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ynemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ynemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized y emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.beammatrix">
-<em class="property">property </em><code class="sig-name descname">beammatrix</code><a class="headerlink" href="#flame_utils.core.state.BeamState.beammatrix" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.beammatrix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">beammatrix</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.beammatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: averaged correlation tensor of all charge states</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.beammatrix_all">
-<em class="property">property </em><code class="sig-name descname">beammatrix_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.beammatrix_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.beammatrix_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">beammatrix_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.beammatrix_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: correlation tensor of all charge states, for each charge
 state, the correlation matrix could be written as:</p>
 <div class="math notranslate nohighlight">
@@ -977,9 +984,9 @@ state, the correlation matrix could be written as:</p>
 \end{array}\end{split}\]</div>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cenvector">
-<em class="property">property </em><code class="sig-name descname">cenvector</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cenvector" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cenvector">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cenvector</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cenvector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: weight average of centroid for all charge states, array of
 <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code>, with the units of
 <code class="docutils literal notranslate"><span class="pre">[mm,</span> <span class="pre">rad,</span> <span class="pre">mm,</span> <span class="pre">rad,</span> <span class="pre">rad,</span> <span class="pre">MeV/u,</span> <span class="pre">1]</span></code>.</p>
@@ -997,104 +1004,104 @@ corrector (i.e. <code class="docutils literal notranslate"><span class="pre">orb
 </ul>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cenvector_all">
-<em class="property">property </em><code class="sig-name descname">cenvector_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cenvector_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cenvector_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cenvector_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cenvector_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: centroid for all charge states, array of
 <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">x',</span> <span class="pre">y,</span> <span class="pre">y',</span> <span class="pre">phi,</span> <span class="pre">dEk,</span> <span class="pre">1]</span></code></p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxpy">
-<em class="property">property </em><code class="sig-name descname">cxpy</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpy" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxpy">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxpy</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized xp-y coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxpy_all">
-<em class="property">property </em><code class="sig-name descname">cxpy_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpy_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxpy_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxpy_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpy_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized xp-y coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxpyp">
-<em class="property">property </em><code class="sig-name descname">cxpyp</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpyp" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxpyp">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxpyp</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpyp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized xp-yp coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxpyp_all">
-<em class="property">property </em><code class="sig-name descname">cxpyp_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpyp_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxpyp_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxpyp_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxpyp_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized xp-yp coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxy">
-<em class="property">property </em><code class="sig-name descname">cxy</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxy" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxy">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxy</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxy" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x-y coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxy_all">
-<em class="property">property </em><code class="sig-name descname">cxy_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxy_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxy_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxy_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxy_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x-y coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxyp">
-<em class="property">property </em><code class="sig-name descname">cxyp</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxyp" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxyp">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxyp</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxyp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x-yp coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.cxyp_all">
-<em class="property">property </em><code class="sig-name descname">cxyp_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.cxyp_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.cxyp_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cxyp_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.cxyp_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x-yp coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEkcen">
-<em class="property">property </em><code class="sig-name descname">dEkcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEkcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEkcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\delta E_k\)</span>,
 [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEkcen_all">
-<em class="property">property </em><code class="sig-name descname">dEkcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEkcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEkcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: kinetic energy deviation w.r.t. reference charge state,
 for all charge states, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.dEkrms">
-<em class="property">property </em><code class="sig-name descname">dEkrms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkrms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.dEkrms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dEkrms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.dEkrms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span>, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phicen">
-<em class="property">property </em><code class="sig-name descname">phicen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phicen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phicen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phicen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phicen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\phi\)</span>,
 [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phicen_all">
-<em class="property">property </em><code class="sig-name descname">phicen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phicen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phicen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phicen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phicen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: longitudinal beam length, measured in RF frequency for all
 charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.phirms">
-<em class="property">property </em><code class="sig-name descname">phirms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.phirms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.phirms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">phirms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.phirms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.rmsvector">
-<em class="property">property </em><code class="sig-name descname">rmsvector</code><a class="headerlink" href="#flame_utils.core.state.BeamState.rmsvector" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.rmsvector">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">rmsvector</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.rmsvector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: rms beam envelope, part of statistical results from
 <code class="docutils literal notranslate"><span class="pre">moment1</span></code>.</p>
 <div class="admonition seealso">
@@ -1109,427 +1116,427 @@ charge states, [rad]</p>
 elements of <code class="docutils literal notranslate"><span class="pre">moment1</span></code>.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.transmat">
-<em class="property">property </em><code class="sig-name descname">transmat</code><a class="headerlink" href="#flame_utils.core.state.BeamState.transmat" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.transmat">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">transmat</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.transmat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: Transfer matrix of the last element</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xcen">
-<em class="property">property </em><code class="sig-name descname">xcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(x\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xcen_all">
-<em class="property">property </em><code class="sig-name descname">xcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: x centroid for all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xeps">
-<em class="property">property </em><code class="sig-name descname">xeps</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xeps" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xeps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xeps</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xeps" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical x emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xeps_all">
-<em class="property">property </em><code class="sig-name descname">xeps_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xeps_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xeps_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xeps_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xeps_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical x emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xepsn">
-<em class="property">property </em><code class="sig-name descname">xepsn</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xepsn" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xepsn">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xepsn</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xepsn" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xepsn_all">
-<em class="property">property </em><code class="sig-name descname">xepsn_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xepsn_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xepsn_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xepsn_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xepsn_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xpcen">
-<em class="property">property </em><code class="sig-name descname">xpcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xpcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xpcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xpcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xpcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(x'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xpcen_all">
-<em class="property">property </em><code class="sig-name descname">xpcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xpcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xpcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xpcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xpcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: x centroid divergence for all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xprms">
-<em class="property">property </em><code class="sig-name descname">xprms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xprms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xprms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xprms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xprms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(x'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xrms">
-<em class="property">property </em><code class="sig-name descname">xrms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xrms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xrms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xrms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xrms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(x\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwsa">
-<em class="property">property </em><code class="sig-name descname">xtwsa</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsa" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwsa">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwsa</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsa" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha x, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwsa_all">
-<em class="property">property </em><code class="sig-name descname">xtwsa_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsa_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwsa_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwsa_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsa_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha x of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwsb">
-<em class="property">property </em><code class="sig-name descname">xtwsb</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsb" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwsb">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwsb</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsb" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta x, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwsb_all">
-<em class="property">property </em><code class="sig-name descname">xtwsb_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsb_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwsb_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwsb_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwsb_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta x of all charge states, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ycen">
-<em class="property">property </em><code class="sig-name descname">ycen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ycen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ycen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ycen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ycen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(y\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ycen_all">
-<em class="property">property </em><code class="sig-name descname">ycen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ycen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ycen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ycen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ycen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: y centroid for all charge states, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yeps">
-<em class="property">property </em><code class="sig-name descname">yeps</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yeps" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yeps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yeps</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yeps" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical y emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yeps_all">
-<em class="property">property </em><code class="sig-name descname">yeps_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yeps_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yeps_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yeps_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yeps_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical y emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yepsn">
-<em class="property">property </em><code class="sig-name descname">yepsn</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yepsn" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yepsn">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yepsn</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yepsn" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized y emittance, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yepsn_all">
-<em class="property">property </em><code class="sig-name descname">yepsn_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yepsn_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yepsn_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yepsn_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yepsn_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized y emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ypcen">
-<em class="property">property </em><code class="sig-name descname">ypcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ypcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ypcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ypcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ypcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(y'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ypcen_all">
-<em class="property">property </em><code class="sig-name descname">ypcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ypcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ypcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ypcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ypcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: y centroid divergence for all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yprms">
-<em class="property">property </em><code class="sig-name descname">yprms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yprms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yprms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yprms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yprms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(y'\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.yrms">
-<em class="property">property </em><code class="sig-name descname">yrms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.yrms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.yrms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yrms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.yrms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(y\)</span>, [mm]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwsa">
-<em class="property">property </em><code class="sig-name descname">ytwsa</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsa" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwsa">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwsa</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsa" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha y, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwsa_all">
-<em class="property">property </em><code class="sig-name descname">ytwsa_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsa_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwsa_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwsa_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsa_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha y of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwsb">
-<em class="property">property </em><code class="sig-name descname">ytwsb</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsb" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwsb">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwsb</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsb" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta y, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwsb_all">
-<em class="property">property </em><code class="sig-name descname">ytwsb_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsb_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwsb_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwsb_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwsb_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta y of all charge states, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zcen">
-<em class="property">property </em><code class="sig-name descname">zcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\phi\)</span>,
 [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zcen_all">
-<em class="property">property </em><code class="sig-name descname">zcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: longitudinal beam length, measured in RF frequency for all
 charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zeps">
-<em class="property">property </em><code class="sig-name descname">zeps</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zeps" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zeps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zeps</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zeps" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of geometrical z emittance, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zeps_all">
-<em class="property">property </em><code class="sig-name descname">zeps_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zeps_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zeps_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zeps_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zeps_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: geometrical z emittance of all charge states, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zepsn">
-<em class="property">property </em><code class="sig-name descname">zepsn</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zepsn" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zepsn">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zepsn</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zepsn" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized z emittance, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zepsn_all">
-<em class="property">property </em><code class="sig-name descname">zepsn_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zepsn_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zepsn_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zepsn_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zepsn_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized z emittance of all charge states, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.znemittance">
-<em class="property">property </em><code class="sig-name descname">znemittance</code><a class="headerlink" href="#flame_utils.core.state.BeamState.znemittance" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.znemittance">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">znemittance</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.znemittance" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized z emittance, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zpcen">
-<em class="property">property </em><code class="sig-name descname">zpcen</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zpcen" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zpcen">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zpcen</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zpcen" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of all charge states for <span class="math notranslate nohighlight">\(\delta E_k\)</span>,
 [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zpcen_all">
-<em class="property">property </em><code class="sig-name descname">zpcen_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zpcen_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zpcen_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zpcen_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zpcen_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: kinetic energy deviation w.r.t. reference charge state,
 for all charge states, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zprms">
-<em class="property">property </em><code class="sig-name descname">zprms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zprms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zprms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zprms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zprms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span>, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zprms_all">
-<em class="property">property </em><code class="sig-name descname">zprms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zprms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zprms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zprms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zprms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(\delta E_k\)</span> of all charge states, [MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zrms">
-<em class="property">property </em><code class="sig-name descname">zrms</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zrms" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zrms">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zrms</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zrms" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: general rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span>, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.zrms_all">
-<em class="property">property </em><code class="sig-name descname">zrms_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.zrms_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.zrms_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">zrms_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.zrms_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: general rms beam envelope for <span class="math notranslate nohighlight">\(\phi\)</span> of all charge states, [rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwsa">
-<em class="property">property </em><code class="sig-name descname">ztwsa</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsa" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwsa">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwsa</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsa" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha z, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwsa_all">
-<em class="property">property </em><code class="sig-name descname">ztwsa_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsa_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwsa_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwsa_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsa_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha z of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwsb">
-<em class="property">property </em><code class="sig-name descname">ztwsb</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsb" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwsb">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwsb</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsb" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta z, [rad/MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwsb_all">
-<em class="property">property </em><code class="sig-name descname">ztwsb_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsb_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwsb_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwsb_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwsb_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta z of all charge states, [rad/MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xnemittance_all">
-<em class="property">property </em><code class="sig-name descname">xnemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xnemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xnemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xnemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xnemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ynemittance_all">
-<em class="property">property </em><code class="sig-name descname">ynemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ynemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ynemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ynemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ynemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized y emittance of all charge states, [mm-mrad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.znemittance_all">
-<em class="property">property </em><code class="sig-name descname">znemittance_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.znemittance_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.znemittance_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">znemittance_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.znemittance_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized z emittance of all charge states, [rad-MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwiss_beta">
-<em class="property">property </em><code class="sig-name descname">xtwiss_beta</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_beta" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwiss_beta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwiss_beta</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta x, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwiss_beta">
-<em class="property">property </em><code class="sig-name descname">ytwiss_beta</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_beta" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwiss_beta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwiss_beta</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta y, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwiss_beta">
-<em class="property">property </em><code class="sig-name descname">ztwiss_beta</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_beta" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwiss_beta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwiss_beta</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss beta z, [rad/MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwiss_beta_all">
-<em class="property">property </em><code class="sig-name descname">xtwiss_beta_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_beta_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwiss_beta_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwiss_beta_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_beta_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta x of all charge states, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwiss_beta_all">
-<em class="property">property </em><code class="sig-name descname">ytwiss_beta_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_beta_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwiss_beta_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwiss_beta_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_beta_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta y of all charge states, [m/rad]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwiss_beta_all">
-<em class="property">property </em><code class="sig-name descname">ztwiss_beta_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_beta_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwiss_beta_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwiss_beta_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_beta_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss beta z of all charge states, [rad/MeV/u]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwiss_alpha">
-<em class="property">property </em><code class="sig-name descname">xtwiss_alpha</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_alpha" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwiss_alpha">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwiss_alpha</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha x, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwiss_alpha">
-<em class="property">property </em><code class="sig-name descname">ytwiss_alpha</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_alpha" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwiss_alpha">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwiss_alpha</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha y, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwiss_alpha">
-<em class="property">property </em><code class="sig-name descname">ztwiss_alpha</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_alpha" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwiss_alpha">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwiss_alpha</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of twiss alpha z, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.xtwiss_alpha_all">
-<em class="property">property </em><code class="sig-name descname">xtwiss_alpha_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.xtwiss_alpha_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xtwiss_alpha_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.xtwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha x of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ytwiss_alpha_all">
-<em class="property">property </em><code class="sig-name descname">ytwiss_alpha_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ytwiss_alpha_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ytwiss_alpha_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ytwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha y of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.ztwiss_alpha_all">
-<em class="property">property </em><code class="sig-name descname">ztwiss_alpha_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.ztwiss_alpha_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ztwiss_alpha_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.ztwiss_alpha_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: twiss alpha z of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xy">
-<em class="property">property </em><code class="sig-name descname">couple_xy</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xy" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xy">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xy</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xy" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x-y coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xpy">
-<em class="property">property </em><code class="sig-name descname">couple_xpy</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpy" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xpy">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xpy</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized xp-y coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xyp">
-<em class="property">property </em><code class="sig-name descname">couple_xyp</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xyp" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xyp">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xyp</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xyp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized x-yp coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xpyp">
-<em class="property">property </em><code class="sig-name descname">couple_xpyp</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpyp" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xpyp">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xpyp</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpyp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: weight average of normalized xp-yp coupling term, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xy_all">
-<em class="property">property </em><code class="sig-name descname">couple_xy_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xy_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xy_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xy_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xy_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x-y coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xpy_all">
-<em class="property">property </em><code class="sig-name descname">couple_xpy_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpy_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xpy_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xpy_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpy_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized xp-y coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xyp_all">
-<em class="property">property </em><code class="sig-name descname">couple_xyp_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xyp_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xyp_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xyp_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xyp_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized x-yp coupling term of all charge states, [1]</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="flame_utils.core.state.BeamState.couple_xpyp_all">
-<em class="property">property </em><code class="sig-name descname">couple_xpyp_all</code><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpyp_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.couple_xpyp_all">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">couple_xpyp_all</span></span><a class="headerlink" href="#flame_utils.core.state.BeamState.couple_xpyp_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array: normalized xp-yp coupling term of all charge states, [1]</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="flame_utils.core.state.BeamState.set_twiss">
-<code class="sig-name descname">set_twiss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coor</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">beta</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rmssize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emittance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nemittance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.set_twiss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.set_twiss" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.set_twiss">
+<span class="sig-name descname"><span class="pre">set_twiss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmssize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emittance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nemittance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.set_twiss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.set_twiss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set moment1 matrix by using Twiss parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1556,8 +1563,8 @@ for all charge states, [MeV/u]</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="flame_utils.core.state.BeamState.get_couple">
-<code class="sig-name descname">get_couple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coor1</span></em>, <em class="sig-param"><span class="n">coor2</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.get_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.get_couple" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.get_couple">
+<span class="sig-name descname"><span class="pre">get_couple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coor2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.get_couple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.get_couple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get normalized coupling term of moment1 matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1578,8 +1585,8 @@ for all charge states, [MeV/u]</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="flame_utils.core.state.BeamState.set_couple">
-<code class="sig-name descname">set_couple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coor1</span></em>, <em class="sig-param"><span class="n">coor2</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.set_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.set_couple" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.BeamState.set_couple">
+<span class="sig-name descname"><span class="pre">set_couple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coor2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#BeamState.set_couple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.BeamState.set_couple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set normalized coupling term of moment1 matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1600,8 +1607,8 @@ for all charge states, [MeV/u]</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="flame_utils.core.state.generate_source">
-<code class="sig-prename descclassname">flame_utils.core.state.</code><code class="sig-name descname">generate_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">sconf</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#generate_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flame_utils.core.state.generate_source" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="flame_utils.core.state.generate_source">
+<span class="sig-prename descclassname"><span class="pre">flame_utils.core.state.</span></span><span class="sig-name descname"><span class="pre">generate_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sconf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flame_utils/core/state.html#generate_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flame_utils.core.state.generate_source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate/Update FLAME source element from FLAME beam state object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1641,25 +1648,18 @@ use <cite>s</cite> as the input of <cite>generate_source</cite>.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="modelflame.html" class="btn btn-neutral float-right" title="ModelFlame Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="element.html" class="btn btn-neutral float-left" title="Lattice Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="modelflame.html" class="btn btn-neutral float-right" title="ModelFlame Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="element.html" class="btn btn-neutral float-left" title="Lattice Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University
+        &#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
       <span class="lastupdated">
-        Last updated on Jul 30, 2020.
+        Last updated on May 28, 2021.
       </span>
 
     </p>
@@ -1667,14 +1667,13 @@ use <cite>s</cite> as the input of <cite>generate_source</cite>.</p>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
