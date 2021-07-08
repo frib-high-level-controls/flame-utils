@@ -308,6 +308,7 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
                 [elem_k.add(k) for k in SOURCE_PROP_KEYS]
             elem_p = {k: elem.get(k) for k in elem_k}
             retval.append({'index': i, 'properties': elem_p})
+        retval.sort(key=lambda i:i['index'])
         return retval
 
 
