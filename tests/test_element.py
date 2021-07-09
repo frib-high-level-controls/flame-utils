@@ -175,16 +175,16 @@ class TestGetElement(unittest.TestCase):
     def test_multi_filters(self):
         eidx, etyp = list(range(20)), 'bpm'
         e0 = [
-              {'index': 18,
-               'properties': {'name': 'LS1_CA01:BPM_D1144', 'type': 'bpm'}},
               {'index': 5,
-               'properties': {'name': 'LS1_CA01:BPM_D1129', 'type': 'bpm'}}
+               'properties': {'name': 'LS1_CA01:BPM_D1129', 'type': 'bpm'}},
+              {'index': 18,
+               'properties': {'name': 'LS1_CA01:BPM_D1144', 'type': 'bpm'}}
         ]
         e1 = get_element(index=eidx, type=etyp, latfile=self.latfile)
         self.assertEqual(e1, e0)
 
         e2 = get_element(index=eidx, type=etyp, latfile=self.latfile, name='LS1_CA01:BPM_D1144')
-        self.assertEqual(e2, [e0[0]])
+        self.assertEqual(e2, [e0[1]])
 
     def test_name_pattern(self):
         name_pattern = 'FS1_BBS:DH_D2394_.?$'
