@@ -15,6 +15,8 @@ import re
 import sys
 import flame
 
+import numpy as np
+
 from collections import Counter
 
 from flame_utils.misc import machine_setter
@@ -58,8 +60,9 @@ def get_all_types(latfile=None, _machine=None):
         return None
 
     mconf = m.conf()
-    mconfe = mconf['elements']
-    return list(set([i.get('type') for i in mconfe]))
+    a = np.asarray([i.get('type') for i in m.conf()['elements']])
+    _, idx = np.unique(a, return_index=True)
+    return a[np.sort(idx)].tolist()
 
 
 def get_all_names(latfile=None, _machine=None):
@@ -82,8 +85,9 @@ def get_all_names(latfile=None, _machine=None):
         return None
 
     mconf = m.conf()
-    mconfe = mconf['elements']
-    return list(set([i.get('name') for i in mconfe]))
+    a = np.asarray([i.get('name') for i in m.conf()['elements']])
+    _, idx = np.unique(a, return_index=True)
+    return a[np.sort(idx)].tolist()
 
 
 def inspect_lattice(latfile=None, out=None, _machine=None):
@@ -304,6 +308,7 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
                 [elem_k.add(k) for k in SOURCE_PROP_KEYS]
             elem_p = {k: elem.get(k) for k in elem_k}
             retval.append({'index': i, 'properties': elem_p})
+        retval.sort(key=lambda i:i['index'])
         return retval
 
 

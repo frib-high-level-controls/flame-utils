@@ -454,6 +454,7 @@ class ModelFlame(object):
         ----------
         econf : (list of) dict
             Element configuration(s), see :func:`get_element`.
+            Pass single element dict for source configuration.
 
         See Also
         --------
@@ -463,15 +464,17 @@ class ModelFlame(object):
         Notes
         -----
         Pass `econf` with a list of dict for applying batch configuring.
+        This method is not meant for reconfigure source.
         """
         m = configure(self._mach_ins, econf)
 
-        # update source as well if the econf is for source element,
-        # i.e. element with index of 0.
-        if econf['properties']['type'] == 'source':
-            # self.machine.propagate(self.bmstate.state, 0, 1)
-            zero_s = self.machine.allocState({})
-            _, self.bmstate = self.run(from_element=0, to_element=0, bmstate=zero_s)
+        if isinstance(econf, dict):
+            # update source as well if the econf is for source element,
+            # i.e. element with index of 0.
+            if econf['properties']['type'] == 'source':
+                # self.machine.propagate(self.bmstate.state, 0, 1)
+                zero_s = self.machine.allocState({})
+                _, self.bmstate = self.run(from_element=0, to_element=0, bmstate=zero_s)
 
     def reconfigure(self, index, properties):
         """Reconfigure FLAME model.
