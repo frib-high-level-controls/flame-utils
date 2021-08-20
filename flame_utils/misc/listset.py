@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 
 def _flatten(nnn):
     """ flatten recursively defined list or tuple
@@ -33,7 +28,7 @@ def flatten(nnn):
 
     :param nnn: recursively defined list or tuple
     :return: flattened list
-    
+
     :Example:
 
     >>> l0 = [1,2,3,[4,5],[6,[7,8,[9,10,['x',['y']]]]]]
@@ -51,7 +46,7 @@ def get_intersection(**kws):
     Returns
     -------
     res : list
-    
+
     Examples
     --------
     >>> a, b, c = [], [], []

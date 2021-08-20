@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
+from io import StringIO
 import unittest
 import os
 
@@ -12,11 +8,6 @@ from flame import Machine
 from _utils import make_latfile
 from flame_utils import generate_latfile
 from numpy.testing import assert_array_almost_equal as assertAEqual
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 curdir = os.path.dirname(__file__)
 
