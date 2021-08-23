@@ -170,19 +170,9 @@
 <span class="sd">&quot;&quot;&quot;Abstracted FLAME beam state class.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">flame</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">basestring</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
 
 <span class="kn">from</span> <span class="nn">flame_utils.misc</span> <span class="kn">import</span> <span class="n">is_zeros_states</span>
 <span class="kn">from</span> <span class="nn">flame_utils.misc</span> <span class="kn">import</span> <span class="n">machine_setter</span>
@@ -1161,7 +1151,7 @@
         <span class="sd">&quot;&quot;&quot;Get index from coordinate information&quot;&quot;&quot;</span>
         <span class="n">crd</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;xp&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yp&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;zp&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coor1</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coor2</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coor1</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coor2</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">coor1</span> <span class="ow">in</span> <span class="n">crd</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">coor2</span> <span class="ow">in</span> <span class="n">crd</span><span class="p">:</span>
                 <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid coordinate type. It must be &#39;x&#39;, &#39;xp&#39;, &#39;y&#39;, &#39;yp&#39;, &#39;z&#39;, or &#39;zp&#39;. &quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
@@ -1300,7 +1290,7 @@
     <p>
         &#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
       <span class="lastupdated">
-        Last updated on Jul 12, 2021.
+        Last updated on Aug 23, 2021.
       </span>
 
     </p>
