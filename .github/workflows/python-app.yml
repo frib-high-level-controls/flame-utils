@@ -39,6 +39,7 @@ jobs:
         cd tests
         pytest
     - name: Build documentation
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       run: |
         pip install sphinx sphinx_rtd_theme numpydoc
         cd docs
@@ -46,6 +47,7 @@ jobs:
         make html
         ! [ -e _build/html/.nojekyll ] && touch _build/html/.nojekyll
     - name: Publish documentation
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
