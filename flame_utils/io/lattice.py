@@ -4,27 +4,17 @@
 """FLAME lattice operations.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import flame
 import numpy as np
 import sys
 
 import logging
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 from flame_utils.core import get_all_names
 from flame_utils.core import generate_source
 
-
 _LOGGER = logging.getLogger(__name__)
+
 
 def generate_latfile(machine, latfile=None, state=None, original=None,
                      out=None, start=None, end=None):
@@ -98,7 +88,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         _LOGGER.error("Failed to load initial beam state.")
         return None
 
-    if not isinstance(original, basestring):
+    if not isinstance(original, str):
 
         try:
             lines = []
@@ -117,7 +107,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
 
             if start is None:
                 start = 1
-            elif isinstance(start, basestring):
+            elif isinstance(start, str):
                 start = m.find(name=start)[0]
             else :
                 start = int(start)
@@ -127,7 +117,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
 
             if end is None:
                 end = elem_num
-            elif isinstance(end, basestring):
+            elif isinstance(end, str):
                 end = m.find(name=end)[0] + 1
             else :
                 end = int(end) + 1
@@ -227,7 +217,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                 v = mc_src[bp]
                                 if isinstance(v, np.ndarray):
                                     v = str(v.tolist())
-                                elif isinstance(v, basestring):
+                                elif isinstance(v, str):
                                     v = '"' + str(v) + '"'
                                 else:
                                     v = str(v)
@@ -250,7 +240,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                                 v = c[k]
                                 if isinstance(v, np.ndarray):
                                     v = str(v.tolist())
-                                elif isinstance(v, basestring):
+                                elif isinstance(v, str):
                                     v = '"' + str(v) + '"'
                                 else:
                                     v = str(v)

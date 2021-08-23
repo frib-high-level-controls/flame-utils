@@ -4,19 +4,9 @@
 """Abstracted FLAME beam state class.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import flame
 import logging
 import numpy as np
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
@@ -995,7 +985,7 @@ class BeamState(object):
         """Get index from coordinate information"""
         crd = {'x': 0, 'xp': 1, 'y': 2, 'yp': 3, 'z': 4, 'zp': 5}
 
-        if isinstance(coor1, basestring) and isinstance(coor2, basestring):
+        if isinstance(coor1, str) and isinstance(coor2, str):
             if not coor1 in crd or not coor2 in crd:
                 _LOGGER.error("Invalid coordinate type. It must be 'x', 'xp', 'y', 'yp', 'z', or 'zp'. ")
                 return None

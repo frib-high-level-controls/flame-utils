@@ -4,22 +4,12 @@
 """Simulation/modeling with FLAME.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import flame
 from flame import Machine
 
 from functools import reduce
 import numpy as np
 import logging
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
@@ -349,13 +339,13 @@ class ModelFlame(object):
         """
         m = self._mach_ins
 
-        if isinstance(from_element, basestring):
+        if isinstance(from_element, str):
             eid = m.find(from_element)
             if len(eid) == 0:
                 _LOGGER.error(from_element + ' does not found.')
             from_element = min(eid)
 
-        if isinstance(to_element, basestring):
+        if isinstance(to_element, str):
             eid = m.find(to_element)
             if len(eid) == 0:
                 _LOGGER.error(to_element + ' does not found.')
@@ -379,10 +369,10 @@ class ModelFlame(object):
         elif monitor == 'all':
             obs = range(len(m))
         elif monitor is not None:
-            if isinstance(monitor, (int, basestring)):
+            if isinstance(monitor, (int, str)):
                 monitor = [monitor]
             for elem in monitor:
-                if isinstance(elem, basestring):
+                if isinstance(elem, str):
                     obs += self._mach_ins.find(name = elem)
                     obs += self._mach_ins.find(type = elem)
                 else:
@@ -502,7 +492,7 @@ class ModelFlame(object):
 
         idx = []
         for elem in index:
-            if isinstance(elem, basestring):
+            if isinstance(elem, str):
                 idx += self._mach_ins.find(name = elem)
                 idx += self._mach_ins.find(type = elem)
             else:

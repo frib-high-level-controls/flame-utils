@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import unittest
 import os
 import random
+from io import StringIO
 from numpy import array
 from numpy.testing import assert_array_equal
 import numpy as np
@@ -23,10 +20,6 @@ from flame_utils import insert_element
 from _utils import make_latfile
 from _utils import compare_source_element
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 curdir = os.path.dirname(__file__)
 

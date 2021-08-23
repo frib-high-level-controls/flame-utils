@@ -3,11 +3,6 @@
 
 """This module provides lattice picture from FLAME lattice file(.lat) or FLAME Machine object."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from flame import Machine
 from flame_utils.core import ModelFlame
 from flame_utils.core import BeamState
@@ -21,10 +16,6 @@ import numpy as np
 
 _LOGGER = logging.getLogger(__name__)
 
-try:
-    basestring
-except NameError:
-    basestring = str
 
 def hplot(*args, **kws):
     """Plot beam state history with input arguments.
@@ -247,7 +238,7 @@ def hplot(*args, **kws):
     m = kws['machine'] if 'machine' in kws else None
     r = kws['result'] if 'result' in kws else None
 
-    if isinstance(m, basestring):
+    if isinstance(m, str):
         m = ModelFlame(lat_file=m)
 
     if m is None and r is None:
@@ -412,7 +403,7 @@ class PlotLat:
 
                     self.types[elem['type']]['scale'] = max(prv_scl,tmp_scl)
 
-        if isinstance(output, basestring):
+        if isinstance(output, str):
             self.generate(legend=True, option=True)
             self.output(window=True, fname=output, **kws)
 

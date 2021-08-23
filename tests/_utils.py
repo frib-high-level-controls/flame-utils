@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import os
 import numpy as np
 
@@ -32,6 +27,7 @@ def make_latfile(latfile1):
     fp2.close()
     return f2
 
+
 def compare_source_element(self, s0, s1):
     for k,v in s0['properties'].items():
         left_val, right_val = v, s1['properties'][k]
@@ -40,8 +36,9 @@ def compare_source_element(self, s0, s1):
         else:
             self.assertAlmostEqual(left_val, right_val)
 
+
 def compare_mstates(self, ms, s):
-    k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW', 
+    k = ['beta', 'bg', 'gamma', 'IonEk', 'IonEs', 'IonQ', 'IonW',
          'IonZ', 'phis', 'SampleIonK']
     all_keys = [i for i in k]
     all_keys.extend(['ref_{}'.format(i) for i in k] + ['pos'])
