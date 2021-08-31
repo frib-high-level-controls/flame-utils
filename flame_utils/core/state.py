@@ -27,7 +27,6 @@ KEY_MAPPING = {
         'NCharge': 'IonQ',
 }
 
-
 @alias
 class BeamState(object):
     """FLAME beam state, from which simulated results could be retrieved.
@@ -46,6 +45,7 @@ class BeamState(object):
         ref_IonZ
         ref_phis
         ref_SampleIonK
+        ref_Brho
 
 
    Class attributes of actual beam parameter:
@@ -61,6 +61,7 @@ class BeamState(object):
         IonZ
         phis
         SampleIonK
+        Brho
         moment0
         moment0_rms
         moment0_env
@@ -104,16 +105,22 @@ class BeamState(object):
         znemittance_all
         xtwiss_beta
         xtwiss_alpha
+        xtwiss_gamma
         ytwiss_beta
         ytwiss_alpha
+        ytwiss_gamma
         ztwiss_beta
         ztwiss_alpha
+        ztwiss_gamma
         xtwiss_beta_all
         xtwiss_alpha_all
+        xtwiss_gamma_all
         ytwiss_beta_all
         ytwiss_alpha_all
+        ytwiss_gamma_all
         ztwiss_beta_all
         ztwiss_alpha_all
+        ztwiss_gamma_all
         couple_xy
         couple_xpy
         couple_xyp
@@ -242,6 +249,12 @@ class BeamState(object):
         'xtwsa_all': 'xtwiss_alpha_all',
         'ytwsa_all': 'ytwiss_alpha_all',
         'ztwsa_all': 'ztwiss_alpha_all',
+        'xtwsg': 'xtwiss_gamma',
+        'ytwsg': 'ytwiss_gamma',
+        'ztwsg': 'ztwiss_gamma',
+        'xtwsg_all': 'xtwiss_gamma_all',
+        'ytwsg_all': 'ytwiss_gamma_all',
+        'ztwsg_all': 'ztwiss_gamma_all',
         'cxy': 'couple_xy',
         'cxpy': 'couple_xpy',
         'cxyp': 'couple_xyp',
@@ -374,7 +387,7 @@ class BeamState(object):
 
     @property
     def ref_IonZ(self):
-        """float: reference charge state, measured by charge to mass ratio,
+        """float: reference charge to mass ratio,
         e.g. :math:`^{33^{+}}_{238}U: Q(33)/A(238)`, [Q/A]"""
         return getattr(self._states, 'ref_IonZ')
 
@@ -401,6 +414,20 @@ class BeamState(object):
     @ref_SampleIonK.setter
     def ref_SampleIonK(self, x):
         setattr(self._states, 'ref_SampleIonK', x)
+
+    @property
+    def ref_SampleFreq(self):
+        """float: sampling frequency of reference charge state, [Hz]"""
+        return getattr(self._states, 'ref_SampleFreq')
+
+    @ref_SampleFreq.setter
+    def ref_SampleFreq(self, x):
+        setattr(self._states, 'ref_SampleFreq', x)
+
+    @property
+    def ref_Brho(self):
+        """float: magnetic rigidity of reference charge state, [Hz]"""
+        return Brho(self.ref_IonEk, self.ref_IonZ)
 
     @property
     def beta(self):
@@ -474,7 +501,7 @@ class BeamState(object):
 
     @property
     def IonZ(self):
-        """Array: all charge states, measured by charge to mass ratio
+        """Array: all charge to mass ratios
 
         Notes
         -----
@@ -506,6 +533,20 @@ class BeamState(object):
         setattr(self._states, 'SampleIonK', x)
 
     @property
+    def SampleFreq(self):
+        """Array: sampling frequency of all charge states, [Hz]"""
+        return getattr(self._states, 'SampleFreq')
+
+    @SampleFreq.setter
+    def SampleFreq(self, x):
+        setattr(self._states, 'SampleFreq', x)
+
+    @property
+    def Brho(self):
+        """float: magnetic rigidity of reference charge state, [Hz]"""
+        return Brho(self.IonEk, self.IonZ)
+
+    @property
     def moment0_env(self):
         """Array: weight average of centroid for all charge states, array of
         ``[x, x', y, y', phi, dEk, 1]``, with the units of
@@ -526,10 +567,6 @@ class BeamState(object):
         """
         return getattr(self._states, 'moment0_env')
 
-    @moment0_env.setter
-    def moment0_env(self, x):
-        setattr(self._states, 'moment0_env', x)
-
     @property
     def moment0_rms(self):
         """Array: rms beam envelope, part of statistical results from
@@ -542,7 +579,7 @@ class BeamState(object):
 
         See Also
         --------
-        moment1 : correlation tensor of all charge states
+        moment1 : covariance matrices of all charge states
         """
         return getattr(self._states, 'moment0_rms')
 
@@ -558,8 +595,8 @@ class BeamState(object):
 
     @property
     def moment1(self):
-        r"""Array: correlation tensor of all charge states, for each charge
-        state, the correlation matrix could be written as:
+        r"""Array: covariance matrices of all charge states, for each charge
+        state, the covariance matrix could be written as:
 
         .. math::
 
@@ -581,12 +618,8 @@ class BeamState(object):
 
     @property
     def moment1_env(self):
-        """Array: averaged correlation tensor of all charge states"""
+        """Array: averaged covariance matrices of all charge states"""
         return getattr(self._states, 'moment1_env')
-
-    @moment1_env.setter
-    def moment1_env(self, x):
-        setattr(self._states, 'moment1_env', x)
 
     @property
     def x0(self):
@@ -860,6 +893,36 @@ class BeamState(object):
         return -self._states.moment1[4, 5, :]/self.zeps_all
 
     @property
+    def xtwiss_gamma(self):
+        """float: weight average of twiss gamma x, [rad/m]"""
+        return (1.0 + self.xtwiss_alpha**2)/self.xtwiss_beta
+
+    @property
+    def ytwiss_gamma(self):
+        """float: weight average of twiss gamma y, [rad/m]"""
+        return (1.0 + self.ytwiss_alpha**2)/self.ytwiss_beta
+
+    @property
+    def ztwiss_gamma(self):
+        """float: weight average of twiss gamma z, [MeV/u/rad]"""
+        return (1.0 + self.ztwiss_alpha**2)/self.ztwiss_beta
+
+    @property
+    def xtwiss_gamma_all(self):
+        """Array: twiss gamma x of all charge states, [rad/m]"""
+        return (1.0 + self.xtwiss_alpha_all**2)/self.xtwiss_beta_all
+
+    @property
+    def ytwiss_gamma_all(self):
+        """Array: twiss gamma y of all charge states, [rad/m]"""
+        return (1.0 + self.ytwiss_alpha_all**2)/self.ytwiss_beta_all
+
+    @property
+    def ztwiss_gamma_all(self):
+        """Array: twiss gamma z of all charge states, [MeV/u/rad]"""
+        return (1.0 + self.ztwiss_alpha_all**2)/self.ztwiss_beta_all
+
+    @property
     def couple_xy(self):
         """float: weight average of normalized x-y coupling term, [1]"""
         return self.get_couple('x', 'y', cs=-1)
@@ -928,7 +991,7 @@ class BeamState(object):
         if eps is None and neps is None:
             eps = getattr(self, coor + 'emittance_all')[cs]
         elif eps is not None and neps is not None:
-            _LOGGER.warning("'neps' is ignored by 'eps' input.")
+            _LOGGER.warning("'nemittance' is ignored by 'emittance' input.")
 
         if eps is None:
             gam = 1.0 + self.ref_IonEk/self.ref_IonEs
@@ -948,59 +1011,10 @@ class BeamState(object):
         alpha = getattr(self, coor + 'twiss_alpha_all')[cs] if alpha is None else alpha
 
         mat = self._states.moment1
-        if coor == 'x':
-            idx = [0, 1]
-            jdx = [2, 3, 4, 5]
-            cpt = [[self.get_couple(i, j, cs = cs) for i in idx] for j in jdx]
-            mat[0, 0, cs] = beta*eps
-            mat[0, 1, cs] = mat[1, 0, cs] = -alpha*eps*1e-3
-            mat[1, 1, cs] = (1.0 + alpha*alpha)/beta*eps*1e-6
-        elif coor == 'y':
-            idx = [2, 3]
-            jdx = [0, 1, 4, 5]
-            cpt = [[self.get_couple(i, j, cs = cs) for i in idx] for j in jdx]
-            mat[2, 2, cs] = beta*eps
-            mat[2, 3, cs] = mat[3, 2, cs] = -alpha*eps*1e-3
-            mat[3, 3, cs] = (1.0 + alpha*alpha)/beta*eps*1e-6
-        elif coor == 'z':
-            idx = [4, 5]
-            jdx = [0, 1, 2, 3]
-            cpt = [[self.get_couple(i, j, cs = cs) for i in idx] for j in jdx]
-            mat[4, 4, cs] = beta*eps
-            mat[4, 5, cs] = mat[5, 4, cs] = -alpha*eps
-            mat[5, 5, cs] = (1.0 + alpha*alpha)/beta*eps
-        else:
-            _LOGGER.error("Invalid coordinate type. It must be 'x', 'y', or 'z'.")
-            return None
-
+        mcs = mat[:, :, cs]
+        mat[:, :, cs] = twiss_to_matrix(coor, alpha, beta, eps, matrix=mcs)
         self._states.moment1 = mat
-        for j, cp in zip(jdx, cpt):
-            for i, v in zip(idx, cp):
-                self.set_couple(i, j, v, cs = cs)
-
         self.dm.propagate(self.state)
-
-    @staticmethod
-    def _couple_index(coor1, coor2):
-        """Get index from coordinate information"""
-        crd = {'x': 0, 'xp': 1, 'y': 2, 'yp': 3, 'z': 4, 'zp': 5}
-
-        if isinstance(coor1, str) and isinstance(coor2, str):
-            if not coor1 in crd or not coor2 in crd:
-                _LOGGER.error("Invalid coordinate type. It must be 'x', 'xp', 'y', 'yp', 'z', or 'zp'. ")
-                return None
-
-            c1 = crd[coor1]
-            c2 = crd[coor2]
-        else:
-            c1 = int(coor1)
-            c2 = int(coor2)
-
-        if c1 == c2:
-            _LOGGER.error("Invalid coordinate type. Combination of " + str(coor1) + " and " + str(coor2) + " is not coupling term.")
-            return None
-
-        return  c1, c2
 
     def get_couple(self, coor1, coor2, cs=0):
         """Get normalized coupling term of moment1 matrix
@@ -1018,21 +1032,12 @@ class BeamState(object):
         term : float
             Normalized coupling term of ``coor1`` and ``coor2`` of ``cs``-th charge state.
         """
-        r = self._couple_index(coor1, coor2)
-        if r is not None:
-            c1, c2 = r
-        else:
-            return None
-
         if cs == -1:
             mat = self._states.moment1_env
         else:
             mat = self._states.moment1[:, :, cs]
 
-        fac = mat[c1, c1]*mat[c2, c2]
-        term = mat[c1, c2]/np.sqrt(fac) if fac > 0.0 else 0.0
-
-        return term
+        return get_couple(mat, coor1, coor2)
 
     def set_couple(self, coor1, coor2, value=0.0, cs = 0):
         """Set normalized coupling term of moment1 matrix
@@ -1048,17 +1053,9 @@ class BeamState(object):
         cs : int
             Index of the charge state.
         """
-        r = self._couple_index(coor1, coor2)
-        if r is not None:
-            c1, c2 = r
-        else:
-            return None
-
         mat = self._states.moment1
-        fac = mat[c1, c1, cs]*mat[c2, c2, cs]
-        term = value*np.sqrt(fac) if fac > 0.0 else 0.0
-        mat[c1, c2, cs] = mat[c2, c1, cs] = term
-
+        mcs = mat[:, :, cs]
+        mat[:, :, cs] = set_couple(mcs, coor1, coor2, value)
         self._states.moment1 = mat
         self.dm.propagate(self.state)
 
@@ -1111,3 +1108,148 @@ def generate_source(state, sconf=None):
         sconf_prop['{0}{1}'.format(s, i)] = state.moment1[:, :, i].flatten()
 
     return {'index': sconf_indx, 'properties': sconf_prop}
+
+def Brho(k, z):
+    """Get magnetic rigidity
+
+    Parameters
+    ----------
+    k : float
+        Kinetic energy [eV/u]
+    z : float
+        Charge to mass ratio, Q/A [1].
+    Returns
+    -------
+    brho : float
+        Magnetic rigidity [Tm].
+    """
+    amu = 931.49432e6 # ev/c2
+    c0 = 2.99792458e8 # m/s
+    gam = (k + amu)/amu
+    bet = np.sqrt(1e0 - 1e0/gam/gam)
+    brho = bet*(k + amu)/(c0*z)
+    return brho
+
+def couple_index(coor1, coor2):
+        """Get index from coordinate information"""
+        crd = {'x': 0, 'xp': 1, 'y': 2, 'yp': 3, 'z': 4, 'zp': 5}
+
+        if isinstance(coor1, str) and isinstance(coor2, str):
+            if not coor1 in crd or not coor2 in crd:
+                _LOGGER.error("Invalid coordinate type. It must be 'x', 'xp', 'y', 'yp', 'z', or 'zp'. ")
+                return None
+
+            c1 = crd[coor1]
+            c2 = crd[coor2]
+        else:
+            c1 = int(coor1)
+            c2 = int(coor2)
+
+        if c1 == c2:
+            _LOGGER.error("Invalid coordinate type. Combination of " + str(coor1) + " and " + str(coor2) + " is not coupling term.")
+            return None
+
+        return  c1, c2
+
+def get_couple(matrix, coor1, coor2):
+    """Get normalized coupling term of moment1 matrix
+
+    Parameters
+    ----------
+    matrix : Array
+        Covariance matrix of the beam.
+    coor1 : str
+        First Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+    coor2 : str
+        Second Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+    Returns
+    -------
+    term : float
+        Normalized coupling term of ``coor1`` and ``coor2`` of ``cs``-th charge state.
+    """
+    r = couple_index(coor1, coor2)
+    if r is not None:
+        c1, c2 = r
+    else:
+        return None
+    mat = matrix
+    fac = mat[c1, c1]*mat[c2, c2]
+    term = mat[c1, c2]/np.sqrt(fac) if fac > 0.0 else 0.0
+
+    return term
+
+def set_couple(matrix, coor1, coor2, value=0.0):
+        """Set normalized coupling term of moment1 matrix
+
+        Parameters
+        ----------
+        matrix : Array
+            Covariance matrix of the beam.
+        coor1 : str
+            First Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+        coor2 : str
+            Second Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+        value : float
+            Normalized coupling term, (-1 ~ +1) [1].
+        """
+        r = couple_index(coor1, coor2)
+        if r is not None:
+            c1, c2 = r
+        else:
+            return None
+
+        mat = matrix
+        fac = mat[c1, c1]*mat[c2, c2]
+        term = value*np.sqrt(fac) if fac > 0.0 else 0.0
+        mat[c1, c2] = mat[c2, c1] = term
+
+        return mat
+
+def twiss_to_matrix(coor, alpha, beta, emittance, matrix=None):
+    """Set covariance matrix by using Twiss parameter.
+
+    Parameters
+    ----------
+    coor : str
+        Coordinate of the twiss parameter,　'x', 'y', or 'z'.
+    alpha : float
+        Twiss alpha, [1].
+    beta : float
+        Twiss beta, [m/rad] for 'x' and 'y', [rad/MeV/u] for 'z'.
+    emittance : float
+        Geometrical (Unnormalized) emittance, [mm-mrad] for 'x' and 'y', [rad-MeV/u] for 'z'.
+    matrix : Array
+        Original covariance matrix of the beam
+    """
+    eps = emittance
+    mat = np.zeros([7, 7]) if matrix is None else matrix
+    if coor == 'x':
+        idx = [0, 1]
+        jdx = [2, 3, 4, 5]
+        cpt = [[get_couple(mat, i, j) for i in idx] for j in jdx]
+        mat[0, 0] = beta*eps
+        mat[0, 1] = mat[1, 0] = -alpha*eps*1e-3
+        mat[1, 1] = (1.0 + alpha*alpha)/beta*eps*1e-6
+    elif coor == 'y':
+        idx = [2, 3]
+        jdx = [0, 1, 4, 5]
+        cpt = [[get_couple(mat, i, j) for i in idx] for j in jdx]
+        mat[2, 2] = beta*eps
+        mat[2, 3] = mat[3, 2] = -alpha*eps*1e-3
+        mat[3, 3] = (1.0 + alpha*alpha)/beta*eps*1e-6
+    elif coor == 'z':
+        idx = [4, 5]
+        jdx = [0, 1, 2, 3]
+        cpt = [[get_couple(mat, i, j) for i in idx] for j in jdx]
+        mat[4, 4] = beta*eps
+        mat[4, 5] = mat[5, 4] = -alpha*eps
+        mat[5, 5] = (1.0 + alpha*alpha)/beta*eps
+    else:
+        _LOGGER.error("Invalid coordinate type. It must be 'x', 'y', or 'z'.")
+        return None
+
+    for j, cp in zip(jdx, cpt):
+        for i, v in zip(idx, cp):
+            mat = set_couple(mat, i, j, v)
+
+    return mat
