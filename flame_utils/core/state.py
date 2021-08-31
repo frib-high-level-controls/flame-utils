@@ -428,7 +428,7 @@ class BeamState(object):
 
     @property
     def ref_Brho(self):
-        """float: magnetic rigidity of reference charge state, [Hz]"""
+        """float: magnetic rigidity of reference charge state, [Tm]"""
         return Brho(self.ref_IonEk, self.ref_IonZ)
 
     @property
@@ -545,7 +545,7 @@ class BeamState(object):
 
     @property
     def Brho(self):
-        """float: magnetic rigidity of reference charge state, [Hz]"""
+        """float: magnetic rigidity of reference charge state, [Tm]"""
         return Brho(self.IonEk, self.IonZ)
 
     @property
