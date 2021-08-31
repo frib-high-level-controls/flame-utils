@@ -137,7 +137,9 @@ class BeamState(object):
     .. autosummary ::
         clone
         set_twiss
+        get_twiss
         set_couple
+        get_couple
 
     Parameters
     ----------
@@ -1016,15 +1018,51 @@ class BeamState(object):
         self._states.moment1 = mat
         self.dm.propagate(self.state)
 
+    def get_twiss(self, coor, cs=0):
+        """Get twiss parameters of moment1 matrix
+
+        Parameters
+        ----------
+        coor : str
+            Coordinate of the twiss parameter,　'x', 'y', or 'z'.
+        cs : int
+            Index of the charge state (-1 for weight average of all charge states).
+        Returns
+        -------
+        twiss : array
+            Twiss [alpha, beta, gamma] of the beam.
+        """
+
+        if coor == 'x':
+            if cs == -1:
+                tws = np.array([self.xtwsa, self.xtwsb, self.xtwsg])
+            else:
+                tws = np.array([self.xtwsa_all[cs], self.xtwsb_all[cs], self.xtwsg_all[cs]])
+        elif coor == 'y':
+            if cs == -1:
+                tws = np.array([self.ytwsa, self.ytwsb, self.ytwsg])
+            else:
+                tws = np.array([self.ytwsa_all[cs], self.ytwsb_all[cs], self.ytwsg_all[cs]])
+        elif coor == 'z':
+            if cs == -1:
+                tws = np.array([self.ztwsa, self.ztwsb, self.ztwsg])
+            else:
+                tws = np.array([self.ztwsa_all[cs], self.ztwsb_all[cs], self.ztwsg_all[cs]])
+        else:
+            _LOGGER.error("Invalid coordinate type. It must be 'x', 'y', or 'z'.")
+            return None
+
+        return tws
+
     def get_couple(self, coor1, coor2, cs=0):
         """Get normalized coupling term of moment1 matrix
 
         Parameters
         ----------
         coor1 : str
-            First Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+            First coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
         coor2 : str
-            Second Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+            Second coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
         cs : int
             Index of the charge state (-1 for weight average of all charge states).
         Returns
@@ -1045,9 +1083,9 @@ class BeamState(object):
         Parameters
         ----------
         coor1 : str
-            First Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+            First coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
         coor2 : str
-            Second Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+            Second coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
         value : float
             Normalized coupling term, (-1 ~ +1) [1].
         cs : int
