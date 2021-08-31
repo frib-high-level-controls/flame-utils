@@ -1027,6 +1027,7 @@ class BeamState(object):
             Coordinate of the twiss parameter,　'x', 'y', or 'z'.
         cs : int
             Index of the charge state (-1 for weight average of all charge states).
+
         Returns
         -------
         twiss : array
@@ -1065,6 +1066,7 @@ class BeamState(object):
             Second coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
         cs : int
             Index of the charge state (-1 for weight average of all charge states).
+
         Returns
         -------
         term : float
@@ -1156,6 +1158,7 @@ def Brho(k, z):
         Kinetic energy [eV/u]
     z : float
         Charge to mass ratio, Q/A [1].
+
     Returns
     -------
     brho : float
@@ -1200,6 +1203,7 @@ def get_couple(matrix, coor1, coor2):
         First Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
     coor2 : str
         Second Coordinate of the coupling term, 'x', xp, 'y', 'yp', 'z', or 'zp'.
+
     Returns
     -------
     term : float
