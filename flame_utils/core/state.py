@@ -429,7 +429,7 @@ class BeamState(object):
     @property
     def ref_Brho(self):
         """float: magnetic rigidity of reference charge state, [Tm]"""
-        return Brho(self.ref_IonEk, self.ref_IonZ)
+        return get_brho(self.ref_IonEk, self.ref_IonZ)
 
     @property
     def beta(self):
@@ -546,7 +546,7 @@ class BeamState(object):
     @property
     def Brho(self):
         """float: magnetic rigidity of reference charge state, [Tm]"""
-        return Brho(self.IonEk, self.IonZ)
+        return get_brho(self.IonEk, self.IonZ)
 
     @property
     def moment0_env(self):
@@ -1149,7 +1149,7 @@ def generate_source(state, sconf=None):
 
     return {'index': sconf_indx, 'properties': sconf_prop}
 
-def Brho(k, z):
+def get_brho(k, z):
     """Get magnetic rigidity
 
     Parameters
