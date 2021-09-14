@@ -58,7 +58,7 @@ def collect_data(result, *args, **kws):
         Total energy of reference charge state, [eV/u],
         i.e. :math:`W = E_s + E_k`.
     ref_IonZ : float
-        Reference charge state, measured by charge to mass ratio, e.g.
+        Reference charge to mass ratio, e.g.
         :math:`^{33^{+}}_{238}U: Q[33]/A[238]`.
     ref_phis : float
         Absolute synchrotron phase of reference charge state, [rad].
@@ -81,7 +81,7 @@ def collect_data(result, *args, **kws):
     IonW : Array
         Total energy of all charge states, [eV/u], i.e. :math:`W = E_s + E_k`.
     IonZ : Array
-        All charge states, measured by charge to mass ratio
+        All charge to mass ratios
     phis : Array
         Absolute synchrotron phase of all charge states, [rad]
     SampleIonK : Array
@@ -146,9 +146,9 @@ def collect_data(result, *args, **kws):
     moment0_rms, rmsvector : Array
         RMS beam envelope, part of statistical results from ``moment1``.
     moment1, beammatrix_all : Array
-        Correlation tensor of all charge states, for each charge state.
+        Covariance matrices of all charge states, for each charge state.
     moment1_env, beammatrix : Array
-        Correlation tensor of all charge states, average over all charge states.
+        Covariance matrices of all charge states, average over all charge states.
     xemittance, xeps : float
         Weight average of geometrical x emittance, [mm-mrad].
     yemittance, yeps : float

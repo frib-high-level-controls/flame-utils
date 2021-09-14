@@ -10,6 +10,7 @@ from flame_utils import BeamState
 from flame_utils import ModelFlame
 from flame_utils import collect_data
 from flame_utils import generate_source
+from flame_utils import twiss_to_matrix
 
 from _utils import make_latfile
 from _utils import compare_mstates
@@ -135,6 +136,18 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(ms.xeps_all[0], 5.0)
         self.assertAlmostEqual(ms.yeps_all[0], 5.0)
         self.assertAlmostEqual(ms.zeps_all[0], 5.0)
+        mat = twiss_to_matrix('x', 1, 2, 3)
+        mat = twiss_to_matrix('y', 1, 2, 3, matrix=mat)
+        mat = twiss_to_matrix('z', 1, 2, 3, matrix=mat)
+        for i in [0, 2]:
+            self.assertAlmostEqual(mat[i,   i],    6.0)
+            self.assertAlmostEqual(mat[i,   i+1], -3e-3)
+            self.assertAlmostEqual(mat[i+1, i],   -3e-3)
+            self.assertAlmostEqual(mat[i+1, i+1],  3e-06)
+        self.assertAlmostEqual(mat[4, 4],  6.0)
+        self.assertAlmostEqual(mat[4, 5], -3e0)
+        self.assertAlmostEqual(mat[5, 4], -3e0)
+        self.assertAlmostEqual(mat[5, 5],  3e0)
 
     def test_transmat(self):
         with open(self.latfile, 'rb') as f:
@@ -145,7 +158,6 @@ class TestBeamState(unittest.TestCase):
         left_val = ms.transfer_matrix
         right_val = s.transmat
         self.assertTrue((left_val == right_val).all())
-
 
 class TestModelFlame(unittest.TestCase):
     def setUp(self):

@@ -1,5 +1,6 @@
 from .state import BeamState
 from .state import generate_source
+from .state import twiss_to_matrix
 from .element import get_all_names
 from .element import get_all_types
 from .element import get_element
@@ -12,7 +13,7 @@ from .model import ModelFlame
 from .model import configure
 from .model import propagate
 
-__all__ = ['BeamState', 'generate_source', 'get_all_types',
+__all__ = ['BeamState', 'generate_source', 'twiss_to_matrix', 'get_all_types',
            'get_all_names', 'inspect_lattice', 'insert_element', 'get_element',
            'get_index_by_type', 'get_index_by_name', 'get_names_by_pattern',
            'propagate', 'configure', 'ModelFlame'
