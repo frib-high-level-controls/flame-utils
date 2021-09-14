@@ -1,77 +1,35 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>flame_utils.io.output &mdash; flame-utils  documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/frib-favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> flame-utils
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.3.11
+                0.4.1
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,18 +37,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../element.html">Lattice Properties</a></li>
@@ -100,69 +47,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">Application Programming Interface</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">flame-utils</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
       <li>flame_utils.io.output</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for flame_utils.io.output</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
@@ -224,7 +132,7 @@
 <span class="sd">        Total energy of reference charge state, [eV/u],</span>
 <span class="sd">        i.e. :math:`W = E_s + E_k`.</span>
 <span class="sd">    ref_IonZ : float</span>
-<span class="sd">        Reference charge state, measured by charge to mass ratio, e.g.</span>
+<span class="sd">        Reference charge to mass ratio, e.g.</span>
 <span class="sd">        :math:`^{33^{+}}_{238}U: Q[33]/A[238]`.</span>
 <span class="sd">    ref_phis : float</span>
 <span class="sd">        Absolute synchrotron phase of reference charge state, [rad].</span>
@@ -247,7 +155,7 @@
 <span class="sd">    IonW : Array</span>
 <span class="sd">        Total energy of all charge states, [eV/u], i.e. :math:`W = E_s + E_k`.</span>
 <span class="sd">    IonZ : Array</span>
-<span class="sd">        All charge states, measured by charge to mass ratio</span>
+<span class="sd">        All charge to mass ratios</span>
 <span class="sd">    phis : Array</span>
 <span class="sd">        Absolute synchrotron phase of all charge states, [rad]</span>
 <span class="sd">    SampleIonK : Array</span>
@@ -312,9 +220,9 @@
 <span class="sd">    moment0_rms, rmsvector : Array</span>
 <span class="sd">        RMS beam envelope, part of statistical results from ``moment1``.</span>
 <span class="sd">    moment1, beammatrix_all : Array</span>
-<span class="sd">        Correlation tensor of all charge states, for each charge state.</span>
+<span class="sd">        Covariance matrices of all charge states, for each charge state.</span>
 <span class="sd">    moment1_env, beammatrix : Array</span>
-<span class="sd">        Correlation tensor of all charge states, average over all charge states.</span>
+<span class="sd">        Covariance matrices of all charge states, average over all charge states.</span>
 <span class="sd">    xemittance, xeps : float</span>
 <span class="sd">        Weight average of geometrical x emittance, [mm-mrad].</span>
 <span class="sd">    yemittance, yeps : float</span>
@@ -414,49 +322,32 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
-      <span class="lastupdated">
-        Last updated on Aug 23, 2021.
-      </span>
-
-    </p>
+    <p>&#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
+      <span class="lastupdated">Last updated on Sep 14, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

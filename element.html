@@ -1,80 +1,39 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Lattice Properties &mdash; flame-utils  documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/frib-favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="BeamState Class" href="beamstate.html" />
     <link rel="prev" title="Tutorial" href="tutorial.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> flame-utils
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.3.11
+                0.4.1
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -82,18 +41,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lattice Properties</a><ul>
@@ -120,75 +68,34 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">flame-utils</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Lattice Properties</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/element.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="lattice-properties">
-<h1>Lattice Properties<a class="headerlink" href="#lattice-properties" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="general-parameter">
-<h2>General parameter<a class="headerlink" href="#general-parameter" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="lattice-properties">
+<h1>Lattice Properties<a class="headerlink" href="#lattice-properties" title="Permalink to this headline"></a></h1>
+<section id="general-parameter">
+<h2>General parameter<a class="headerlink" href="#general-parameter" title="Permalink to this headline"></a></h2>
 <p>Basic format of the general parameters are,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>keyword1 = &quot;value1&quot;;
 keyword2 = &quot;value2&quot;;
@@ -279,9 +186,9 @@ keyword2 = &quot;value2&quot;;
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="beam-parameter">
-<h2>Beam parameter<a class="headerlink" href="#beam-parameter" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="beam-parameter">
+<h2>Beam parameter<a class="headerlink" href="#beam-parameter" title="Permalink to this headline"></a></h2>
 <p>Basic format of the beam parameters are,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>keyword1 = value1;
 keyword2 = [value2, value3]; # list input
@@ -424,9 +331,9 @@ keyword2 = [value2, value3]; # list input
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="lattice-elements">
-<span id="element"></span><h2>Lattice elements<a class="headerlink" href="#lattice-elements" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="lattice-elements">
+<span id="element"></span><h2>Lattice elements<a class="headerlink" href="#lattice-elements" title="Permalink to this headline"></a></h2>
 <p>Basic format of the one lattice element is,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name_of_element1: element_type, parameter1 = value1, parameter2 = value2, ... ;
 </pre></div>
@@ -491,11 +398,11 @@ USE: name_of_cell;
 </tr>
 </tbody>
 </table>
-<div class="section" id="special-element">
-<h3>Special element<a class="headerlink" href="#special-element" title="Permalink to this headline">¶</a></h3>
+<section id="special-element">
+<h3>Special element<a class="headerlink" href="#special-element" title="Permalink to this headline"></a></h3>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv46source">
-<span id="_CPPv36source"></span><span id="_CPPv26source"></span><span id="source"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source</span></span></span><a class="headerlink" href="#_CPPv46source" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36source"></span><span id="_CPPv26source"></span><span id="source"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source</span></span></span><a class="headerlink" href="#_CPPv46source" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Starting point of the simulation. Initial beam state parameters are set at this element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -517,13 +424,13 @@ USE: name_of_cell;
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv46marker">
-<span id="_CPPv36marker"></span><span id="_CPPv26marker"></span><span id="marker"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">marker</span></span></span><a class="headerlink" href="#_CPPv46marker" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36marker"></span><span id="_CPPv26marker"></span><span id="marker"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">marker</span></span></span><a class="headerlink" href="#_CPPv46marker" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Marker element. Nothing to do.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv48stripper">
-<span id="_CPPv38stripper"></span><span id="_CPPv28stripper"></span><span id="stripper"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stripper</span></span></span><a class="headerlink" href="#_CPPv48stripper" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv38stripper"></span><span id="_CPPv28stripper"></span><span id="stripper"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stripper</span></span></span><a class="headerlink" href="#_CPPv48stripper" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Stripper element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -606,7 +513,7 @@ USE: name_of_cell;
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv47tmatrix">
-<span id="_CPPv37tmatrix"></span><span id="_CPPv27tmatrix"></span><span id="tmatrix"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tmatrix</span></span></span><a class="headerlink" href="#_CPPv47tmatrix" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37tmatrix"></span><span id="_CPPv27tmatrix"></span><span id="tmatrix"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tmatrix</span></span></span><a class="headerlink" href="#_CPPv47tmatrix" title="Permalink to this definition"></a><br /></dt>
 <dd><p>User input transfer matrix element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameter</dt>
@@ -618,12 +525,12 @@ USE: name_of_cell;
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="optical-element">
-<h3>Optical element<a class="headerlink" href="#optical-element" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="optical-element">
+<h3>Optical element<a class="headerlink" href="#optical-element" title="Permalink to this headline"></a></h3>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv47orbtrim">
-<span id="_CPPv37orbtrim"></span><span id="_CPPv27orbtrim"></span><span id="orbtrim"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">orbtrim</span></span></span><a class="headerlink" href="#_CPPv47orbtrim" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37orbtrim"></span><span id="_CPPv27orbtrim"></span><span id="orbtrim"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">orbtrim</span></span></span><a class="headerlink" href="#_CPPv47orbtrim" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Orbit trim element. This can be use as steering magnet.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -676,7 +583,7 @@ the process order is, transverse rotation -&gt; beam kick. In other words, the b
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45drift">
-<span id="_CPPv35drift"></span><span id="_CPPv25drift"></span><span id="drift"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drift</span></span></span><a class="headerlink" href="#_CPPv45drift" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35drift"></span><span id="_CPPv25drift"></span><span id="drift"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drift</span></span></span><a class="headerlink" href="#_CPPv45drift" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Drift space element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -690,7 +597,7 @@ the process order is, transverse rotation -&gt; beam kick. In other words, the b
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv48solenoid">
-<span id="_CPPv38solenoid"></span><span id="_CPPv28solenoid"></span><span id="solenoid"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solenoid</span></span></span><a class="headerlink" href="#_CPPv48solenoid" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv38solenoid"></span><span id="_CPPv28solenoid"></span><span id="solenoid"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solenoid</span></span></span><a class="headerlink" href="#_CPPv48solenoid" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Solenoid magnet element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -779,7 +686,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv410quadrupole">
-<span id="_CPPv310quadrupole"></span><span id="_CPPv210quadrupole"></span><span id="quadrupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadrupole</span></span></span><a class="headerlink" href="#_CPPv410quadrupole" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv310quadrupole"></span><span id="_CPPv210quadrupole"></span><span id="quadrupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadrupole</span></span></span><a class="headerlink" href="#_CPPv410quadrupole" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Magnetic quadrupole element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -815,7 +722,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv49sextupole">
-<span id="_CPPv39sextupole"></span><span id="_CPPv29sextupole"></span><span id="sextupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sextupole</span></span></span><a class="headerlink" href="#_CPPv49sextupole" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv39sextupole"></span><span id="_CPPv29sextupole"></span><span id="sextupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sextupole</span></span></span><a class="headerlink" href="#_CPPv49sextupole" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Magnetic sextupole element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -857,7 +764,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45equad">
-<span id="_CPPv35equad"></span><span id="_CPPv25equad"></span><span id="equad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equad</span></span></span><a class="headerlink" href="#_CPPv45equad" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35equad"></span><span id="_CPPv25equad"></span><span id="equad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equad</span></span></span><a class="headerlink" href="#_CPPv45equad" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Electrostatic quadrupole element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -899,7 +806,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45sbend">
-<span id="_CPPv35sbend"></span><span id="_CPPv25sbend"></span><span id="sbend"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sbend</span></span></span><a class="headerlink" href="#_CPPv45sbend" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35sbend"></span><span id="_CPPv25sbend"></span><span id="sbend"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sbend</span></span></span><a class="headerlink" href="#_CPPv45sbend" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Magnetic bend (dipole) element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -946,7 +853,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv47edipole">
-<span id="_CPPv37edipole"></span><span id="_CPPv27edipole"></span><span id="edipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edipole</span></span></span><a class="headerlink" href="#_CPPv47edipole" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37edipole"></span><span id="_CPPv27edipole"></span><span id="edipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edipole</span></span></span><a class="headerlink" href="#_CPPv47edipole" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Electrostatic dipole (bend) element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1016,7 +923,7 @@ due to the middle point potential deviation from ground. [1]</div>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv48rfcavity">
-<span id="_CPPv38rfcavity"></span><span id="_CPPv28rfcavity"></span><span id="rfcavity"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rfcavity</span></span></span><a class="headerlink" href="#_CPPv48rfcavity" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv38rfcavity"></span><span id="_CPPv28rfcavity"></span><span id="rfcavity"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rfcavity</span></span></span><a class="headerlink" href="#_CPPv48rfcavity" title="Permalink to this definition"></a><br /></dt>
 <dd><p>RF cavity element.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1084,14 +991,14 @@ due to the middle point potential deviation from ground. [1]</div>
 </dl>
 </dd></dl>
 
-</div>
-</div>
-<div class="section" id="rf-cavity-data-format">
-<span id="cavformat"></span><h2>Rf cavity data format<a class="headerlink" href="#rf-cavity-data-format" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="rf-cavity-data-format">
+<span id="cavformat"></span><h2>Rf cavity data format<a class="headerlink" href="#rf-cavity-data-format" title="Permalink to this headline"></a></h2>
 <p>FLAME using Thin-Lens-Model for rf cavity calculation.
 Rf cavity data is composed of “Longitudinal axis data”, “Multipole lattice data”, “Multipole field data”, and “TTF fitting data”.</p>
-<div class="section" id="hard-coded-frib-cavity-models">
-<h3>Hard-coded FRIB cavity models<a class="headerlink" href="#hard-coded-frib-cavity-models" title="Permalink to this headline">¶</a></h3>
+<section id="hard-coded-frib-cavity-models">
+<h3>Hard-coded FRIB cavity models<a class="headerlink" href="#hard-coded-frib-cavity-models" title="Permalink to this headline"></a></h3>
 <p>For typical rf cavity in FRIB, the “TTF fitting data” is hard-coded in FLAME.
 Following files are required for each rf cavity type.</p>
 <table class="docutils align-default">
@@ -1131,9 +1038,9 @@ Following files are required for each rf cavity type.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="generic-rf-cavity-model">
-<h3>Generic rf cavity model<a class="headerlink" href="#generic-rf-cavity-model" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="generic-rf-cavity-model">
+<h3>Generic rf cavity model<a class="headerlink" href="#generic-rf-cavity-model" title="Permalink to this headline"></a></h3>
 <p>FLAME supports <em>lattice format</em> input for the generic rf cavity model.</p>
 <p>The basic format of the rf cavity data is similar to the main lattice file,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Rm = value1;
@@ -1261,12 +1168,12 @@ USE: cell;
 </tr>
 </tbody>
 </table>
-<div class="section" id="lattice-element-for-the-rf-cavity-data">
-<h4>Lattice element for the rf cavity data<a class="headerlink" href="#lattice-element-for-the-rf-cavity-data" title="Permalink to this headline">¶</a></h4>
+<section id="lattice-element-for-the-rf-cavity-data">
+<h4>Lattice element for the rf cavity data<a class="headerlink" href="#lattice-element-for-the-rf-cavity-data" title="Permalink to this headline"></a></h4>
 <p>Drift space is the same format as the main lattice but unit of <code class="docutils literal notranslate"><span class="pre">L</span></code> is [mm] - <a class="reference internal" href="#_CPPv45drift" title="drift"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">drift</span></code></a></p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv47EDipole">
-<span id="_CPPv37EDipole"></span><span id="_CPPv27EDipole"></span><span id="EDipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EDipole</span></span></span><a class="headerlink" href="#_CPPv47EDipole" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37EDipole"></span><span id="_CPPv27EDipole"></span><span id="EDipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EDipole</span></span></span><a class="headerlink" href="#_CPPv47EDipole" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Dipole term generated by the electric field.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1297,21 +1204,21 @@ USE: cell;
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv46EFocus">
-<span id="_CPPv36EFocus"></span><span id="_CPPv26EFocus"></span><span id="EFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EFocus</span></span></span><a class="headerlink" href="#_CPPv46EFocus" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36EFocus"></span><span id="_CPPv26EFocus"></span><span id="EFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EFocus</span></span></span><a class="headerlink" href="#_CPPv46EFocus" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Constant focusing term generated by the electric field.</p>
 <p>Parameters are the same as <a class="reference internal" href="#_CPPv47EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45EQuad">
-<span id="_CPPv35EQuad"></span><span id="_CPPv25EQuad"></span><span id="EQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EQuad</span></span></span><a class="headerlink" href="#_CPPv45EQuad" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35EQuad"></span><span id="_CPPv25EQuad"></span><span id="EQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EQuad</span></span></span><a class="headerlink" href="#_CPPv45EQuad" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Quadrupole term generated by the electric field.</p>
 <p>Parameters are the same as <a class="reference internal" href="#_CPPv47EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45HMono">
-<span id="_CPPv35HMono"></span><span id="_CPPv25HMono"></span><span id="HMono"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HMono</span></span></span><a class="headerlink" href="#_CPPv45HMono" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35HMono"></span><span id="_CPPv25HMono"></span><span id="HMono"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HMono</span></span></span><a class="headerlink" href="#_CPPv45HMono" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Dipole term generated by the magnetic field.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1342,21 +1249,21 @@ USE: cell;
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv46HFocus">
-<span id="_CPPv36HFocus"></span><span id="_CPPv26HFocus"></span><span id="HFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HFocus</span></span></span><a class="headerlink" href="#_CPPv46HFocus" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36HFocus"></span><span id="_CPPv26HFocus"></span><span id="HFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HFocus</span></span></span><a class="headerlink" href="#_CPPv46HFocus" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Constant focusing term generated by the magnetic field.</p>
 <p>Parameters are the same as <a class="reference internal" href="#_CPPv45HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv45HQuad">
-<span id="_CPPv35HQuad"></span><span id="_CPPv25HQuad"></span><span id="HQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HQuad</span></span></span><a class="headerlink" href="#_CPPv45HQuad" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35HQuad"></span><span id="_CPPv25HQuad"></span><span id="HQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HQuad</span></span></span><a class="headerlink" href="#_CPPv45HQuad" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Quadrupole term generated by the magnetic field.</p>
 <p>Parameters are the same as <a class="reference internal" href="#_CPPv45HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv46AccGap">
-<span id="_CPPv36AccGap"></span><span id="_CPPv26AccGap"></span><span id="AccGap"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AccGap</span></span></span><a class="headerlink" href="#_CPPv46AccGap" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36AccGap"></span><span id="_CPPv26AccGap"></span><span id="AccGap"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AccGap</span></span></span><a class="headerlink" href="#_CPPv46AccGap" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Acceleration gap term by the longitudinal electric field.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1408,60 +1315,42 @@ to different particle phase speed <span class="math notranslate nohighlight">\(k
 <p>where, <span class="math notranslate nohighlight">\(\varphi_s\)</span> is the synchronous phase in input, <span class="math notranslate nohighlight">\(\varphi_\text{abs}\)</span>
 is absolute phase in front of the rf cavity, and <span class="math notranslate nohighlight">\(m\)</span> is the harmonic number.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="beamstate.html" class="btn btn-neutral float-right" title="BeamState Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="beamstate.html" class="btn btn-neutral float-right" title="BeamState Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
-      <span class="lastupdated">
-        Last updated on Aug 23, 2021.
-      </span>
-
-    </p>
+    <p>&#169; Copyright 2018-2020, Facility for Rare Isotope Beams, Michigan State University.
+      <span class="lastupdated">Last updated on Sep 14, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
