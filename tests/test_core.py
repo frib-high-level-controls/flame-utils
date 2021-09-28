@@ -148,6 +148,12 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(mat[4, 5], -3e0)
         self.assertAlmostEqual(mat[5, 4], -3e0)
         self.assertAlmostEqual(mat[5, 5],  3e0)
+        mat = twiss_to_matrix('x', np.nan, np.inf, 3)
+        self.assertAlmostEqual(mat[0, 0], 0.0)
+        self.assertAlmostEqual(mat[0, 1], 0.0)
+        self.assertAlmostEqual(mat[1, 0], 0.0)
+        self.assertAlmostEqual(mat[1, 1], 0.0)
+
 
     def test_transmat(self):
         with open(self.latfile, 'rb') as f:

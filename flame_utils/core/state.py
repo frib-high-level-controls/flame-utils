@@ -1264,6 +1264,15 @@ def twiss_to_matrix(coor, alpha, beta, emittance, matrix=None):
         Original covariance matrix of the beam
     """
     eps = emittance
+
+    if any(np.isnan([alpha, beta, eps] + np.isinf([alpha, beta, eps]))) or 0.0 in [beta, eps]:
+        _LOGGER.warning("twiss_to_matrix: " \
+                        "nan, inf, beta = 0, or emittance = 0 found in coor = " + coor + \
+                        ", zero emittance beam is set.")
+        alpha = 0.0
+        beta = 1.0
+        eps = 0.0
+
     mat = np.zeros([7, 7]) if matrix is None else matrix
     if coor == 'x':
         idx = [0, 1]
