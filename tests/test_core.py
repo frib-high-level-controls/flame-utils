@@ -154,7 +154,6 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(mat[1, 0], 0.0)
         self.assertAlmostEqual(mat[1, 1], 0.0)
 
-
     def test_transmat(self):
         with open(self.latfile, 'rb') as f:
             m = Machine(f)
