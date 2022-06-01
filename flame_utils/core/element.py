@@ -18,6 +18,7 @@ from flame_utils.misc import machine_setter
 from flame_utils.misc import flatten
 from flame_utils.misc import get_intersection
 from flame_utils.misc import conf_update
+from flame_utils.misc import get_share_keys
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -279,9 +280,9 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
         _LOGGER.warning("get_element: Nothing to get, invalid filtering.")
         return []
     else:
-        mconf = m.conf()
-        mks = mconf.keys()
-        share_keys = [k for k in mks if k not in ("elements", "name")]
+        share_keys = kws.get('share_keys', None)
+        if share_keys is None:
+            share_keys = get_share_keys(m)
         retval = []
         for i in ele_idx:
             elem = m.conf(i)

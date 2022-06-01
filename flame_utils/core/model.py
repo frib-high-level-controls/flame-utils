@@ -14,6 +14,7 @@ import logging
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
 from flame_utils.misc import conf_update
+from flame_utils.misc import get_share_keys
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
 from flame_utils.io import generate_latfile
@@ -105,6 +106,7 @@ class ModelFlame(object):
     def __init__(self, lat_file=None, **kws):
         self._lat_file = lat_file
         self._mach_ins, self._mach_states = self.init_machine(lat_file)
+        self._share_keys = get_share_keys(self._mach_ins)
 
     @property
     def latfile(self):
@@ -211,6 +213,7 @@ class ModelFlame(object):
         """
         elem_list = get_element(_machine=self._mach_ins,
                                 name=name, index=index, type=type,
+                                share_keys=self._share_keys,
                                 **kws)
         return elem_list
 
@@ -737,3 +740,31 @@ def configure(machine=None, econf=None, **kws):
             for e in econf:
                 _m.reconfigure(e['index'], e['properties'])
     return _m
+
+def scale_by_factor(machine, index, s0, s1):
+    m = machine
+    c = m.conf(index)
+
+    scalable = {
+        'rfcavity': 'scl_fac',
+        'solenoid': 'B',
+        'quadrupole': 'B2',
+        'sextupole': 'B3',
+        'equad': 'V'
+        }
+
+    if c['type'] in scalable:
+        if c['type'] == 'equad':
+            fac = s1.ref_Brho/s0.ref_Brho
+        else:
+            fac = s1.ref_Brho/s0.ref_Brho
+
+        if 'ncurve' in c and c['ncurve'] != 0:
+            for i in range(c['ncurve']):
+                key = 'scl_fac{}'.format(i)
+                v0 = c[key]
+                m.reconfigure(index, {key: v0*fac})
+        else:
+            key = scalable[c['type']]
+            v0 = c[key]
+            m.reconfigure(index, {key: v0*fac})
