@@ -26,6 +26,7 @@ from .element import get_index_by_name
 from .element import get_index_by_type
 from .element import inspect_lattice
 from .element import insert_element
+from .element import pop_element
 from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
@@ -103,9 +104,16 @@ class ModelFlame(object):
     BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.
     """
 
-    def __init__(self, lat_file=None, **kws):
-        self._lat_file = lat_file
-        self._mach_ins, self._mach_states = self.init_machine(lat_file)
+    def __init__(self, lat_file=None, machine=None, **kws):
+        if isinstance(machine, Machine):
+            self._mach_ins = machine
+            s = machine.allocState({})
+            machine.propagate(s, 0, 1)
+            self._mach_states = s
+        else:
+            self._lat_file = lat_file
+            self._mach_ins, self._mach_states = self.init_machine(lat_file)
+
         self._share_keys = get_share_keys(self._mach_ins)
 
     @property
@@ -535,6 +543,19 @@ class ModelFlame(object):
             new_m = insert_element(self._mach_ins, index, element)
         else:
             new_m = insert_element(self._mach_ins, econf['index'], econf['properties'])
+
+        if new_m is not None:
+            self._mach_ins = new_m
+
+    def pop_element(self, index=None):
+        """Remove element from the machine.
+
+        Parameters
+        ----------
+        index : str, int, list or tuple of int
+            Remove element at the index (or element name).
+        """
+        new_m = pop_element(self._mach_ins, index)
 
         if new_m is not None:
             self._mach_ins = new_m

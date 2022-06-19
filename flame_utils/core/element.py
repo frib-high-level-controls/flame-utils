@@ -487,3 +487,39 @@ def insert_element(machine=None, index=None, element=None):
 
     new_m = flame.Machine(mconf)
     return new_m
+
+def pop_element(machine=None, index=None):
+    """Remove element from the machine.
+
+    Parameters
+    ----------
+    machine :
+        FLAME machine object.
+    index : str, int, list or tuple of int
+        Remove element at the index (or element name).
+
+    Returns
+    -------
+    machine : FLAME machine object.
+    """
+    if machine is None:
+        return None
+
+    try:
+        m = conf_update(machine)
+        mconf = m.conf()
+    except:
+        _LOGGER.error("Failed to load FLAME machine object.")
+        return None
+
+    if index is not None:
+        if isinstance(index, str):
+            index = m.find(name=index)
+        if not isinstance(index, (list, tuple)):
+            index = [index]
+        index.sort()
+        for i in reversed(index):
+            mconf['elements'].pop(i)
+
+    new_m = flame.Machine(mconf)
+    return new_m
