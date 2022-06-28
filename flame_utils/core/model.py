@@ -111,9 +111,8 @@ class ModelFlame(object):
             machine.propagate(s, 0, 1)
             self._mach_states = s
         else:
-            self._lat_file = lat_file
             self._mach_ins, self._mach_states = self.init_machine(lat_file)
-
+        self._lat_file = lat_file
         self._share_keys = get_share_keys(self._mach_ins)
 
     @property
