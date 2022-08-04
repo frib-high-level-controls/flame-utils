@@ -240,30 +240,29 @@ Optical element
 
     Orbit trim element. This can be use as steering magnet.
 
-    :parameters: **realpara**: int
+    :parameters: **realpara**: int (optional, default is **0**)
 
                     | Realistic input parameter flag for the beam kick angle.
                     | **0** - use ``theta_x`` and ``theta_y`` for the beam kick.
                     | **1** - use ``tm_xkick`` and ``tm_ykick`` for the beam kick.
 
-                 **theta_x**: float
+                 **theta_x**: float (optional, default is **0.0**)
 
                     | Horizontal beam kick angle. [rad]
 
-                 **theta_y**: float
+                 **theta_y**: float (optional, default is **0.0**)
 
                     | Vertical beam kick angle. [rad]
 
-                 **tm_xkick**: float
+                 **tm_xkick**: float (optional, default is **0.0**)
 
                     | Magnetic field strength for the horizontal beam kick. [T*m]
 
-
-                 **tm_ykick**: float
+                 **tm_ykick**: float (optional, default is **0.0**)
 
                     | Magnetic field strength for the vertical beam kick. [T*m]
 
-                 **xyrotate**: float
+                 **xyrotate**: float (optional, default is **0.0**)
 
                     | Transverse rotation angle of the beam. [deg]
 
@@ -292,50 +291,50 @@ Optical element
 
                     | Solenoid strength (:math:`B_z`). [T]
 
-                 **dx**: float (default: 0.0)
+                 **dx**: float (optional, default is **0.0**)
 
                     | Misalignment of horizontal shift. [m]
 
-                 **dy**: float (default: 0.0)
+                 **dy**: float (optional, default is **0.0**)
 
                     | Misalignment of vertical shift. [m]
 
-                 **pitch**: float (default: 0.0)
+                 **pitch**: float (optional, default is **0.0**)
 
                     | Misaglignment of pitch angle. [rad]
 
-                 **yaw**: float (default: 0.0)
+                 **yaw**: float (optional, default is **0.0**)
 
                     | Misaglignment of yaw angle. [rad]
 
-                 **roll**: float (default: 0.0)
+                 **roll**: float (optional, default is **0.0**)
 
                     | Misaglignment of roll angle. [rad]
 
-                 **ncurve**: int (default: 0)
+                 **ncurve**: int (optional, default is **0**)
 
                     | Number of curves for slanted and overlapped field.
                     | (0 means hard-edge fringe model)
 
-                 **scl_fac${n}**: float (default: 0)
+                 **scl_fac${n}**: float (optional, default is **0.0**)
 
                     | Scaling factor of the *n*-th curve (*n* start from 0).
                     | Unit of scl_fac${n}\*curve${n} is [T].
 
-                 **curve${n}**: vector
+                 **curve${n}**: vector (optional, default is **None**)
 
                     | *n*-th Curve information (*n* start from 0).
                     | Each curve vector must have the same size.
                       The vector elements should be defined by the scaled strength of the element at the step.
                       Also, the step size is defined by "**L** divided by the size of **curve${n}**".
 
-                 **CurveFile**: string
+                 **CurveFile**: string (optional, default is **None**)
 
                     | External file name for the curves, the file format is the same as **curve${n}**.
                     | e.g. `curve0 = [1.0, 2.0, ...];`
                     | If CurveFile is available, it overrides the **curve${n}**.
 
-                 **use_range**: vector[2]
+                 **use_range**: vector[2] (optional, default is **None**)
 
                     | Use range of **curve${n}**. Format is [start_id, end_id].
 
@@ -352,11 +351,11 @@ Optical element
                     | Quadrupole field gradient. [T/m]
                     | Positive value means horizontal focusing.
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
-                 **ncurve**, **scl_fac${n}**, **curve${n}**, **CurveFile**, **use_range**
+                 **ncurve**, **scl_fac${n}**, **curve${n}**, **CurveFile**, **use_range**: (optional)
 
                     | Curve inputs for slanted and overlapped field. See :cpp:type:`solenoid` case.
                     | Unit of scl_fac${n}\*curve${n} is [T/m].
@@ -374,16 +373,17 @@ Optical element
                     | Sextupole field gradient. [T/m^2]
                     | Positive value means horizontal focusing.
 
-                 **dstkick**: bool
+                 **dstkick**: bool (optional, default is **1**)
 
                     | On/off flag to calculate the centroid shift due to the 3rd order effect.
-                    | Default is **1** (on).
+                    | **0** - off
+                    | **1** - on
 
-                 **step**: int
+                 **step**: int (optional, default is **1**)
 
-                    | Step number for the sextupole element. Default is **1**.
+                    | Step number for the sextupole element.
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
@@ -404,11 +404,11 @@ Optical element
 
                     | Electrostatic quadrupole pole tip radius. [m]
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
-                 **ncurve**, **scl_fac${n}**, **curve${n}**, **CurveFile**, **use_range**
+                 **ncurve**, **scl_fac${n}**, **curve${n}**, **CurveFile**, **use_range**: (optional)
 
                     | Curve inputs for slanted and overlapped field. See :cpp:type:`solenoid` case.
                     | Unit of scl_fac${n}\*curve${n} is [V/m^2].
@@ -433,12 +433,12 @@ Optical element
 
                     | Back pole face angle. [deg]
 
-                 **bg**: float (optional: Used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
+                 **bg**: float (optional, used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
 
                     | Lorentz :math:`\beta \gamma` for the reference beam. [1]
                     | This parameter is correspond to the bend field strength.
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
@@ -454,20 +454,20 @@ Optical element
 
                     | Bend angle. [deg]
 
-                 **beta**: float (optional: Used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
+                 **beta**: float (optional, used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
 
                     | Lorentz :math:`\beta` for the reference beam. [1]
                     | This parameter is correspond to the bend field strength.
 
-                 **fringe_x**: float
+                 **fringe_x**: float (optional, default is **0.0**)
 
                     | Horizontal fringe term. [rad/mm]
 
-                 **fringe_y**: float
+                 **fringe_y**: float (optional, default is **0.0**)
 
                     | Vertical fringe term. [rad/mm]
 
-                 **asymfac**: float
+                 **asymfac**: float (optional, default is **0.0**)
 
                     | Characteristic parameter of the kinetic energy change
                       due to the middle point potential deviation from ground. [1]
@@ -484,7 +484,7 @@ Optical element
                     | **0** - horizontal bend
                     | **1** - vertical bend
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
@@ -509,7 +509,7 @@ Optical element
 
                     | Input phase of the cavity. [deg]
 
-                 **syncflag**: int
+                 **syncflag**: int (optional, default is **1**)
 
                     | Flag for synchronous phase input (for above parameter **phi**).
                     |    **0** for driven phase input.
@@ -520,15 +520,15 @@ Optical element
 
                     | Scaling factor of the field. [1]
 
-                 **datafile**: string (optional: Used in the case of ``cavtype`` = "Generic")
+                 **datafile**: string (optional, used in the case of ``cavtype`` = "Generic")
 
                     | File path of the rf cavity data.
 
-                 **Rm**: float (optional: Used in the case of ``cavtype`` = "Generic")
+                 **Rm**: float (optional, used in the case of ``cavtype`` = "Generic")
 
                     | Characteristic radial length of the multipole expansion. [mm]
 
-                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float
+                 **dx**, **dy**, **pitch**, **yaw**, **roll**: float  (optional)
 
                     | Misalignment parameters. See :cpp:type:`solenoid` case.
 
