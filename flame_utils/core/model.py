@@ -192,7 +192,7 @@ class ModelFlame(object):
         Parameters
         ----------
         type : str or list of str
-            Single element type name or list[tuple] of element type names.
+            Single element type/name or list[tuple] of element type/names.
 
         Returns
         -------
@@ -205,6 +205,22 @@ class ModelFlame(object):
         get_index_by_type : Get element(s) index by type(s).
         """
         return self._mach_ins.find(*args, **kws)
+
+    def conf(self, target):
+        """Get configuration of the element
+        """
+        ret = []
+        if not isinstance(target, (np.ndarray, list, tuple)):
+            target = [target]
+
+        for v in target:
+            if isinstance(v, (int)):
+                ret += [self._mach_ins.conf(v)]
+            elif isinstance(v, (str)):
+                v2 = self.find(v)
+                for i in v2:
+                    ret += [self._mach_ins.conf(i)]
+        return ret
 
     def get_element(self, name=None, index=None, type=None, **kws):
         """Element inspection, get properties.
@@ -353,7 +369,7 @@ class ModelFlame(object):
             eid = m.find(from_element)
             if len(eid) == 0:
                 _LOGGER.error(from_element + ' does not found.')
-            from_element = min(eid)
+            from_element = min(eid) + 1
 
         if isinstance(to_element, str):
             eid = m.find(to_element)
