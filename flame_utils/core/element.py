@@ -56,7 +56,7 @@ def get_all_types(latfile=None, _machine=None):
     return a[np.sort(idx)].tolist()
 
 
-def get_all_names(latfile=None, _machine=None):
+def get_all_names(type=None, latfile=None, _machine=None):
     """Get all uniqe names from a FLAME machine or lattice file.
 
     Parameters
@@ -75,8 +75,11 @@ def get_all_names(latfile=None, _machine=None):
     if m is None:
         return None
 
-    mconf = m.conf()
-    a = np.asarray([i.get('name') for i in m.conf()['elements']])
+    mconf = m.conf()['elements']
+    if type is not None:
+        mconf = [mconf[i] for i in m.find(type=type)]
+
+    a = np.asarray([i.get('name') for i in mconf])
     _, idx = np.unique(a, return_index=True)
     return a[np.sort(idx)].tolist()
 

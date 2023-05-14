@@ -263,8 +263,13 @@ class ModelFlame(object):
         """
         return get_all_types(_machine=self._mach_ins)
 
-    def get_all_names(self):
+    def get_all_names(self, type=None):
         """Get all uniqe element names.
+
+        Parameters
+        ----------
+        type : str or list of str
+            Type of the element to get names.
 
         Returns
         -------
@@ -275,7 +280,7 @@ class ModelFlame(object):
         --------
         get_all_names : Get all uniqe names from a FLAME machine.
         """
-        return get_all_names(_machine=self._mach_ins)
+        return get_all_names(type=type, _machine=self._mach_ins)
 
     def get_index_by_type(self, type='', rtype='dict'):
         """Get element(s) index by type(s).
