@@ -331,7 +331,7 @@ class BeamState(object):
     def ref_beta(self, x):
         setattr(self._states, 'ref_beta', x)
         ref_IonEk = _get_ek_from_beta(x, self.ref_IonEs)
-        self.set_energy(ref_IonEk = ref_IonEk)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_bg(self):
@@ -343,7 +343,7 @@ class BeamState(object):
         setattr(self._states, 'ref_bg', x)
         ref_beta = 1.0/np.sqrt(1.0+1.0/x/x)
         ref_IonEk = _get_ek_from_beta(ref_beta, self.ref_IonEs)
-        self.set_energy(ref_IonEk = ref_IonEk)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_gamma(self):
@@ -355,7 +355,7 @@ class BeamState(object):
         setattr(self._states, 'ref_gamma', x)
         ref_beta = np.sqrt(1.0-1.0/x/x)
         ref_IonEk = _get_ek_from_beta(ref_beta, self.ref_IonEs)
-        self.set_energy(ref_IonEk = ref_IonEk)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_IonEk(self):
@@ -365,7 +365,7 @@ class BeamState(object):
 
     @ref_IonEk.setter
     def ref_IonEk(self, x):
-        self.set_energy(ref_IonEk = x)
+        self.set_IonEk(ref_IonEk = x)
 
     @property
     def ref_IonEs(self):
@@ -398,7 +398,7 @@ class BeamState(object):
     @ref_IonW.setter
     def ref_IonW(self, x):
         setattr(self._states, 'ref_IonW', x)
-        self.set_energy(ref_IonEk = x-self.ref_IonEs)
+        self.set_IonEk(ref_IonEk = x-self.ref_IonEs)
 
     @property
     def ref_IonZ(self):
@@ -420,7 +420,7 @@ class BeamState(object):
     def ref_phis(self, x):
         setattr(self._states, 'ref_phis', x)
         for i, v in enumerate(self.phis):
-            self.set_centroid('z', position=v-x, cs=i)
+            self.set_moment0('z', position=v-x, cs=i)
 
     @property
     def ref_SampleIonK(self):
@@ -446,7 +446,7 @@ class BeamState(object):
     @ref_Brho.setter
     def ref_Brho(self, x):
         ref_IonEk = _get_ek_from_brho(x, self.ref_IonZ, self.ref_IonEs)
-        self.set_energy(ref_IonEk = ref_IonEk)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def beta(self):
@@ -458,7 +458,7 @@ class BeamState(object):
     def beta(self, x):
         setattr(self._states, 'beta', x)
         IonEk = _get_ek_from_beta(x, self.IonEs)
-        self.set_energy(IonEk = IonEk)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def bg(self):
@@ -470,7 +470,7 @@ class BeamState(object):
         setattr(self._states, 'bg', x)
         beta = 1.0/np.sqrt(1.0+1.0/x/x)
         IonEk = _get_ek_from_beta(beta, self.IonEs)
-        self.set_energy(IonEk = IonEk)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def gamma(self):
@@ -482,7 +482,7 @@ class BeamState(object):
         setattr(self._states, 'gamma', x)
         beta = np.sqrt(1.0-1.0/x/x)
         IonEk = _get_ek_from_beta(beta, self.IonEs)
-        self.set_energy(IonEk = IonEk)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def IonEk(self):
@@ -492,7 +492,7 @@ class BeamState(object):
     @IonEk.setter
     def IonEk(self, x):
         setattr(self._states, 'IonEk', x)
-        self.set_energy(IonEk = x)
+        self.set_IonEk(IonEk = x)
 
     @property
     def IonEs(self):
@@ -528,7 +528,7 @@ class BeamState(object):
     @IonW.setter
     def IonW(self, x):
         setattr(self._states, 'IonW', x)
-        self.set_energy(IonEk = x-self.IonEs)
+        self.set_IonEk(IonEk = x-self.IonEs)
 
     @property
     def IonZ(self):
@@ -553,7 +553,7 @@ class BeamState(object):
     def phis(self, x):
         setattr(self._states, 'phis', x)
         for i, v in enumerate(x):
-            self.set_centroid('z', position=v-self.ref_phis, cs=i)
+            self.set_moment0('z', position=v-self.ref_phis, cs=i)
 
     @property
     def SampleIonK(self):
@@ -579,7 +579,7 @@ class BeamState(object):
     @Brho.setter
     def Brho(self, x):
         IonEk = _get_ek_from_brho(x, self.IonZ, self.IonEs)
-        self.set_energy(IonEk = IonEk)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def moment0_env(self):
@@ -665,7 +665,7 @@ class BeamState(object):
     def x0(self, x):
         if x.shape == self.x0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('x', position=v, cs=i)
+                self.set_moment0('x', position=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.x0.shape))
 
@@ -678,7 +678,7 @@ class BeamState(object):
     def xp0(self, x):
         if x.shape == self.xp0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('x', momentum=v, cs=i)
+                self.set_moment0('x', momentum=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.xp0.shape))
 
@@ -691,7 +691,7 @@ class BeamState(object):
     def y0(self, x):
         if x.shape == self.y0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('y', position=v, cs=i)
+                self.set_moment0('y', position=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.y0.shape))
 
@@ -704,7 +704,7 @@ class BeamState(object):
     def yp0(self, x):
         if x.shape == self.yp0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('y', momentum=v, cs=i)
+                self.set_moment0('y', momentum=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.yp0.shape))
 
@@ -718,7 +718,7 @@ class BeamState(object):
     def phi0(self, x):
         if x.shape == self.phi0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('z', position=v, cs=i)
+                self.set_moment0('z', position=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.phi0.shape))
 
@@ -732,7 +732,7 @@ class BeamState(object):
     def dEk0(self, x):
         if x.shape == self.dEk0.shape:
             for i, v in enumerate(x):
-                self.set_centroid('z', momentum=v, cs=i)
+                self.set_moment0('z', momentum=v, cs=i)
         else:
             raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.dEk0.shape))
 
@@ -745,7 +745,7 @@ class BeamState(object):
     def x0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.x0)) :
-                self.set_centroid('x', position=x, cs=i)
+                self.set_moment0('x', position=x, cs=i)
         else:
             raise ValueError('input type should be a float.')
 
@@ -758,7 +758,7 @@ class BeamState(object):
     def xp0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.xp0)) :
-                self.set_centroid('x', momentum=x, cs=i)
+                self.set_moment0('x', momentum=x, cs=i)
         else:
             raise ValueError('input type should be a float.')
 
@@ -771,7 +771,7 @@ class BeamState(object):
     def y0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.y0)) :
-                self.set_centroid('y', position=x, cs=i)
+                self.set_moment0('y', position=x, cs=i)
         else:
             raise ValueError('input type should be a float.')
 
@@ -784,7 +784,7 @@ class BeamState(object):
     def yp0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.yp0)) :
-                self.set_centroid('y', momentum=x, cs=i)
+                self.set_moment0('y', momentum=x, cs=i)
         else:
             raise ValueError('input type should be a float.')
 
@@ -798,7 +798,7 @@ class BeamState(object):
     def phi0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.phi0)) :
-                self.set_centroid('z', position=x, cs=i)
+                self.set_moment0('z', position=x, cs=i)
         else:
             raise ValueError('input type must be a float.')
 
@@ -812,7 +812,7 @@ class BeamState(object):
     def dEk0_env(self, x):
         if isinstance(x, (int, float)):
             for i in range(len(self.dEk0)) :
-                self.set_centroid('z', momentum=x, cs=i)
+                self.set_moment0('z', momentum=x, cs=i)
         else:
             raise ValueError('input type must be a float.')
 
@@ -1093,7 +1093,7 @@ class BeamState(object):
         """Array: normalized xp-yp coupling term of all charge states, [1]"""
         return np.array([self.get_couple('xp', 'yp', cs=i) for i in range(len(self.bg))])
 
-    def set_energy(self, IonEk=None, ref_IonEk=None):
+    def set_IonEk(self, IonEk=None, ref_IonEk=None):
         """Set longitudinal parameters based on reference/actual enargy
 
         Parameters
@@ -1118,17 +1118,16 @@ class BeamState(object):
             else:
                 raise ValueError('input type must be a float.')
         for i, v in enumerate(self.IonEk):
-            self.set_centroid('z', momentum=(v-self.ref_IonEk)*1e-6, cs=i)
+            self.set_moment0('z', momentum=(v-self.ref_IonEk)*1e-6, cs=i)
         self.dm.propagate(self.state)
 
-
-    def set_centroid(self, coor, position=None, momentum=None, cs=0):
+    def set_moment0(self, coor, position=None, momentum=None, cs=0):
         """Set moment0 vector based on the centroid information
 
         Parameters
         ----------
         coor : str
-            Coordinate of the twiss parameter,　'x', 'y', or 'z'.
+            Coordinate of the twiss parameter, 'x', 'y', or 'z'.
         position : float
             Centroid position of the phase space, [mm] of 'x' and 'y', [rad] for 'z'.
         momentum : float
