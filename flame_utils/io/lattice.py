@@ -6,6 +6,7 @@
 
 import flame
 import numpy as np
+import re
 import sys
 
 import logging
@@ -76,13 +77,16 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         return None
 
     try:
-        mconf_ks = list(mconf.keys())
-        [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
         mc_src = m.conf(m.find(type='source')[0])
 
         # initial beam condition from input
         if state is not None:
             mc_src = generate_source(state, sconf={'index':0, 'properties':mc_src})['properties']
+
+        mconf_ks = mconf.copy()
+        mconf_ks.update(mc_src)
+        mconf_ks = list(mconf_ks.keys())
+        [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
 
     except:
         _LOGGER.error("Failed to load initial beam state.")
@@ -184,6 +188,8 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
             lines = []
 
             n = 0
+            vec_flg = True
+            mat_flg = True
             while n < len(fline):
                 l = fline[n]
                 rl = l.replace(' ', '')
@@ -200,19 +206,34 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                         if bp in mc_src:
                             if bp == 'Eng_Data_Dir':
                                 nl = l[0:-1]
-                            elif mc_src['vector_variable'] == bp[0:-1]:
-                                nl = bp + ' = ' + str(mc_src[bp].tolist())
-                            elif mc_src['matrix_variable'] == bp[0:-1]:
-                                nl = bp + ' = [\n'
-                                kk = 0
-                                for i in range(7):
-                                    nl += '    '
-                                    for j in range(7):
-                                        nl += str(mc_src[bp][kk]) + ', '
-                                        kk += 1
-                                    nl += '\n'
-                                nl = nl[0:-3]
-                                nl += ']'
+                            elif re.match(mc_src['vector_variable']+'[0-9]', bp) != None:
+                                nl = ''
+                                if vec_flg:
+                                    for i in range(len(mc_src['NCharge'])):
+                                        vec = mc_src['vector_variable'] + str(i)
+                                        if i != 0:
+                                            nl += ';\n'
+                                        nl +=  vec + ' = ' + str(mc_src[vec].tolist())
+
+                                vec_flg = False
+                            elif re.match(mc_src['matrix_variable']+'[0-9]', bp) != None:
+                                nl = ''
+                                if mat_flg:
+                                    for nn in range(len(mc_src['NCharge'])):
+                                        mat = mc_src['matrix_variable'] + str(nn)
+                                        if nn != 0:
+                                            nl += ';\n'
+                                        nl += mat + ' = [\n'
+                                        kk = 0
+                                        for i in range(7):
+                                            nl += '    '
+                                            for j in range(7):
+                                                nl += str(mc_src[mat][kk]) + ', '
+                                                kk += 1
+                                            nl += '\n'
+                                        nl = nl[0:-3]
+                                        nl += ']'
+                                mat_flg = False
                             else:
                                 v = mc_src[bp]
                                 if isinstance(v, np.ndarray):
@@ -249,7 +270,8 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
                     if nl is None:
                         lines.append(l)
                     else:
-                        lines.append(nl + '; ' + l[p['#']:])
+                        if nl != '':
+                            lines.append(nl + '; ' + l[p['#']:])
                         if p[';'] == -1:
                             flg = 1
                             while flg:
