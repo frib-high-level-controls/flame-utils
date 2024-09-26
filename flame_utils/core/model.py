@@ -14,6 +14,7 @@ import logging
 from flame_utils.misc import is_zeros_states
 from flame_utils.misc import machine_setter
 from flame_utils.misc import conf_update
+from flame_utils.misc import get_share_keys
 from flame_utils.io import collect_data
 from flame_utils.io import convert_results
 from flame_utils.io import generate_latfile
@@ -25,6 +26,7 @@ from .element import get_index_by_name
 from .element import get_index_by_type
 from .element import inspect_lattice
 from .element import insert_element
+from .element import pop_element
 from .state import BeamState
 
 _LOGGER = logging.getLogger(__name__)
@@ -102,9 +104,16 @@ class ModelFlame(object):
     BeamState : FLAME beam state class for ``MomentMatrix`` simulation type.
     """
 
-    def __init__(self, lat_file=None, **kws):
+    def __init__(self, lat_file=None, machine=None, **kws):
+        if isinstance(machine, Machine):
+            self._mach_ins = machine
+            s = machine.allocState({})
+            machine.propagate(s, 0, 1)
+            self._mach_states = s
+        else:
+            self._mach_ins, self._mach_states = self.init_machine(lat_file)
         self._lat_file = lat_file
-        self._mach_ins, self._mach_states = self.init_machine(lat_file)
+        self._share_keys = get_share_keys(self._mach_ins)
 
     @property
     def latfile(self):
@@ -177,13 +186,18 @@ class ModelFlame(object):
                 "ModelFlame: Lattice file is not valid, do it manually.")
             return None, None
 
+    def load_bmstate(self):
+        s = self._mach_ins.allocState({})
+        self._mach_ins.propagate(s, 0, 1)
+        self._mach_states = s
+
     def find(self, *args, **kws):
         """Find element indexs.
 
         Parameters
         ----------
         type : str or list of str
-            Single element type name or list[tuple] of element type names.
+            Single element type/name or list[tuple] of element type/names.
 
         Returns
         -------
@@ -196,6 +210,22 @@ class ModelFlame(object):
         get_index_by_type : Get element(s) index by type(s).
         """
         return self._mach_ins.find(*args, **kws)
+
+    def conf(self, target):
+        """Get configuration of the element
+        """
+        ret = []
+        if not isinstance(target, (np.ndarray, list, tuple)):
+            target = [target]
+
+        for v in target:
+            if isinstance(v, (int)):
+                ret += [self._mach_ins.conf(v)]
+            elif isinstance(v, (str)):
+                v2 = self.find(v)
+                for i in v2:
+                    ret += [self._mach_ins.conf(i)]
+        return ret
 
     def get_element(self, name=None, index=None, type=None, **kws):
         """Element inspection, get properties.
@@ -211,6 +241,7 @@ class ModelFlame(object):
         """
         elem_list = get_element(_machine=self._mach_ins,
                                 name=name, index=index, type=type,
+                                share_keys=self._share_keys,
                                 **kws)
         return elem_list
 
@@ -237,8 +268,13 @@ class ModelFlame(object):
         """
         return get_all_types(_machine=self._mach_ins)
 
-    def get_all_names(self):
+    def get_all_names(self, type=None):
         """Get all uniqe element names.
+
+        Parameters
+        ----------
+        type : str or list of str
+            Type of the element to get names.
 
         Returns
         -------
@@ -249,7 +285,7 @@ class ModelFlame(object):
         --------
         get_all_names : Get all uniqe names from a FLAME machine.
         """
-        return get_all_names(_machine=self._mach_ins)
+        return get_all_names(type=type, _machine=self._mach_ins)
 
     def get_index_by_type(self, type='', rtype='dict'):
         """Get element(s) index by type(s).
@@ -343,7 +379,7 @@ class ModelFlame(object):
             eid = m.find(from_element)
             if len(eid) == 0:
                 _LOGGER.error(from_element + ' does not found.')
-            from_element = min(eid)
+            from_element = min(eid) + 1
 
         if isinstance(to_element, str):
             eid = m.find(to_element)
@@ -532,6 +568,19 @@ class ModelFlame(object):
             new_m = insert_element(self._mach_ins, index, element)
         else:
             new_m = insert_element(self._mach_ins, econf['index'], econf['properties'])
+
+        if new_m is not None:
+            self._mach_ins = new_m
+
+    def pop_element(self, index=None):
+        """Remove element from the machine.
+
+        Parameters
+        ----------
+        index : str, int, list or tuple of int
+            Remove element at the index (or element name).
+        """
+        new_m = pop_element(self._mach_ins, index)
 
         if new_m is not None:
             self._mach_ins = new_m
@@ -737,3 +786,31 @@ def configure(machine=None, econf=None, **kws):
             for e in econf:
                 _m.reconfigure(e['index'], e['properties'])
     return _m
+
+def scale_by_factor(machine, index, s0, s1):
+    m = machine
+    c = m.conf(index)
+
+    scalable = {
+        'rfcavity': 'scl_fac',
+        'solenoid': 'B',
+        'quadrupole': 'B2',
+        'sextupole': 'B3',
+        'equad': 'V'
+        }
+
+    if c['type'] in scalable:
+        if c['type'] == 'equad':
+            fac = s1.ref_Brho/s0.ref_Brho
+        else:
+            fac = s1.ref_Brho/s0.ref_Brho
+
+        if 'ncurve' in c and c['ncurve'] != 0:
+            for i in range(c['ncurve']):
+                key = 'scl_fac{}'.format(i)
+                v0 = c[key]
+                m.reconfigure(index, {key: v0*fac})
+        else:
+            key = scalable[c['type']]
+            v0 = c[key]
+            m.reconfigure(index, {key: v0*fac})

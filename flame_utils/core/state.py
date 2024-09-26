@@ -20,12 +20,18 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 
 _LOGGER = logging.getLogger(__name__)
 
+DUMMY_LAT = {'sim_type':'MomentMatrix',
+                'elements':[{'name':'mk', 'type':'marker'}]}
+DUMMY_MACHINE = flame.Machine(DUMMY_LAT)
+
 KEY_MAPPING = {
         'IonChargeStates': 'IonZ',
         'IonEk': 'ref_IonEk',
         'IonEs': 'ref_IonEs',
         'NCharge': 'IonQ',
 }
+
+c0 = 2.99792458e8 # m/s
 
 @alias
 class BeamState(object):
@@ -293,9 +299,7 @@ class BeamState(object):
                      "Zeros initial states, get true values by " \
                      "parameter '_latfile' or '_machine'.")
 
-        dummy_lat = {'sim_type':'MomentMatrix',
-                     'elements':[{'name':'mk', 'type':'marker'}]}
-        self.dm = flame.Machine(dummy_lat)
+        self.dm = DUMMY_MACHINE
 
     @property
     def state(self):
@@ -328,6 +332,8 @@ class BeamState(object):
     @ref_beta.setter
     def ref_beta(self, x):
         setattr(self._states, 'ref_beta', x)
+        ref_IonEk = _get_ek_from_beta(x, self.ref_IonEs)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_bg(self):
@@ -337,6 +343,9 @@ class BeamState(object):
     @ref_bg.setter
     def ref_bg(self, x):
         setattr(self._states, 'ref_bg', x)
+        ref_beta = 1.0/np.sqrt(1.0+1.0/x/x)
+        ref_IonEk = _get_ek_from_beta(ref_beta, self.ref_IonEs)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_gamma(self):
@@ -346,6 +355,9 @@ class BeamState(object):
     @ref_gamma.setter
     def ref_gamma(self, x):
         setattr(self._states, 'ref_gamma', x)
+        ref_beta = np.sqrt(1.0-1.0/x/x)
+        ref_IonEk = _get_ek_from_beta(ref_beta, self.ref_IonEs)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def ref_IonEk(self):
@@ -355,7 +367,7 @@ class BeamState(object):
 
     @ref_IonEk.setter
     def ref_IonEk(self, x):
-        setattr(self._states, 'ref_IonEk', x)
+        self.set_IonEk(ref_IonEk = x)
 
     @property
     def ref_IonEs(self):
@@ -366,6 +378,7 @@ class BeamState(object):
     @ref_IonEs.setter
     def ref_IonEs(self, x):
         setattr(self._states, 'ref_IonEs', x)
+        self.dm.propagate(self.state)
 
     @property
     def ref_IonQ(self):
@@ -376,6 +389,7 @@ class BeamState(object):
     @ref_IonQ.setter
     def ref_IonQ(self, x):
         setattr(self._states, 'ref_IonQ', x)
+        self.dm.propagate(self.state)
 
     @property
     def ref_IonW(self):
@@ -386,6 +400,7 @@ class BeamState(object):
     @ref_IonW.setter
     def ref_IonW(self, x):
         setattr(self._states, 'ref_IonW', x)
+        self.set_IonEk(ref_IonEk = x-self.ref_IonEs)
 
     @property
     def ref_IonZ(self):
@@ -406,16 +421,14 @@ class BeamState(object):
     @ref_phis.setter
     def ref_phis(self, x):
         setattr(self._states, 'ref_phis', x)
+        for i, v in enumerate(self.phis):
+            self.set_moment0('z', position=v-x, cs=i)
 
     @property
     def ref_SampleIonK(self):
         """float: wave-vector in cavities with different beta values of
         reference charge state, [rad]"""
         return getattr(self._states, 'ref_SampleIonK')
-
-    @ref_SampleIonK.setter
-    def ref_SampleIonK(self, x):
-        setattr(self._states, 'ref_SampleIonK', x)
 
     @property
     def ref_SampleFreq(self):
@@ -425,11 +438,17 @@ class BeamState(object):
     @ref_SampleFreq.setter
     def ref_SampleFreq(self, x):
         setattr(self._states, 'ref_SampleFreq', x)
+        self.dm.propagate(self.state)
 
     @property
     def ref_Brho(self):
         """float: magnetic rigidity of reference charge state, [Tm]"""
-        return get_brho(self.ref_IonEk, self.ref_IonZ)
+        return get_brho(self.ref_IonEk, self.ref_IonZ, self.ref_IonEs)
+
+    @ref_Brho.setter
+    def ref_Brho(self, x):
+        ref_IonEk = _get_ek_from_brho(x, self.ref_IonZ, self.ref_IonEs)
+        self.set_IonEk(ref_IonEk = ref_IonEk)
 
     @property
     def beta(self):
@@ -440,6 +459,8 @@ class BeamState(object):
     @beta.setter
     def beta(self, x):
         setattr(self._states, 'beta', x)
+        IonEk = _get_ek_from_beta(x, self.IonEs)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def bg(self):
@@ -449,6 +470,9 @@ class BeamState(object):
     @bg.setter
     def bg(self, x):
         setattr(self._states, 'bg', x)
+        beta = 1.0/np.sqrt(1.0+1.0/x/x)
+        IonEk = _get_ek_from_beta(beta, self.IonEs)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def gamma(self):
@@ -458,6 +482,9 @@ class BeamState(object):
     @gamma.setter
     def gamma(self, x):
         setattr(self._states, 'gamma', x)
+        beta = np.sqrt(1.0-1.0/x/x)
+        IonEk = _get_ek_from_beta(beta, self.IonEs)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def IonEk(self):
@@ -467,6 +494,7 @@ class BeamState(object):
     @IonEk.setter
     def IonEk(self, x):
         setattr(self._states, 'IonEk', x)
+        self.set_IonEk(IonEk = x)
 
     @property
     def IonEs(self):
@@ -476,6 +504,7 @@ class BeamState(object):
     @IonEs.setter
     def IonEs(self, x):
         setattr(self._states, 'IonEs', x)
+        self.dm.propagate(self.state)
 
     @property
     def IonQ(self):
@@ -490,6 +519,7 @@ class BeamState(object):
     @IonQ.setter
     def IonQ(self, x):
         setattr(self._states, 'IonQ', x)
+        self.dm.propagate(self.state)
 
     @property
     def IonW(self):
@@ -500,6 +530,7 @@ class BeamState(object):
     @IonW.setter
     def IonW(self, x):
         setattr(self._states, 'IonW', x)
+        self.set_IonEk(IonEk = x-self.IonEs)
 
     @property
     def IonZ(self):
@@ -523,16 +554,14 @@ class BeamState(object):
     @phis.setter
     def phis(self, x):
         setattr(self._states, 'phis', x)
+        for i, v in enumerate(x):
+            self.set_moment0('z', position=v-self.ref_phis, cs=i)
 
     @property
     def SampleIonK(self):
         """Array: wave-vector in cavities with different beta values of all
         charge states, [rad]"""
         return getattr(self._states, 'SampleIonK')
-
-    @SampleIonK.setter
-    def SampleIonK(self, x):
-        setattr(self._states, 'SampleIonK', x)
 
     @property
     def SampleFreq(self):
@@ -542,11 +571,17 @@ class BeamState(object):
     @SampleFreq.setter
     def SampleFreq(self, x):
         setattr(self._states, 'SampleFreq', x)
+        self.dm.propagate(self.state)
 
     @property
     def Brho(self):
         """float: magnetic rigidity of reference charge state, [Tm]"""
-        return get_brho(self.IonEk, self.IonZ)
+        return get_brho(self.IonEk, self.IonZ, self.IonEs)
+
+    @Brho.setter
+    def Brho(self, x):
+        IonEk = _get_ek_from_brho(x, self.IonZ, self.IonEs)
+        self.set_IonEk(IonEk = IonEk)
 
     @property
     def moment0_env(self):
@@ -628,20 +663,52 @@ class BeamState(object):
         """Array: x centroid for all charge states, [mm]"""
         return self._states.moment0[0]
 
+    @x0.setter
+    def x0(self, x):
+        if x.shape == self.x0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('x', position=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.x0.shape))
+
     @property
     def xp0(self):
         """Array: x centroid divergence for all charge states, [rad]"""
         return self._states.moment0[1]
+
+    @xp0.setter
+    def xp0(self, x):
+        if x.shape == self.xp0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('x', momentum=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.xp0.shape))
 
     @property
     def y0(self):
         """Array: y centroid for all charge states, [mm]"""
         return self._states.moment0[2]
 
+    @y0.setter
+    def y0(self, x):
+        if x.shape == self.y0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('y', position=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.y0.shape))
+
     @property
     def yp0(self):
         """Array: y centroid divergence for all charge states, [rad]"""
         return self._states.moment0[3]
+
+    @yp0.setter
+    def yp0(self, x):
+        if x.shape == self.yp0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('y', momentum=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.yp0.shape))
 
     @property
     def phi0(self):
@@ -649,31 +716,79 @@ class BeamState(object):
         charge states, [rad]"""
         return self._states.moment0[4]
 
+    @phi0.setter
+    def phi0(self, x):
+        if x.shape == self.phi0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('z', position=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.phi0.shape))
+
     @property
     def dEk0(self):
         """Array: kinetic energy deviation w.r.t. reference charge state,
         for all charge states, [MeV/u]"""
         return self._states.moment0[5]
 
+    @dEk0.setter
+    def dEk0(self, x):
+        if x.shape == self.dEk0.shape:
+            for i, v in enumerate(x):
+                self.set_moment0('z', momentum=v, cs=i)
+        else:
+            raise ValueError('input shape {} does not match to the original shape {}'.format(x.shape, self.dEk0.shape))
+
     @property
     def x0_env(self):
         """float: weight average of all charge states for :math:`x`, [mm]"""
         return self._states.moment0_env[0]
+
+    @x0_env.setter
+    def x0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.x0)) :
+                self.set_moment0('x', position=x, cs=i)
+        else:
+            raise ValueError('input type should be a float.')
 
     @property
     def xp0_env(self):
         """float: weight average of all charge states for :math:`x'`, [rad]"""
         return self._states.moment0_env[1]
 
+    @xp0_env.setter
+    def xp0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.xp0)) :
+                self.set_moment0('x', momentum=x, cs=i)
+        else:
+            raise ValueError('input type should be a float.')
+
     @property
     def y0_env(self):
         """float: weight average of all charge states for :math:`y`, [mm]"""
         return self._states.moment0_env[2]
 
+    @y0_env.setter
+    def y0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.y0)) :
+                self.set_moment0('y', position=x, cs=i)
+        else:
+            raise ValueError('input type should be a float.')
+
     @property
     def yp0_env(self):
         """float: weight average of all charge states for :math:`y'`, [rad]"""
         return self._states.moment0_env[3]
+
+    @yp0_env.setter
+    def yp0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.yp0)) :
+                self.set_moment0('y', momentum=x, cs=i)
+        else:
+            raise ValueError('input type should be a float.')
 
     @property
     def phi0_env(self):
@@ -681,11 +796,27 @@ class BeamState(object):
         [rad]"""
         return self._states.moment0_env[4]
 
+    @phi0_env.setter
+    def phi0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.phi0)) :
+                self.set_moment0('z', position=x, cs=i)
+        else:
+            raise ValueError('input type must be a float.')
+
     @property
     def dEk0_env(self):
         """float: weight average of all charge states for :math:`\delta E_k`,
         [MeV/u]"""
         return self._states.moment0_env[5]
+
+    @dEk0_env.setter
+    def dEk0_env(self, x):
+        if isinstance(x, (int, float)):
+            for i in range(len(self.dEk0)) :
+                self.set_moment0('z', momentum=x, cs=i)
+        else:
+            raise ValueError('input type must be a float.')
 
     @property
     def xrms_all(self):
@@ -964,7 +1095,87 @@ class BeamState(object):
         """Array: normalized xp-yp coupling term of all charge states, [1]"""
         return np.array([self.get_couple('xp', 'yp', cs=i) for i in range(len(self.bg))])
 
-    def set_twiss(self, coor, alpha = None, beta = None, rmssize = None, emittance = None, nemittance = None, cs = 0):
+    def set_IonEk(self, IonEk=None, ref_IonEk=None):
+        """Set longitudinal parameters based on reference/actual enargy
+
+        Parameters
+        ----------
+        IonEk : Array
+            Kinetic energy of all charge state, [eV/u]
+        ref_IonEk : float
+            kinetic energy of reference charge state, [eV/u]
+
+        Note
+        ----
+        `moment0` will be updated based by the input energy
+        """
+        if IonEk is not None:
+            if self._states.IonEk.shape != IonEk.shape:
+                raise ValueError('input shape {} does not match to the original shape {}'.format(
+                    self._states.IonEk.shape, IonEk.shape))
+            setattr(self._states, 'IonEk', IonEk)
+        if ref_IonEk is not None:
+            if isinstance(ref_IonEk, (int, float)):
+                setattr(self._states, 'ref_IonEk', ref_IonEk)
+            else:
+                raise ValueError('input type must be a float.')
+        for i, v in enumerate(self.IonEk):
+            self.set_moment0('z', momentum=(v-self.ref_IonEk)*1e-6, cs=i)
+        self.dm.propagate(self.state)
+
+    def set_moment0(self, coor, position=None, momentum=None, cs=0):
+        """Set moment0 vector based on the centroid information
+
+        Parameters
+        ----------
+        coor : str
+            Coordinate of the twiss parameter, 'x', 'y', or 'z'.
+        position : float
+            Centroid position of the phase space, [mm] of 'x' and 'y', [rad] for 'z'.
+        momentum : float
+            Centroid momentum of the phase space, [rad] of 'x' and 'y', '[MeV/u] for 'z'.
+        cs : int
+            Index of the charge state to set parameter.
+
+        Notes
+        -----
+        'z momentum' means the energy deviation from the reference energy.
+        """
+        if coor == 'x':
+            idx = [0, 1]
+        elif coor == 'y':
+            idx = [2, 3]
+        elif coor == 'z':
+            idx = [4, 5]
+        else:
+            _LOGGER.error("Invalid coordinate type. It must be 'x', 'y', or 'z'.")
+            return None
+
+        vec = self._states.moment0
+
+        if position is None:
+            position = vec[idx[0], cs]
+
+        if momentum is None:
+            momentum = vec[idx[1], cs]
+
+        vec[idx[0], cs] = position
+        vec[idx[1], cs] = momentum
+
+        self._states.moment0 = vec
+
+        if coor == 'z':
+            phis = self._states.phis
+            phis[cs] = self._states.ref_phis + position
+            self._states.phis = phis
+
+            ek = self._states.IonEk
+            ek[cs] = self._states.ref_IonEk + momentum*1e6
+            self._states.IonEk = ek
+
+        self.dm.propagate(self.state)
+
+    def set_twiss(self, coor, alpha=None, beta=None, rmssize=None, emittance=None, nemittance=None, cs=0):
         """Set moment1 matrix by using Twiss parameter.
 
         Parameters
@@ -1149,7 +1360,15 @@ def generate_source(state, sconf=None):
 
     return {'index': sconf_indx, 'properties': sconf_prop}
 
-def get_brho(k, z):
+def _get_ek_from_beta(beta, es):
+    """Calculate kinetic energy [eV/u] from Lorentz beta"""
+    return es/np.sqrt(1e0 - beta*beta) - es
+
+def _get_ek_from_brho(brho, z, es):
+    """Calculate kinetic energy [eV/u] from magnetic rigidity"""
+    return np.sqrt(es*es + (brho*c0*z)**2) - es
+
+def get_brho(k, z, es):
     """Get magnetic rigidity
 
     Parameters
@@ -1158,17 +1377,17 @@ def get_brho(k, z):
         Kinetic energy [eV/u]
     z : float
         Charge to mass ratio, Q/A [1].
+    es : float
+        Rest energy [eV/u]
 
     Returns
     -------
     brho : float
         Magnetic rigidity [Tm].
     """
-    amu = 931.49432e6 # ev/c2
-    c0 = 2.99792458e8 # m/s
-    gam = (k + amu)/amu
+    gam = (k + es)/es
     bet = np.sqrt(1e0 - 1e0/gam/gam)
-    brho = bet*(k + amu)/(c0*z)
+    brho = bet*(k + es)/(c0*z)
     return brho
 
 def couple_index(coor1, coor2):
