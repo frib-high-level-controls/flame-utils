@@ -18,6 +18,7 @@ from flame_utils.misc import machine_setter
 from flame_utils.misc import flatten
 from flame_utils.misc import get_intersection
 from flame_utils.misc import conf_update
+from flame_utils.misc import get_share_keys
 
 __authors__ = "Tong Zhang"
 __copyright__ = "(c) 2016-2017, Facility for Rare Isotope beams, " \
@@ -55,7 +56,7 @@ def get_all_types(latfile=None, _machine=None):
     return a[np.sort(idx)].tolist()
 
 
-def get_all_names(latfile=None, _machine=None):
+def get_all_names(type=None, latfile=None, _machine=None):
     """Get all uniqe names from a FLAME machine or lattice file.
 
     Parameters
@@ -74,8 +75,11 @@ def get_all_names(latfile=None, _machine=None):
     if m is None:
         return None
 
-    mconf = m.conf()
-    a = np.asarray([i.get('name') for i in m.conf()['elements']])
+    mconf = m.conf()['elements']
+    if type is not None:
+        mconf = [mconf[i] for i in m.find(type=type)]
+
+    a = np.asarray([i.get('name') for i in mconf])
     _, idx = np.unique(a, return_index=True)
     return a[np.sort(idx)].tolist()
 
@@ -279,9 +283,9 @@ def get_element(latfile=None, index=None, name=None, type=None, **kws):
         _LOGGER.warning("get_element: Nothing to get, invalid filtering.")
         return []
     else:
-        mconf = m.conf()
-        mks = mconf.keys()
-        share_keys = [k for k in mks if k not in ("elements", "name")]
+        share_keys = kws.get('share_keys', None)
+        if share_keys is None:
+            share_keys = get_share_keys(m)
         retval = []
         for i in ele_idx:
             elem = m.conf(i)
@@ -483,6 +487,42 @@ def insert_element(machine=None, index=None, element=None):
         if isinstance(index, str):
             index = m.find(name=index)[0]
         mconf['elements'].insert(index, element)
+
+    new_m = flame.Machine(mconf)
+    return new_m
+
+def pop_element(machine=None, index=None):
+    """Remove element from the machine.
+
+    Parameters
+    ----------
+    machine :
+        FLAME machine object.
+    index : str, int, list or tuple of int
+        Remove element at the index (or element name).
+
+    Returns
+    -------
+    machine : FLAME machine object.
+    """
+    if machine is None:
+        return None
+
+    try:
+        m = conf_update(machine)
+        mconf = m.conf()
+    except:
+        _LOGGER.error("Failed to load FLAME machine object.")
+        return None
+
+    if index is not None:
+        if isinstance(index, str):
+            index = m.find(name=index)
+        if not isinstance(index, (list, tuple)):
+            index = [index]
+        index.sort()
+        for i in reversed(index):
+            mconf['elements'].pop(i)
 
     new_m = flame.Machine(mconf)
     return new_m

@@ -148,6 +148,11 @@ class TestBeamState(unittest.TestCase):
         self.assertAlmostEqual(mat[4, 5], -3e0)
         self.assertAlmostEqual(mat[5, 4], -3e0)
         self.assertAlmostEqual(mat[5, 5],  3e0)
+        mat = twiss_to_matrix('x', np.nan, np.inf, 3)
+        self.assertAlmostEqual(mat[0, 0], 0.0)
+        self.assertAlmostEqual(mat[0, 1], 0.0)
+        self.assertAlmostEqual(mat[1, 0], 0.0)
+        self.assertAlmostEqual(mat[1, 1], 0.0)
 
     def test_transmat(self):
         with open(self.latfile, 'rb') as f:
@@ -158,6 +163,94 @@ class TestBeamState(unittest.TestCase):
         left_val = ms.transfer_matrix
         right_val = s.transmat
         self.assertTrue((left_val == right_val).all())
+
+    def test_set_ref(self):
+        ms = BeamState(latfile=self.latfile)
+        ms.ref_beta = 0.03
+        self.assertAlmostEqual(ms.ref_IonEk, 419455.4536757469)
+        ms.ref_bg = 0.03
+        self.assertAlmostEqual(ms.ref_IonEk, 419078.028649807)
+        ms.ref_gamma = 1.005
+        self.assertAlmostEqual(ms.ref_IonEk, 4657469.999999881)
+        ms.ref_IonEk = 500000.0
+        self.assertAlmostEqual(ms.ref_IonEk, 500000.0)
+
+        ms.ref_IonEs = 931494000.0 + 1.0
+        self.assertAlmostEqual(ms.ref_IonEs, 931494001.0)
+        ms.ref_IonEs = 931494000.0
+
+        ms.ref_IonQ = 10000.0
+        self.assertAlmostEqual(ms.ref_IonQ, 10000.0)
+
+        ms.ref_IonW = 931994000.0 + 1.0
+        self.assertAlmostEqual(ms.ref_IonEk, 500001.0)
+
+        ms.ref_phis = 1e-4
+        self.assertAlmostEqual(ms.moment0[4, 0], -0.000284773)
+
+        ms.ref_SampleFreq = 40.25e6
+        self.assertAlmostEqual(ms.ref_SampleFreq, 40250000.0)
+
+        ms.ref_Brho = 0.7
+        self.assertAlmostEqual(ms.ref_IonEk, 454352.15719020367)
+
+    def test_set_real(self):
+        ms = BeamState(latfile=self.latfile)
+        ms.beta = np.array([0.03])
+        self.assertAlmostEqual(ms.IonEk[0], 419455.4536757469)
+        ms.bg = np.array([0.03])
+        self.assertAlmostEqual(ms.IonEk[0], 419078.028649807)
+        ms.gamma = np.array([1.005])
+        self.assertAlmostEqual(ms.IonEk[0], 4657469.999999881)
+        ms.IonEk = np.array([500000.0])
+        self.assertAlmostEqual(ms.IonEk[0], 500000.0)
+
+        ms.IonEs = np.array([931494000.0 + 1.0])
+        self.assertAlmostEqual(ms.IonEs[0], 931494001.0)
+        ms.IonEs = np.array([931494000.0])
+
+        ms.IonQ = np.array([10000.0])
+        self.assertAlmostEqual(ms.IonQ[0], 10000.0)
+
+        ms.IonW = np.array([931994000.0 + 1.0])
+        self.assertAlmostEqual(ms.IonEk[0], 500001.0)
+
+        ms.phis = np.array([1e-4])
+        self.assertAlmostEqual(ms.moment0[4, 0], 1e-4)
+
+        ms.SampleFreq = np.array([40.25e6])
+        self.assertAlmostEqual(ms.SampleFreq[0], 40250000.0)
+
+        ms.Brho = np.array(0.7)
+        self.assertAlmostEqual(ms.IonEk[0], 454352.15719020367)
+
+    def test_set_centroid(self):
+        ms = BeamState(latfile=self.latfile)
+        ms.xcen = 1.0
+        self.assertAlmostEqual(ms.moment0[0, 0], 1.0)
+        ms.xpcen = 1.0
+        self.assertAlmostEqual(ms.moment0[1, 0], 1.0)
+        ms.ycen = 1.0
+        self.assertAlmostEqual(ms.moment0[2, 0], 1.0)
+        ms.ypcen = 1.0
+        self.assertAlmostEqual(ms.moment0[3, 0], 1.0)
+        ms.zcen = 1.0
+        self.assertAlmostEqual(ms.moment0[4, 0], 1.0)
+        ms.zpcen = 1.0
+        self.assertAlmostEqual(ms.moment0[5, 0], 1.0)
+
+        ms.xcen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[0, 0], 2.0)
+        ms.xpcen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[1, 0], 2.0)
+        ms.ycen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[2, 0], 2.0)
+        ms.ypcen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[3, 0], 2.0)
+        ms.zcen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[4, 0], 2.0)
+        ms.zpcen_all = np.array([2.0])
+        self.assertAlmostEqual(ms.moment0[5, 0], 2.0)
 
 class TestModelFlame(unittest.TestCase):
     def setUp(self):
@@ -521,3 +614,12 @@ class TestInsertElemInModelFlame(unittest.TestCase):
         r1,s1 = fm.run(to_element=6)
 
         compare_mstates(self, s0, s1)
+
+    def test_pop_in_modelflame(self):
+        latfile = self.testfile
+        fm = ModelFlame(latfile)
+        r0,s0 = fm.run(to_element=6)
+        total_before_pop = len(fm.machine)
+        fm.pop_element(4)
+        total_after_pop = len(fm.machine)
+        self.assertEqual(total_before_pop-1, total_after_pop)

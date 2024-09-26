@@ -43,4 +43,18 @@ def is_zeros_states(s):
     True or False
         True if is all zeros, else False
     """
-    return np.alltrue(getattr(s, 'moment0') == np.zeros([7, 1]))
+    return getattr(s, 'ref_IonEk') == 0.0
+
+
+def get_share_keys(machine):
+    """Get share keys of lattice file.
+
+    Returns
+    -------
+    List of share keys
+    """
+    if not isinstance(machine, Machine):
+        return None
+    mks = machine.conf().keys()
+    share_keys = [k for k in mks if k not in ("elements", "name")]
+    return  share_keys
