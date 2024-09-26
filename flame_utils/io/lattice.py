@@ -86,7 +86,7 @@ def generate_latfile(machine, latfile=None, state=None, original=None,
         mconf_ks = mconf.copy()
         mconf_ks.update(mc_src)
         mconf_ks = list(mconf_ks.keys())
-        [mconf_ks.remove(i) for i in ['elements', 'name'] if i in mconf_ks]
+        [mconf_ks.remove(i) for i in ['elements', 'name', 'type', 'vector_variable','matrix_variable'] if i in mconf_ks]
 
     except:
         _LOGGER.error("Failed to load initial beam state.")

@@ -43,7 +43,7 @@ def is_zeros_states(s):
     True or False
         True if is all zeros, else False
     """
-    return np.alltrue(getattr(s, 'moment0') == np.zeros([7, 1]))
+    return getattr(s, 'ref_IonEk') == 0.0
 
 
 def get_share_keys(machine):

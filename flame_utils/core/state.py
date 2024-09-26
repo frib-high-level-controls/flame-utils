@@ -20,7 +20,9 @@ __contact__ = "Tong Zhang <zhangt@frib.msu.edu>"
 
 _LOGGER = logging.getLogger(__name__)
 
-c0 = 2.99792458e8 # m/s
+DUMMY_LAT = {'sim_type':'MomentMatrix',
+                'elements':[{'name':'mk', 'type':'marker'}]}
+DUMMY_MACHINE = flame.Machine(DUMMY_LAT)
 
 KEY_MAPPING = {
         'IonChargeStates': 'IonZ',
@@ -28,6 +30,8 @@ KEY_MAPPING = {
         'IonEs': 'ref_IonEs',
         'NCharge': 'IonQ',
 }
+
+c0 = 2.99792458e8 # m/s
 
 @alias
 class BeamState(object):
@@ -295,9 +299,7 @@ class BeamState(object):
                      "Zeros initial states, get true values by " \
                      "parameter '_latfile' or '_machine'.")
 
-        dummy_lat = {'sim_type':'MomentMatrix',
-                     'elements':[{'name':'mk', 'type':'marker'}]}
-        self.dm = flame.Machine(dummy_lat)
+        self.dm = DUMMY_MACHINE
 
     @property
     def state(self):

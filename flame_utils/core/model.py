@@ -186,6 +186,11 @@ class ModelFlame(object):
                 "ModelFlame: Lattice file is not valid, do it manually.")
             return None, None
 
+    def load_bmstate(self):
+        s = self._mach_ins.allocState({})
+        self._mach_ins.propagate(s, 0, 1)
+        self._mach_states = s
+
     def find(self, *args, **kws):
         """Find element indexs.
 

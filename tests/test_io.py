@@ -3,10 +3,12 @@
 from io import StringIO
 import unittest
 import os
+import numpy
 
 from flame import Machine
 from _utils import make_latfile
 from flame_utils import generate_latfile
+from flame_utils import ModelFlame
 from numpy.testing import assert_array_almost_equal as assertAEqual
 
 curdir = os.path.dirname(__file__)
@@ -122,7 +124,6 @@ class TestGenerateLatfile(unittest.TestCase):
         self.assertEqual(m.conf(idx)['theta_x'], 0.1)
 
     def test_generate_latfile_update2(self):
-        idx = 0
         s = self.m.allocState({})
         self.m.propagate(s,0,1)
         s.moment0 = [[0.1], [0.1], [0.1], [0.1], [0.1], [0.1], [1.0]]
@@ -131,3 +132,18 @@ class TestGenerateLatfile(unittest.TestCase):
         with open(fout2_file, 'rb') as f:
             m = Machine(f)
         assertAEqual(m.conf()['P0'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1.0])
+
+    def test_generate_latfile_update3(self):
+        s = self.m.allocState({})
+        self.m.reconfigure(0, {'NCharge': numpy.array([1.0, 1.0, 1.0]),
+                               'IonChargeStates': numpy.array([0.31, 0.31, 0.31]),
+                               'P2': numpy.zeros(7),
+                               'S2': numpy.zeros(7*7)})
+
+        fout2_file = generate_latfile(self.m, latfile=self.latfile2)
+
+        with open(fout2_file, 'rb') as f:
+            m = Machine(f)
+            s = m.allocState({})
+            m.propagate(s, 0, 1)
+        assertAEqual(s.moment1[:, :, 2], numpy.zeros([7, 7]))
