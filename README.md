@@ -1,3 +1,5 @@
+**See https://github.com/flame-simulation/flame-utils**
+
 # flame-utils
 
 Python utilities for FLAME, see documentation: [https://frib-high-level-controls.github.io/flame-utils/](https://frib-high-level-controls.github.io/flame-utils/)
